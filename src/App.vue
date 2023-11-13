@@ -19,22 +19,22 @@
 </template>
 
 <script>
-    import Sidebar from './components/Sidebar.vue';
-    import Login from './views/login/index.vue';
-    import Footer from './components/Footer.vue';
+import Sidebar from './components/Sidebar.vue';
+import Login from './views/login/index.vue';
+import Footer from './components/Footer.vue';
 
-    export default {
-        components:{
-            Sidebar,
-            Login,
-            Footer
-        } ,
-        data() {
-            return {
-            }
-        },
+export default {
+	components:{
+		Sidebar,
+		Login,
+		Footer
+	} ,
+	data() {
+		return {
+		};
+	},
 
-    }
+};
 </script>
 
 <style lang="scss">

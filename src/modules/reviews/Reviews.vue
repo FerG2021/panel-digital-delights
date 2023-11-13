@@ -101,112 +101,112 @@
 </template>
 
 <script>
-import { ElMessage, ElMessageBox } from "element-plus";
-import { FilterMatchMode, FilterOperator } from "primevue/api";
+import { ElMessage, ElMessageBox } from 'element-plus';
+import { FilterMatchMode, FilterOperator } from 'primevue/api';
 
-import ModalDetalles from "./modales/detalles.vue";
+import ModalDetalles from './modales/detalles.vue';
 
 export default {
-  components: {
-    ModalDetalles,
-  },
+	components: {
+		ModalDetalles,
+	},
 
-  data() {
-    return {
-      resenias: [],
-      loadingBtnQR: false,
-      loading: false,
-      filters: {
-        global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-      },
-    };
-  },
+	data() {
+		return {
+			resenias: [],
+			loadingBtnQR: false,
+			loading: false,
+			filters: {
+				global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+			},
+		};
+	},
 
-  mounted() {
-    this.obtenerTodos();
-  },
+	mounted() {
+		this.obtenerTodos();
+	},
 
-  methods: {
-    async obtenerTodos() {
-      this.resenias = [];
-      this.loading = true;
-      await this.axios.get("/api/resenia").then((response) => {
-        if (response.data.code == 200) {
-          console.log("response.data");
-          console.log(response.data);
+	methods: {
+		async obtenerTodos() {
+			this.resenias = [];
+			this.loading = true;
+			await this.axios.get('/api/resenia').then((response) => {
+				if (response.data.code == 200) {
+					console.log('response.data');
+					console.log(response.data);
 
-          this.resenias = response.data.data;
-        }
-      });
+					this.resenias = response.data.data;
+				}
+			});
 
-      this.loading = false;
-    },
+			this.loading = false;
+		},
 
-    async nuevaMesa() {
-      await this.axios.post("/api/mesa").then((response) => {
-        if (response.data.code == 200) {
-          console.log("response.data");
-          console.log(response.data);
-        }
-      });
-    },
+		async nuevaMesa() {
+			await this.axios.post('/api/mesa').then((response) => {
+				if (response.data.code == 200) {
+					console.log('response.data');
+					console.log(response.data);
+				}
+			});
+		},
 
-    async generarQR(id) {
-      this.loadingBtnQR = true;
-      await this.axios.get("/api/generarqr/" + id).then((response) => {
-        if (response.data.code == 200) {
-          console.log("response.data");
-          console.log(response.data);
+		async generarQR(id) {
+			this.loadingBtnQR = true;
+			await this.axios.get('/api/generarqr/' + id).then((response) => {
+				if (response.data.code == 200) {
+					console.log('response.data');
+					console.log(response.data);
 
-          window.open(response.data.data);
+					window.open(response.data.data);
 
-          this.loadingBtnQR = false;
-        }
-      });
-    },
+					this.loadingBtnQR = false;
+				}
+			});
+		},
 
-    async eliminar(row) {
-      console.log("row");
-      console.log(row);
+		async eliminar(row) {
+			console.log('row');
+			console.log(row);
 
-      this.$confirm.require({
-        header: "Confirmación",
-        message: "¿Está seguro que desea eliminar la mesa ?",
-        icon: "pi pi-info-circle",
-        acceptClass: "p-button-danger",
-        acceptIcon: "pi pi-check",
-        rejectIcon: "pi pi-times",
-        accept: () => {
-          this.eliminarCategoria(row);
-        },
-        reject: () => {
-          // this.$toast.add({severity:'error', summary:'Rejected', detail:'You have rejected', life: 3000});
-        },
-        onHide: () => {
-          // this.$toast.add({severity:'error', summary:'Hide', detail:'You have hidden', life: 3000});
-        },
-      });
-    },
+			this.$confirm.require({
+				header: 'Confirmación',
+				message: '¿Está seguro que desea eliminar la mesa ?',
+				icon: 'pi pi-info-circle',
+				acceptClass: 'p-button-danger',
+				acceptIcon: 'pi pi-check',
+				rejectIcon: 'pi pi-times',
+				accept: () => {
+					this.eliminarCategoria(row);
+				},
+				reject: () => {
+					// this.$toast.add({severity:'error', summary:'Rejected', detail:'You have rejected', life: 3000});
+				},
+				onHide: () => {
+					// this.$toast.add({severity:'error', summary:'Hide', detail:'You have hidden', life: 3000});
+				},
+			});
+		},
 
-    async eliminarCategoria(row) {
-      console.log("entra");
-      await this.axios.delete("/api/mesa/" + row.data.id).then((response) => {
-        if (response.data.code == 200) {
-          this.$toast.add({
-            severity: "success",
-            summary: "Mensaje de confirmación",
-            detail: "Mesa eliminada con éxito",
-            life: 3000,
-          });
-          this.obtenerTodos();
-        }
-      });
-    },
+		async eliminarCategoria(row) {
+			console.log('entra');
+			await this.axios.delete('/api/mesa/' + row.data.id).then((response) => {
+				if (response.data.code == 200) {
+					this.$toast.add({
+						severity: 'success',
+						summary: 'Mensaje de confirmación',
+						detail: 'Mesa eliminada con éxito',
+						life: 3000,
+					});
+					this.obtenerTodos();
+				}
+			});
+		},
 
-    moneda(x) {
-      return x.toLocaleString("es-AR");
-    },
-  },
+		moneda(x) {
+			return x.toLocaleString('es-AR');
+		},
+	},
 };
 </script>
 

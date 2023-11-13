@@ -152,92 +152,92 @@
 </template>
 
 <script>
-import { FilterMatchMode } from "primevue/api";
+import { FilterMatchMode } from 'primevue/api';
 
-import ModalNuevo from "./modales/nuevo.vue";
-import ModalModificar from "./modales/modificar.vue";
-import Title from "../../components/common/Title.vue";
+import ModalNuevo from './modales/nuevo.vue';
+import ModalModificar from './modales/modificar.vue';
+import Title from '../../components/common/Title.vue';
 
 export default {
-  components: {
-    ModalNuevo,
-    ModalModificar,
-    Title,
-  },
+	components: {
+		ModalNuevo,
+		ModalModificar,
+		Title,
+	},
 
-  data() {
-    return {
-      sectionTitle: this.$t("products"),
-      categories: [],
-      loading: false,
-      filters: {
-        global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-      },
-    };
-  },
+	data() {
+		return {
+			sectionTitle: this.$t('products'),
+			categories: [],
+			loading: false,
+			filters: {
+				global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+			},
+		};
+	},
 
-  mounted() {
-    this.getAll();
-    this.getHeightWindow();
-  },
+	mounted() {
+		this.getAll();
+		this.getHeightWindow();
+	},
 
-  methods: {
-    getHeightWindow() {
-      var heightWindow = window.innerHeight - 285;
-      return heightWindow + "px";
-    },
+	methods: {
+		getHeightWindow() {
+			var heightWindow = window.innerHeight - 285;
+			return heightWindow + 'px';
+		},
 
-    async getAll() {
-      this.categories = [];
-      this.loading = true;
-      await this.axios.get("/api/producto").then((response) => {
-        if (response.data.code == 200) {
-          this.categories = response.data.data;
-        }
-      });
-      this.loading = false;
-    },
+		async getAll() {
+			this.categories = [];
+			this.loading = true;
+			await this.axios.get('/api/producto').then((response) => {
+				if (response.data.code == 200) {
+					this.categories = response.data.data;
+				}
+			});
+			this.loading = false;
+		},
 
-    async deleteRow(row) {
-      this.$confirm.require({
-        header: this.$t("productsSection.headerAnswerDeleteConfirmation"),
-        message: this.$t("productsSection.answerDeleteConfirmation"),
-        icon: "pi pi-info-circle",
-        acceptClass: "p-button-danger",
-        acceptIcon: "pi pi-check",
-        rejectIcon: "pi pi-times",
-        accept: () => {
-          this.deleteProduct(row);
-        },
-        reject: () => {
-          // this.$toast.add({severity:'error', summary:'Rejected', detail:'You have rejected', life: 3000});
-        },
-        onHide: () => {
-          // this.$toast.add({severity:'error', summary:'Hide', detail:'You have hidden', life: 3000});
-        },
-      });
-    },
+		async deleteRow(row) {
+			this.$confirm.require({
+				header: this.$t('productsSection.headerAnswerDeleteConfirmation'),
+				message: this.$t('productsSection.answerDeleteConfirmation'),
+				icon: 'pi pi-info-circle',
+				acceptClass: 'p-button-danger',
+				acceptIcon: 'pi pi-check',
+				rejectIcon: 'pi pi-times',
+				accept: () => {
+					this.deleteProduct(row);
+				},
+				reject: () => {
+					// this.$toast.add({severity:'error', summary:'Rejected', detail:'You have rejected', life: 3000});
+				},
+				onHide: () => {
+					// this.$toast.add({severity:'error', summary:'Hide', detail:'You have hidden', life: 3000});
+				},
+			});
+		},
 
-    async deleteProduct(row) {
-      await this.axios
-        .delete("/api/producto/" + row.data.id)
-        .then((response) => {
-          if (response.data.code == 200) {
-            this.$toast.add({
-              severity: "success",
-              summary: this.$t("productsSection.headerDeleteConfirmation"),
-              detail: this.$t("productsSection.deleteConfirmation"),
-              life: 3000,
-            });
-            this.getAll();
-          }
-        });
-    },
+		async deleteProduct(row) {
+			await this.axios
+				.delete('/api/producto/' + row.data.id)
+				.then((response) => {
+					if (response.data.code == 200) {
+						this.$toast.add({
+							severity: 'success',
+							summary: this.$t('productsSection.headerDeleteConfirmation'),
+							detail: this.$t('productsSection.deleteConfirmation'),
+							life: 3000,
+						});
+						this.getAll();
+					}
+				});
+		},
 
-    moneda(x) {
-      return x.toLocaleString("es-AR");
-    },
-  },
+		moneda(x) {
+			return x.toLocaleString('es-AR');
+		},
+	},
 };
 </script>
 
@@ -261,16 +261,11 @@ export default {
       }
     }
   }
-} 
-
-
-
+}
 
 .margin-auto {
   margin: auto;
 }
-
-
 
 .product-image {
   width: 70px;

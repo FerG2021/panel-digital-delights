@@ -165,210 +165,210 @@
 </template>
 
 <script>
-  import { ElMessage, ElMessageBox } from 'element-plus'
-  import { email, required } from "@vuelidate/validators";
-  import { useVuelidate } from "@vuelidate/core";
-  import { helpers } from "@vuelidate/validators";
+import { ElMessage, ElMessageBox } from 'element-plus';
+import { email, required } from '@vuelidate/validators';
+import { useVuelidate } from '@vuelidate/core';
+import { helpers } from '@vuelidate/validators';
 
-  export default {
-    setup: () => ({ v$: useVuelidate() }),
-    data() {
-      return {
-        id: null,
-        form:{
-          nombre: null,
-          email: null,
-          contrasena: null,
-          cPassword: null,
-        },
-        submitted: false,
-        isFormValid: false,
-        name: "",
-        email: "",
-        password: "",
-        cPassword: "",
-        habilitarEdicion: false,
+export default {
+	setup: () => ({ v$: useVuelidate() }),
+	data() {
+		return {
+			id: null,
+			form:{
+				nombre: null,
+				email: null,
+				contrasena: null,
+				cPassword: null,
+			},
+			submitted: false,
+			isFormValid: false,
+			name: '',
+			email: '',
+			password: '',
+			cPassword: '',
+			habilitarEdicion: false,
 
 
-        rules: {
-          nombre: [
-            {
-              required: true,
-              message: "Por favor ingrese su mail.",
-              trigger: "change",
-            },
-          ],
-          email: [
-            {
-              required: true,
-              message: "Por favor ingrese su mail.",
-              trigger: "change",
-            },
-          ],
-          contrasena: [
-            {
-              required: true,
-              message: "Por favor ingrese su contraseña.",
-              trigger: "change",
-            },
-          ],
-          repetirContrasena: [
-            {
-              required: true,
-              message: "Por favor repita la contraseña.",
-              trigger: "change",
-            },
-          ],
-        },
-      }
-    },
+			rules: {
+				nombre: [
+					{
+						required: true,
+						message: 'Por favor ingrese su mail.',
+						trigger: 'change',
+					},
+				],
+				email: [
+					{
+						required: true,
+						message: 'Por favor ingrese su mail.',
+						trigger: 'change',
+					},
+				],
+				contrasena: [
+					{
+						required: true,
+						message: 'Por favor ingrese su contraseña.',
+						trigger: 'change',
+					},
+				],
+				repetirContrasena: [
+					{
+						required: true,
+						message: 'Por favor repita la contraseña.',
+						trigger: 'change',
+					},
+				],
+			},
+		};
+	},
 
-    validations() {
-      return {
-        name: {
-          required: helpers.withMessage("El nombre es requerido", required),
-        },
-        email: {
-          required: helpers.withMessage("El email es requerido", required),
-        } 
-      };
-    },
+	validations() {
+		return {
+			name: {
+				required: helpers.withMessage('El nombre es requerido', required),
+			},
+			email: {
+				required: helpers.withMessage('El email es requerido', required),
+			} 
+		};
+	},
 
-    created() {
-      this.getDatosMiCuenta()
-    },
+	created() {
+		this.getDatosMiCuenta();
+	},
 
-    methods: {
-      getDatosMiCuenta(){
-        // console.log(this.store.state.user.name)
-        console.log("created");
-        console.log(this.$store.state.user);
+	methods: {
+		getDatosMiCuenta(){
+			// console.log(this.store.state.user.name)
+			console.log('created');
+			console.log(this.$store.state.user);
 
-        this.id = this.$store.state.user.id
-        this.name = this.$store.state.user.name
-        this.email = this.$store.state.user.email
-      },
+			this.id = this.$store.state.user.id;
+			this.name = this.$store.state.user.name;
+			this.email = this.$store.state.user.email;
+		},
 
-      habilitarEdicionNombre(){
-        if (this.habilitarEdicion == false) {
-          return true
-        } else {
-          return false
-        }
-      },
+		habilitarEdicionNombre(){
+			if (this.habilitarEdicion == false) {
+				return true;
+			} else {
+				return false;
+			}
+		},
 
-      habilitarEdicionEmail(){
-        if (this.habilitarEdicion == false) {
-          return true
-        } else {
-          return false
-        }
-      },
-      habilitarEdicionContrasena(){
-        if (this.habilitarEdicion == false) {
-          return true
-        } else {
-          return false
-        }
-      },
-      habilitarEdicionRepetirContrasena(){
-        if (this.habilitarEdicion == false) {
-          return true
-        } else {
-          return false
-        }
-      },
+		habilitarEdicionEmail(){
+			if (this.habilitarEdicion == false) {
+				return true;
+			} else {
+				return false;
+			}
+		},
+		habilitarEdicionContrasena(){
+			if (this.habilitarEdicion == false) {
+				return true;
+			} else {
+				return false;
+			}
+		},
+		habilitarEdicionRepetirContrasena(){
+			if (this.habilitarEdicion == false) {
+				return true;
+			} else {
+				return false;
+			}
+		},
 
-      handleSubmit(isFormValid) {
-        this.isFormValid = isFormValid;
-        this.submitted = true;
-        if (!isFormValid) {
-          return;
-        }
-        this.toggleDialog();
-      },
+		handleSubmit(isFormValid) {
+			this.isFormValid = isFormValid;
+			this.submitted = true;
+			if (!isFormValid) {
+				return;
+			}
+			this.toggleDialog();
+		},
 
-      toggleDialog() {
-        this.showMessage = !this.showMessage;
-        this.onSubmit();
-      },
+		toggleDialog() {
+			this.showMessage = !this.showMessage;
+			this.onSubmit();
+		},
       
-      async onSubmit(){
-        let params = {
-          id: this.id,
-          nombre: this.name,
-          email: this.email,
-        }
+		async onSubmit(){
+			let params = {
+				id: this.id,
+				nombre: this.name,
+				email: this.email,
+			};
 
-        if (this.password != null) {
-          params.contrasena = this.password
-        } else {
-          params.contrasena = null
-        }
+			if (this.password != null) {
+				params.contrasena = this.password;
+			} else {
+				params.contrasena = null;
+			}
 
-        if (this.cPassword != null) {
-          params.repetirContrasena = this.cPassword
-        } else {
-          params.repetirContrasena = null
-        }
+			if (this.cPassword != null) {
+				params.repetirContrasena = this.cPassword;
+			} else {
+				params.repetirContrasena = null;
+			}
 
-        const respuestaApi = await this.axios.put("/api/usuario/actualizar/" + this.id, params)
+			const respuestaApi = await this.axios.put('/api/usuario/actualizar/' + this.id, params);
 
-        if (respuestaApi.data.code == 200) {
-          ElMessage({
-            type: 'success',
-            message: '¡Datos de la cuenta modificados con éxito!',
-          })
-          this.$emit('actualizarTabla')
-          this.logout()
-        } else {
-          if (respuestaApi.data.code == 400) {
-            let erroresMostrar = "// ";
-            let erorres = Object.values(respuestaApi.data.data)
+			if (respuestaApi.data.code == 200) {
+				ElMessage({
+					type: 'success',
+					message: '¡Datos de la cuenta modificados con éxito!',
+				});
+				this.$emit('actualizarTabla');
+				this.logout();
+			} else {
+				if (respuestaApi.data.code == 400) {
+					let erroresMostrar = '// ';
+					let erorres = Object.values(respuestaApi.data.data);
 
-            erorres.forEach((elemento) => {                
-              erroresMostrar = erroresMostrar + " " + elemento + " //";
-            })
+					erorres.forEach((elemento) => {                
+						erroresMostrar = erroresMostrar + ' ' + elemento + ' //';
+					});
 
-            ElMessage({
-              type: 'error',
-              grouping: true,
-              message: erroresMostrar,
-              duration: 5000,
-            })
-          }
-        }
+					ElMessage({
+						type: 'error',
+						grouping: true,
+						message: erroresMostrar,
+						duration: 5000,
+					});
+				}
+			}
 
 
-      },
+		},
 
-      deshabilitarBtnGuardarDatos(){
-        if (this.form.nombre == null ||
-            this.form.nombre == "" ||
+		deshabilitarBtnGuardarDatos(){
+			if (this.form.nombre == null ||
+            this.form.nombre == '' ||
             this.form.email == null ||
-            this.form.email == "" || 
+            this.form.email == '' || 
             this.habilitarEdicion == false
-        ) {
-          return true
-        } else {
-          return false
-        }
-      },
+			) {
+				return true;
+			} else {
+				return false;
+			}
+		},
 
-      resetForm() {
-        this.loadingBtnLogin = false;
-        this.email = null;
-        this.password = null;
-        this.submitted = false;
-      },
+		resetForm() {
+			this.loadingBtnLogin = false;
+			this.email = null;
+			this.password = null;
+			this.submitted = false;
+		},
 
-      async logout(){
-        await this.$store.dispatch("logout")
-        // redirect
-        return this.$router.replace("/login")
-      }
-    },
-  }
+		async logout(){
+			await this.$store.dispatch('logout');
+			// redirect
+			return this.$router.replace('/login');
+		}
+	},
+};
 </script>
 
 <style>
