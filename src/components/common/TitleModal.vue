@@ -6,14 +6,14 @@
 </template>
 
 <script>
-    export default {
-        props: {
-            header: {
-                type: Object,
-                required: true,
-            },
-        },
-    }
+export default {
+	props: {
+		header: {
+			type: Object,
+			required: true,
+		},
+	},
+};
 </script>
 
 <style>

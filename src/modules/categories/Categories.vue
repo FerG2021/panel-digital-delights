@@ -2,159 +2,153 @@
   <main class="about-page">
     <Card>
       <template #header>
-        <h1 style="margin-top: 15px; margin-left: 15px">Categorías</h1>
+        <h1 style="margin-top: 15px; margin-left: 15px">
+			Categorías
+		</h1>
       </template>
 
       <template #content>
-        <div style="margin-top: 10px">
-          <DataTable
-            :value="categorias"
-            responsiveLayout="scroll"
-            :loading="loading"
-            :globalFilterFields="['name']"
-            v-model:filters="filters"
-            filterDisplay="menu"
-            style="text-align: center"
-            headerStyle="text-align: center"
-            :scrollHeight="getHeightWindow()"
-          >
-            <template #header>
-              <div class="display: flex">
-                <!-- <h5 class="m-0">Customers</h5> -->
-                <div class="margin-left: auto">
-                  <span class="p-input-icon-left">
-                    <i class="pi pi-search" />
-                    <InputText
-                      v-model="filters['global'].value"
-                      placeholder="Escriba para buscar"
-                    />
-                  </span>
-                </div>
-
-                <div style="margin-left: auto">
-                  <Button
-                    label="Nueva categoría"
-                    @click="$refs.modalNuevo.abrir()"
-                  />
-                </div>
-              </div>
-            </template>
-
-            <Column field="name" header="Nombre">
-              <template #body="slotProps">
-                <span>
-                  {{ slotProps.data.name }}
-                </span>
-              </template>
-            </Column>
-
-            <Column
-              field="listarSubcategoria"
-              header="Subcategorías"
-              style="width: 100px"
-            >
-              <template #body="slotProps">
-                <div style="display: flex">
-                  <div style="margin: auto">
-                    <Button
-                      icon="pi pi-list"
-                      class="p-button-rounded p-button-primary mr-2"
-                      @click="
-                        $refs.modalListarSubcategoria.abrir(
-                          slotProps.data.id,
-                          slotProps.data
-                        )
-                      "
-                      style="margin-right: 5px"
-                    />
-                  </div>
-                </div>
-              </template>
-            </Column>
-
-            <Column field="modificar" header="Modificar" style="width: 20px">
-              <template #body="slotProps">
-                <div style="display: flex">
-                  <div style="margin: auto">
-                    <Button
-                      icon="pi pi-pencil"
-                      class="p-button-rounded p-button-warning mr-2"
-                      @click="$refs.modalModificar.abrir(slotProps.data.id)"
-                      style="margin-right: 5px"
-                    />
-                  </div>
-                </div>
-              </template>
-            </Column>
-
-            <Column field="eliminar" header="Eliminar" style="width: 20px">
-              <template #body="slotProps">
-                <div style="display: flex">
-                  <div style="margin: auto">
-                    <Button
-                      icon="pi pi-trash"
-                      class="p-button-rounded p-button-danger"
-                      @click="eliminar(slotProps)"
-                    />
-                  </div>
-                </div>
-              </template>
-            </Column>
-          </DataTable>
-        </div>
+		<div>
+			<DynamicTable 
+				:elements="categories"
+				:columns="tableColumns"
+				:labels="labels"
+				:loading="loading"
+				@add='add'
+				@edit='edit'
+				@delete='deleteCategory'
+			/>
+		</div>
       </template>
     </Card>
   </main>
 
-  <modal-nuevo ref="modalNuevo" @actualizar-tabla="obtenerTodos"></modal-nuevo>
+	<ConfirmDialog></ConfirmDialog>
 
-  <modal-agregar-subcategoria
-    ref="modalAgregarSubcategoria"
-    @actualizar-tabla="obtenerTodos"
-  ></modal-agregar-subcategoria>
+	<ABMCreate 
+		:data="create" 
+		@formDataCreate='formDataCreate'
+	/>
 
-  <modal-listar-subcategoria
-    ref="modalListarSubcategoria"
-    @actualizar-tabla="obtenerTodos"
-  ></modal-listar-subcategoria>
-
-  <modal-modificar
-    ref="modalModificar"
-    @actualizar-tabla="obtenerTodos"
-  ></modal-modificar>
-
-  <ConfirmDialog></ConfirmDialog>
+	<ABMUpdate
+		:data="update" 
+		@formDataUpdate='formDataUpdate'
+	/>
 </template>
 
 <script>
-import { ElMessage, ElMessageBox } from 'element-plus';
-import { FilterMatchMode, FilterOperator } from 'primevue/api';
+import { FilterMatchMode } from 'primevue/api';
+import { getAllCategories, newCategory, updateCategory, deleteCategory } from '../../managers/api/api';
+import { mapGetters } from 'vuex';
 
-import ModalNuevo from './modales/nuevo.vue';
-import ModalListarSubcategoria from './modales/listarSubcategoria.vue';
-import ModalAgregarSubcategoria from './modales/agregarSubcategoria.vue';
-import ModalModificar from './modales/modificar.vue';
+import DynamicTable from '../../components/datatable/DynamicTable.vue';
+import ABMCreate from '../../components/ABM/ABMCreate.vue';
+import ABMUpdate from '../../components/ABM/ABMUpdate.vue';
 
 export default {
+	name: 'CategoriesComponent',
 	components: {
-		ModalNuevo,
-		ModalListarSubcategoria,
-		ModalAgregarSubcategoria,
-		ModalModificar,
+		DynamicTable,
+		ABMCreate,
+		ABMUpdate,
 	},
-
 	data() {
 		return {
-			categorias: [],
 			loading: false,
 			filters: {
 				global: { value: null, matchMode: FilterMatchMode.CONTAINS },
 			},
+			labels: {
+				new: 'Nueva categoría',
+				delete: {
+					header: 'Confirmación',
+					message: '¿Está seguro que desea eliminar la categoría?'
+				}
+			},
+			tableColumns: [
+				{ 
+					field: 'image', 
+					header: 'Imagen', 
+					type: 'image', 
+					variation: '' 
+				},
+				{ 
+					field: 'name', 
+					header: 'Nombre', 
+					type: 'normal', 
+					variation: '' 
+				},
+				{ 
+					field: 'name', 
+					header: 'Editar', 
+					type: 'button', 
+					variation: 'update' 
+				},
+				{ 
+					field: 'name', 
+					header: 'Eliminar', 
+					type: 'button', 
+					variation: 'delete' 
+				},
+			],
+			create: {
+				modalVisible: false,
+				header: {
+					class: 'material-icons',
+					icon: 'edit',
+					headerName: 'Nueva categoría',
+				},
+				formConfiguration: [
+					{
+						modelName: 'name',
+						label: 'Nombre',
+						type: 'text', 
+						required: true,
+						defaultValue: null,
+					},
+					{
+						modelName: 'image',
+						label: 'Imagen',
+						type: 'image', 
+						required: true,
+						defaultValue: null,
+					},
+				]
+			},
+			update: {
+				modalVisible: false,
+				header: {
+					class: 'material-icons',
+					icon: 'edit',
+					headerName: 'Modificar categoría',
+				},
+				id: null,
+				formConfiguration: [
+					{
+						modelName: 'name',
+						label: 'Nombre',
+						type: 'text', 
+						required: true,
+						defaultValue: null,
+					},
+					{
+						modelName: 'image',
+						label: 'Imagen',
+						type: 'image', 
+						required: true,
+						defaultValue: null,
+					}
+				]
+			}
 		};
 	},
 
+	computed: {
+		...mapGetters('UsersStore', ['user', 'auth', 'modules']),
+		...mapGetters('CategoriesStore', ['categories']),
+	},
+
 	mounted() {
-		this.obtenerTodos();
 		this.getHeightWindow();
 	},
 
@@ -164,76 +158,99 @@ export default {
 			return alturaPestana + 'px';
 		},
 
-		async obtenerTodos() {
-			this.categorias = [];
-			this.loading = true;
-			await this.axios.get('/api/categoria').then((response) => {
-				if (response.data.code == 200) {
-					console.log('response.data');
-					console.log(response.data);
-
-					this.categorias = response.data.data;
-				}
-			});
-
-			this.loading = false;
+		async loadCategories() {
+			await getAllCategories(this.user.account_id);
 		},
 
-		async generarUsuariosProveedores() {
-			console.log('usuarios proveedores');
-
-			this.axios.post('api/usuario/crearUsuarioProveedor').then((response) => {
-				ElMessage({
-					type: 'success',
-					message: '¡Usuarios proveedores añadidos con éxito!',
-				});
-				this.obtenerTodos();
-			});
-		},
-
-		async eliminar(row) {
-			console.log('row');
-			console.log(row);
-
-			this.$confirm.require({
-				header: 'Confirmación',
-				message: '¿Está seguro que desea eliminar la categoría?',
-				icon: 'pi pi-info-circle',
-				acceptClass: 'p-button-danger',
-				acceptIcon: 'pi pi-check',
-				rejectIcon: 'pi pi-times',
-				accept: () => {
-					this.eliminarCategoria(row);
-				},
-				reject: () => {
-					// this.$toast.add({severity:'error', summary:'Rejected', detail:'You have rejected', life: 3000});
-				},
-				onHide: () => {
-					// this.$toast.add({severity:'error', summary:'Hide', detail:'You have hidden', life: 3000});
-				},
-			});
-		},
-
-		async eliminarCategoria(row) {
-			console.log('entra');
-			await this.axios
-				.delete('/api/categoria/' + row.data.id)
+		async deleteCategory(element) {
+			deleteCategory(this.user.account_id, element)
 				.then((response) => {
-					if (response.data.code == 200) {
-						this.$toast.add({
-							severity: 'success',
-							summary: 'Mensaje de confirmación',
-							detail: 'Categoría eliminada con éxito',
-							life: 3000,
-						});
-						this.obtenerTodos();
-					}
+					this.loadCategories();
+					this.loading = false;
+					this.$toast.add({
+						severity: 'success',
+						summary: this.$t('toast.success'),
+						detail: response.data.message,
+						life: 3000,
+					});
+				})
+				.catch((error) => {
+					console.log(error);
 				});
 		},
 
-		moneda(x) {
-			return x.toLocaleString('es-AR');
+		add() {
+			this.create.modalVisible = true;
 		},
+
+		async formDataCreate(value) {
+			this.formData = value;
+
+			let formData = new FormData();
+
+			for (let key in value) {
+				formData.append(key, value[key]);
+			}
+
+			newCategory(this.user.account_id, formData)
+				.then(() => {
+					this.create.modalVisible = false;
+					this.loadCategories();
+					this.loading = false;
+					this.$toast.add({
+						severity: 'success',
+						summary: this.$t('toast.success'),
+						detail: this.$t('categoriesSection.createConfirmation'),
+						life: 3000,
+					});
+				})
+				.catch((error) => {
+					console.log(error);
+					this.$toast.add({
+						severity: 'error',
+						summary: this.$t('toast.error'),
+						detail: error.response.data.message,
+						life: 3000,
+					});
+				});
+		},
+
+		edit(data) {
+			this.update.id = data.id;
+			for (const configuration of this.update.formConfiguration) {
+				configuration.defaultValue = data[configuration.modelName];
+			}
+			this.update.modalVisible = true;
+		},
+
+		formDataUpdate(value) {
+			let formData = new FormData();
+
+			for (let key in value) {
+				formData.append(key, value[key]);
+			}
+
+			updateCategory(this.user.account_id, formData)
+				.then(() => {
+					this.update.modalVisible = false;
+					this.loadCategories();
+					this.loading = false;
+					this.$toast.add({
+						severity: 'success',
+						summary: this.$t('toast.success'),
+						detail: this.$t('categoriesSection.updateConfirmation'),
+						life: 3000,
+					});
+				})
+				.catch((error) => {
+					this.$toast.add({
+						severity: 'error',
+						summary: this.$t('toast.error'),
+						detail: error.response.data.message,
+						life: 3000,
+					});
+				});
+		}
 	},
 };
 </script>

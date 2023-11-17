@@ -2,53 +2,18 @@
   <main>
     <el-card>
       <template #header>
-        <h1>Mi cuenta</h1>          
+        <h1>Mi cuenta</h1>
       </template>
 
-      <div>    
+      <div>
         <div style="margin-bottom: 20px">
-          <!-- <span style="margin-right: 10px">Habilitar edición de datos</span>
-          <el-switch v-model="habilitarEdicion" /> -->
-          <el-alert title="IMPORTANTE" description="Al modificar algunos de los datos de su cuenta la sesión se cerrará y deberá voler a ingresar" type="warning" show-icon/>
-          <!-- <div v-if="habilitarEdicion == true">
-            <el-alert title="IMPORTANTE" description="Al modificar algunos de los datos de su cuenta la sesión se cerrará y deberá voler a ingresar" type="warning" show-icon/>
-          </div> -->
-        </div>   
-        <!-- <el-form 
-          label-width="150px" 
-          ref="form"
-          :model="form"
-          :rules="rules"
-          status-icon
-        >
-          <el-form-item label="Nombre" prop="nombre" label-width="200px">
-            <el-input v-model="form.nombre"  :disabled="habilitarEdicionNombre()"/>
-          </el-form-item>
-          
-          <el-form-item label="Email" prop="email" label-width="200px">
-            <el-input v-model="form.email"  :disabled="habilitarEdicionEmail()"/>
-          </el-form-item>
-
-          <el-form-item label="Contraseña" prop="contrasena" label-width="200px">
-            <el-input v-model="form.contrasena" :disabled="habilitarEdicionContrasena()" type="password"/>
-          </el-form-item>
-
-          <el-form-item label="Repetir contraseña" prop="repetirContrasena" label-width="200px">
-            <el-input v-model="form.repetirContrasena" :disabled="habilitarEdicionRepetirContrasena()" type="password"/>
-          </el-form-item>
-
-          <el-form-item label-width="200px">
-            <el-button 
-              class="btnEnviar" 
-              type="primary" 
-              @click="onSubmit()"
-              :disabled="deshabilitarBtnGuardarDatos()"
-            >
-              Guardar datos
-            </el-button>
-          </el-form-item>
-        </el-form> -->
-
+          <el-alert
+            title="IMPORTANTE"
+            description="Al modificar algunos de los datos de su cuenta la sesión se cerrará y deberá voler a ingresar"
+            type="warning"
+            show-icon
+          />
+        </div>
         <form
           @submit.prevent="handleSubmit(!v$.$invalid)"
           class="p-fluid mt-3vh form"
@@ -71,16 +36,12 @@
             </div>
             <small
               v-if="
-                (v$.name.$invalid && submitted) ||
-                v$.name.$pending.$response
+                (v$.name.$invalid && submitted) || v$.name.$pending.$response
               "
               class="p-error"
             >
-              {{
-                v$.name.required.$message.replace("Value", "Nombre")
-              }}
-            </small
-            >
+              {{ v$.name.required.$message.replace("Value", "Nombre") }}
+            </small>
           </div>
 
           <!-- Email -->
@@ -101,21 +62,17 @@
             </div>
             <small
               v-if="
-                (v$.email.$invalid && submitted) ||
-                v$.email.$pending.$response
+                (v$.email.$invalid && submitted) || v$.email.$pending.$response
               "
               class="p-error"
             >
-              {{
-                v$.email.required.$message.replace("Value", "Email")
-              }}
-            </small
-            >
+              {{ v$.email.required.$message.replace("Value", "Email") }}
+            </small>
           </div>
 
           <!-- Password -->
           <div class="field password mt-3vh">
-            <div class="p-float-label ">
+            <div class="p-float-label">
               <Password
                 id="password"
                 inputId="integeronly"
@@ -124,16 +81,13 @@
                 :feedback="false"
                 toggleMask
               />
-              <label
-                for="password"
-                >Contraseña</label
-              >
+              <label for="password">Contraseña</label>
             </div>
           </div>
 
           <!-- CPassword -->
           <div class="field password mt-3vh">
-            <div class="p-float-label ">
+            <div class="p-float-label">
               <Password
                 id="cPassword"
                 inputId="integeronly"
@@ -142,10 +96,7 @@
                 :feedback="false"
                 toggleMask
               />
-              <label
-                for="cPassword"
-                >Repetir contraseña</label
-              >
+              <label for="cPassword">Repetir contraseña</label>
             </div>
           </div>
 
@@ -156,26 +107,25 @@
             :loading="loadingBtnLogin"
           />
         </form>
-
-
-
       </div>
     </el-card>
   </main>
 </template>
 
 <script>
-import { ElMessage, ElMessageBox } from 'element-plus';
-import { email, required } from '@vuelidate/validators';
+import { ElMessage } from 'element-plus';
+import { required } from '@vuelidate/validators';
 import { useVuelidate } from '@vuelidate/core';
 import { helpers } from '@vuelidate/validators';
+import { mapGetters } from 'vuex';
+
 
 export default {
 	setup: () => ({ v$: useVuelidate() }),
 	data() {
 		return {
 			id: null,
-			form:{
+			form: {
 				nombre: null,
 				email: null,
 				contrasena: null,
@@ -188,7 +138,6 @@ export default {
 			password: '',
 			cPassword: '',
 			habilitarEdicion: false,
-
 
 			rules: {
 				nombre: [
@@ -223,6 +172,10 @@ export default {
 		};
 	},
 
+	computed: {
+		...mapGetters('UsersStore', ['user']),
+	},
+
 	validations() {
 		return {
 			name: {
@@ -230,7 +183,7 @@ export default {
 			},
 			email: {
 				required: helpers.withMessage('El email es requerido', required),
-			} 
+			},
 		};
 	},
 
@@ -239,17 +192,16 @@ export default {
 	},
 
 	methods: {
-		getDatosMiCuenta(){
-			// console.log(this.store.state.user.name)
-			console.log('created');
-			console.log(this.$store.state.user);
+		getDatosMiCuenta() {
+			console.log('this.user');
+			console.log(this.user);
 
-			this.id = this.$store.state.user.id;
-			this.name = this.$store.state.user.name;
-			this.email = this.$store.state.user.email;
+			this.id = this.user.id;
+			this.name = this.user.name;
+			this.email = this.user.email;
 		},
 
-		habilitarEdicionNombre(){
+		habilitarEdicionNombre() {
 			if (this.habilitarEdicion == false) {
 				return true;
 			} else {
@@ -257,21 +209,21 @@ export default {
 			}
 		},
 
-		habilitarEdicionEmail(){
+		habilitarEdicionEmail() {
 			if (this.habilitarEdicion == false) {
 				return true;
 			} else {
 				return false;
 			}
 		},
-		habilitarEdicionContrasena(){
+		habilitarEdicionContrasena() {
 			if (this.habilitarEdicion == false) {
 				return true;
 			} else {
 				return false;
 			}
 		},
-		habilitarEdicionRepetirContrasena(){
+		habilitarEdicionRepetirContrasena() {
 			if (this.habilitarEdicion == false) {
 				return true;
 			} else {
@@ -292,8 +244,8 @@ export default {
 			this.showMessage = !this.showMessage;
 			this.onSubmit();
 		},
-      
-		async onSubmit(){
+
+		async onSubmit() {
 			let params = {
 				id: this.id,
 				nombre: this.name,
@@ -312,7 +264,10 @@ export default {
 				params.repetirContrasena = null;
 			}
 
-			const respuestaApi = await this.axios.put('/api/usuario/actualizar/' + this.id, params);
+			const respuestaApi = await this.axios.put(
+				'/api/usuario/actualizar/' + this.id,
+				params
+			);
 
 			if (respuestaApi.data.code == 200) {
 				ElMessage({
@@ -326,7 +281,7 @@ export default {
 					let erroresMostrar = '// ';
 					let erorres = Object.values(respuestaApi.data.data);
 
-					erorres.forEach((elemento) => {                
+					erorres.forEach((elemento) => {
 						erroresMostrar = erroresMostrar + ' ' + elemento + ' //';
 					});
 
@@ -338,16 +293,15 @@ export default {
 					});
 				}
 			}
-
-
 		},
 
-		deshabilitarBtnGuardarDatos(){
-			if (this.form.nombre == null ||
-            this.form.nombre == '' ||
-            this.form.email == null ||
-            this.form.email == '' || 
-            this.habilitarEdicion == false
+		deshabilitarBtnGuardarDatos() {
+			if (
+				this.form.nombre == null ||
+        this.form.nombre == '' ||
+        this.form.email == null ||
+        this.form.email == '' ||
+        this.habilitarEdicion == false
 			) {
 				return true;
 			} else {
@@ -362,23 +316,23 @@ export default {
 			this.submitted = false;
 		},
 
-		async logout(){
+		async logout() {
 			await this.$store.dispatch('logout');
 			// redirect
 			return this.$router.replace('/login');
-		}
+		},
 	},
 };
 </script>
 
 <style>
-  .form {
-    width: 60%;
-    display: flex;
-    margin: auto;
-    flex-direction: column;
-  }
-  .mt-3vh {
-    margin-top: 3vh;
-  }
+.form {
+  width: 60%;
+  display: flex;
+  margin: auto;
+  flex-direction: column;
+}
+.mt-3vh {
+  margin-top: 3vh;
+}
 </style>

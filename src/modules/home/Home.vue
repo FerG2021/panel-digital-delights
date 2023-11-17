@@ -1,7 +1,7 @@
 <template>
     <main>
-        <el-card>
-            <Title :title="sectionTitle"></Title>
+        <div class="home">
+            <TitleComponent :title="sectionTitle" />
 
             <div class="grid">
                 <div
@@ -12,59 +12,69 @@
                     <Card 
                         @click="$router.push(section.path)"  
                         :section="section"
+						class="card"
                     ></Card>
                 </div>
             </div>
-        </el-card>
+        </div>
     </main>
 </template>
 
 <script>
 import Card from '../../components/common/Card.vue';
-import Title from '../../components/common/Title.vue';
+import TitleComponent from '../../components/common/Title.vue';
+import { mapGetters } from 'vuex';
 
 export default {
+	name: 'HomeComponent',
 	components: {
 		Card,
-		Title,
+		TitleComponent,
 	},
 
 	data() {
 		return {
 			sectionTitle: 'Home',
-			mesas: [],
-			sections: [
-				{
-					titulo: 'Productos',
-					icono: 'restaurant',
-					path: '/productos',
-				},
-				{
-					titulo: 'Categorías',
-					icono: 'category',
-					path: '/categorias',
-				},
-				{
-					titulo: 'Reseñas',
-					icono: 'reviews',
-					path: '/resenias',
-				},
-				{
-					titulo: 'Mi cuenta',
-					icono: 'manage_accounts',
-					path: '/mi-cuenta',
-				},
-			],
 		};
 	},
 
-	methods: {
+	computed: {
+		...mapGetters('UsersStore', ['modules']),
+
+		sections() {
+			let sections = [];
+
+			for (const module of this.modules) {
+				if (module.showInHome !== false) {
+					sections.push({
+						titulo: module.title,
+						icono: module.icon,
+						path: module.path
+
+					});
+				}
+			}
+
+			return sections;
+		}
 	},
 };
 </script>
 
-<style scoped>
-.grid {
-  margin-top: 20px;
+<style lang="scss" scoped>
+.home {
+	height: 100%;
+	background-color: var(--white);
+	.grid {
+		margin-top: 20px;
+		.contenedor-card {
+			.card {
+				background-color: var(--light);
+				&:hover {
+					background-color: var(--light-card-hover);
+				}
+			}
+		}
+	}
 }
 </style>

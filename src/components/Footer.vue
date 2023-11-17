@@ -23,11 +23,11 @@ export default {
 .container {
     text-align: center;
     .login {
-        color: var(--backgroun-card);
+        color: var(--background-card);
         text-decoration: none;
     }
     .login:hover {
-        color: var(--backgroun-card-hover);
+        color: var(--background-card-hover);
     }
     .main {
         text-align: center;

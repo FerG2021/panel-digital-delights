@@ -1,14 +1,14 @@
 <template>
     <Card class="card">
         <template #title>
-            <h3 class="card-titulo">
+            <h3 class="title-card">
                 {{ section.titulo }}
             </h3>
         </template>
 
         <template #content>
-            <div class="card-contenedor-icono">
-                <span class="material-icons card-icono">
+            <div class="icon-card-container">
+                <span class="material-icons icon-card">
                     {{ section.icono }}
                 </span>
             </div>
@@ -18,42 +18,38 @@
 
 <script>
 export default {
-    props: {
-        section: {
-            type: Object,
-            required: true,
-        }
-    }
-}
+	name: 'CardComponent',
+	props: {
+		section: {
+			type: Object,
+			required: true,
+		}
+	}
+};
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
     .card {
         margin: auto;
         width: 80%;
-        background-color: var(--backgroun-card);
-        color: #1e293b;
-        border-radius: 4vh;
-    }
-
-    .card:hover {
-        cursor: pointer;
-        background-color: var(--backgroun-card-hover);
-    }
-
-    .card-titulo {
-        text-align: center;
-        transition: 0.3s;
-    }
-
-    .card-contenedor-icono {
-        display: flex;
-    }
-
-    .card-icono {
-        font-size: 10vh;
-        text-align: center;
-        margin: auto;
-        transition: 0.3s;
+        background-color: var(--background-card);
+        color: var(--dark);
+        border-radius: 12px;
+        &:hover {
+            cursor: pointer;
+            background-color: var(--background-card-hover);
+        }
+        .title-card {
+            text-align: center;
+        }
+        .icon-card-container {
+            display: flex;
+            .icon-card {
+                font-size: 10vh;
+                text-align: center;
+                margin: auto;
+                transition: 0.3s;
+            }
+        }
     }
 </style>

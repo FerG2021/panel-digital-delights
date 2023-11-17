@@ -1,6 +1,6 @@
 {
     "hello": "Hola!",
-    "welcome": "Bienvenido al panel de gestión",
+    "welcome": "Bienvenido",
 
     "home": "Inicio",
     "products": "Productos",
@@ -9,12 +9,12 @@
 
     "login" : {
         "login": "Ingresar",
-        "loginError" : "Mail o contraseña incorrecto",
+        "loginError" : "Mail o contraseña incorrectos",
         "errorOcurred": "Ocurrió un error",
         "formLogin": {
-            "email": "Email",
+            "email": "Usuario",
             "password": "Contraseña",
-            "requiredEmail": "El email es requerido",
+            "requiredEmail": "El usuario es requerido",
             "requiredPassword": "La contraseña es requerida"
         }
     },
@@ -22,8 +22,14 @@
     "logout": "Salir",
     "save": "Guardar",
 
+    "toast": {
+        "success": "Mensaje de verificación",
+        "error": "Se ha producido un error"
+    },
+
 
     "productsSection": {
+        "sectionTitle": "Productos",
         "headerTable": {
             "image": "Imagen",
             "name": "Nombre",
@@ -48,5 +54,12 @@
             "price": "El precio es requerido",
             "category": "La categoria es requerida"
         }
+    },
+
+    "categoriesSection": {
+        "createConfirmation": "Categoría creada con éxito",
+        "updateConfirmation": "Categoría actualizada con éxito",
+        "deleteConfirmation": "Categoría eliminada con éxito"
+
     }
 }

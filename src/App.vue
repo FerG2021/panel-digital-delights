@@ -1,10 +1,10 @@
 <template>
-    <div v-if="!$store.state.auth">
+    <div v-if="!auth">
         <div class="login">
             <Login />
         </div>
         <div class="footer">
-            <Footer screen="login"></Footer>
+            <FooterComponent screen="login"></FooterComponent>
         </div>
     </div>
     <div v-else>
@@ -13,27 +13,27 @@
             <router-view></router-view>
         </div>
         <div class="footer">
-            <Footer screen="main"></Footer>
+            <FooterComponent screen="main"></FooterComponent>
         </div>
     </div>
 </template>
 
 <script>
-import Sidebar from './components/Sidebar.vue';
-import Login from './views/login/index.vue';
-import Footer from './components/Footer.vue';
+import Sidebar from './components/sidebar/Sidebar.vue';
+import Login from './components/login/Login.vue';
+import FooterComponent from './components/Footer.vue';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
 	components:{
 		Sidebar,
 		Login,
-		Footer
-	} ,
-	data() {
-		return {
-		};
+		FooterComponent
 	},
-
+	computed: {
+		...mapGetters('UsersStore', ['user', 'auth']),
+		...mapActions('UsersStore', ['getUser']),
+	}
 };
 </script>
 

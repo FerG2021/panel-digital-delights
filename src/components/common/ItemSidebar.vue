@@ -1,21 +1,21 @@
 <template>
     <div>
-        <router-link 
+        <!-- <router-link 
             class="button" 
             :to="item.route" 
             v-if="is_expanded"
         >
             <span class="material-icons">{{ item.icon }}</span>
             <span class="text">{{ item.name }}</span>
-        </router-link>
+        </router-link> -->
 
-        <el-tooltip
+        <!-- <el-tooltip
             class="box-item"
             effect="dark"
             :content="item.name"
             placement="right-start"
             v-if="!is_expanded"
-        >
+        > -->
             <router-link
                 class="button"
                 :to="item.route" 
@@ -24,23 +24,23 @@
                 <span class="material-icons">{{ item.icon }}</span>
                 <span class="text">{{ item.name }}</span>
             </router-link>
-        </el-tooltip>
+        <!-- </el-tooltip> -->
       </div>
 </template>
 
 <script>
 export default {
-    props: {
-        item: {
-            type: Object,
-            required: true,
-        },
-        is_expanded: {
-            type: Boolean,
-            required: true,
-        }
-    }
-}
+	props: {
+		item: {
+			type: Object,
+			required: true,
+		},
+		is_expanded: {
+			type: Boolean,
+			required: true,
+		}
+	}
+};
 </script>
 
 <style lang="scss" scoped>

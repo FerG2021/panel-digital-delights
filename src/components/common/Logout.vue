@@ -1,10 +1,8 @@
 <template>
-    <!-- Logout -->
     <div class="button logout" v-if="is_expanded" @click="logout()">
         <span @click="logout()">
             <i class="pi pi-sign-out material-icons"></i>
         </span>
-
         <span class="text">{{ $t("logout") }}</span>
     </div>
 
@@ -14,7 +12,7 @@
         content="Salir"
         placement="right-start"
         v-if="!is_expanded"
-        >
+    >
         <div class="button logout" v-if="!is_expanded" @click="logout()">
             <span>
                 <i class="pi pi-sign-out material-icons"></i>
@@ -25,14 +23,30 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+import Store from '../../managers/store/store';
+
 export default {
-    methods: {
-        async logout() {
-            await this.$store.dispatch("logout");
-            return this.$router.replace("/login");
-        },
-    },
-}
+	name: 'LogOut',
+	computed: {
+		...mapGetters('UsersStore', ['modules'])
+	},
+	methods: {
+		async logout() {
+			this.clearStores();
+			await this.$store.dispatch('UsersStore/logout');
+			return this.$router.replace('/login');
+		},
+
+		clearStores() {
+			for (const module of this.modules) {
+				if (module.store) {
+					Store.commit(`${module.componentName}Store/clearStore`);
+				}
+			}
+		}
+	},
+};
 </script>
 
 <style lang="scss" scoped>
