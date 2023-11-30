@@ -6,7 +6,7 @@
       <Card class="card-login">
         <template #title>
 			<div class="contenedor-img-login">
-				<img src="../../assets/gorrochef.png" class="img-login" />
+				<img src="../../assets/logo.png" class="img-login" />
 			</div>
 			<h1 class="saludo-login">
 				{{ $t("welcome") }}

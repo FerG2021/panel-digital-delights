@@ -46,7 +46,7 @@
 					v-if="column.type === 'price'"
 				>
 					<template #body="slotProps">
-						{{  `$ ${formatNumber(slotProps.data[column.field]) }` }}
+						{{  `$${formatNumber(slotProps.data[column.field]) }` }}
 					</template>
 				</Column>
 

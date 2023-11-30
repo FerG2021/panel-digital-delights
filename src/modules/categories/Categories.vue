@@ -1,45 +1,43 @@
 <template>
-  <main class="about-page">
-    <Card>
-      <template #header>
-        <h1 style="margin-top: 15px; margin-left: 15px">
-			Categorías
-		</h1>
-      </template>
+    <main class="about-page" v-if="Configuration">
+        <Card>
+            <template #header>
+                <h1 style="margin-top: 15px; margin-left: 15px">Categorías</h1>
+            </template>
 
-      <template #content>
-		<div>
-			<DynamicTable 
-				:elements="categories"
-				:columns="tableColumns"
-				:labels="labels"
-				:loading="loading"
-				@add='add'
-				@edit='edit'
-				@delete='deleteCategory'
-			/>
-		</div>
-      </template>
-    </Card>
-  </main>
+            <template #content>
+                <div>
+                    <DynamicTable
+                        :elements="categories"
+                        :columns="Configuration.tableColumns"
+                        :labels="Configuration.labels"
+                        :loading="loading"
+                        @add="add"
+                        @edit="edit"
+                        @delete="deleteCategory"
+                    />
+                </div>
+            </template>
+        </Card>
 
-	<ConfirmDialog></ConfirmDialog>
+        <ConfirmDialog></ConfirmDialog>
 
-	<ABMCreate 
-		:data="create" 
-		@formDataCreate='formDataCreate'
-	/>
+        <ABMCreate :data="Configuration.create" @formDataCreate="formDataCreate" />
 
-	<ABMUpdate
-		:data="update" 
-		@formDataUpdate='formDataUpdate'
-	/>
+        <ABMUpdate :data="Configuration.update" @formDataUpdate="formDataUpdate" />
+    </main>
 </template>
 
 <script>
 import { FilterMatchMode } from 'primevue/api';
-import { getAllCategories, newCategory, updateCategory, deleteCategory } from '../../managers/api/api';
+import {
+	getAllCategories,
+	newCategory,
+	updateCategory,
+	deleteCategory,
+} from '../../managers/api/api';
 import { mapGetters } from 'vuex';
+import { setConfigurationFileByAccount } from '../../utils/utils';
 
 import DynamicTable from '../../components/datatable/DynamicTable.vue';
 import ABMCreate from '../../components/ABM/ABMCreate.vue';
@@ -55,91 +53,10 @@ export default {
 	data() {
 		return {
 			loading: false,
+			Configuration: null,
 			filters: {
 				global: { value: null, matchMode: FilterMatchMode.CONTAINS },
 			},
-			labels: {
-				new: 'Nueva categoría',
-				delete: {
-					header: 'Confirmación',
-					message: '¿Está seguro que desea eliminar la categoría?'
-				}
-			},
-			tableColumns: [
-				{ 
-					field: 'image', 
-					header: 'Imagen', 
-					type: 'image', 
-					variation: '' 
-				},
-				{ 
-					field: 'name', 
-					header: 'Nombre', 
-					type: 'normal', 
-					variation: '' 
-				},
-				{ 
-					field: 'name', 
-					header: 'Editar', 
-					type: 'button', 
-					variation: 'update' 
-				},
-				{ 
-					field: 'name', 
-					header: 'Eliminar', 
-					type: 'button', 
-					variation: 'delete' 
-				},
-			],
-			create: {
-				modalVisible: false,
-				header: {
-					class: 'material-icons',
-					icon: 'edit',
-					headerName: 'Nueva categoría',
-				},
-				formConfiguration: [
-					{
-						modelName: 'name',
-						label: 'Nombre',
-						type: 'text', 
-						required: true,
-						defaultValue: null,
-					},
-					{
-						modelName: 'image',
-						label: 'Imagen',
-						type: 'image', 
-						required: true,
-						defaultValue: null,
-					},
-				]
-			},
-			update: {
-				modalVisible: false,
-				header: {
-					class: 'material-icons',
-					icon: 'edit',
-					headerName: 'Modificar categoría',
-				},
-				id: null,
-				formConfiguration: [
-					{
-						modelName: 'name',
-						label: 'Nombre',
-						type: 'text', 
-						required: true,
-						defaultValue: null,
-					},
-					{
-						modelName: 'image',
-						label: 'Imagen',
-						type: 'image', 
-						required: true,
-						defaultValue: null,
-					}
-				]
-			}
 		};
 	},
 
@@ -149,10 +66,20 @@ export default {
 	},
 
 	mounted() {
+		this.setCongigurationFile();
 		this.getHeightWindow();
 	},
 
 	methods: {
+		async setCongigurationFile() {
+			const account = this.user.email.split('.')[1];
+			this.Configuration = await setConfigurationFileByAccount(
+				'categories',
+				account
+			);
+			console.log(this.Configuration.account);
+		},
+
 		getHeightWindow() {
 			var alturaPestana = window.innerHeight - 285;
 			return alturaPestana + 'px';
@@ -180,7 +107,7 @@ export default {
 		},
 
 		add() {
-			this.create.modalVisible = true;
+			this.Configuration.create.modalVisible = true;
 		},
 
 		async formDataCreate(value) {
@@ -194,7 +121,7 @@ export default {
 
 			newCategory(this.user.account_id, formData)
 				.then(() => {
-					this.create.modalVisible = false;
+					this.Configuration.create.modalVisible = false;
 					this.loadCategories();
 					this.loading = false;
 					this.$toast.add({
@@ -216,11 +143,11 @@ export default {
 		},
 
 		edit(data) {
-			this.update.id = data.id;
-			for (const configuration of this.update.formConfiguration) {
+			this.Configuration.update.id = data.id;
+			for (const configuration of this.Configuration.update.formConfiguration) {
 				configuration.defaultValue = data[configuration.modelName];
 			}
-			this.update.modalVisible = true;
+			this.Configuration.update.modalVisible = true;
 		},
 
 		formDataUpdate(value) {
@@ -232,7 +159,7 @@ export default {
 
 			updateCategory(this.user.account_id, formData)
 				.then(() => {
-					this.update.modalVisible = false;
+					this.Configuration.update.modalVisible = false;
 					this.loadCategories();
 					this.loading = false;
 					this.$toast.add({
@@ -250,32 +177,32 @@ export default {
 						life: 3000,
 					});
 				});
-		}
+		},
 	},
 };
 </script>
 
 <style>
 .product-image {
-  width: 70px;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
-  border-radius: 8px;
-  padding: 3px;
+    width: 70px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    border-radius: 8px;
+    padding: 3px;
 }
 
 .headerClass {
-  text-align: center !important;
+    text-align: center !important;
 }
 
 .p-column-header-content {
-  text-align: center !important;
-  align-content: center !important;
-  /* border: 1px solid red !important; */
+    text-align: center !important;
+    align-content: center !important;
+    /* border: 1px solid red !important; */
 }
 
 .p-column-title {
-  /* border: 1px solid green !important; */
-  text-align: center !important;
-  align-content: center !important;
+    /* border: 1px solid green !important; */
+    text-align: center !important;
+    align-content: center !important;
 }
 </style>

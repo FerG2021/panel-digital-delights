@@ -6,7 +6,6 @@ export const getProducts = () => {
 };
 
 export const getAllCategories = async (id) => {
-	// return axios.get(`/api/categories/${id}`);
 	await axios.get(`/api/categories/${id}`)
 		.then((response) => {
 			Store.commit('CategoriesStore/setCategories', response.data.data);
@@ -29,8 +28,6 @@ export const deleteCategory = (id, category) => {
 };
 
 export const getAllProducts = async (id) => {
-	// return axios.get(`/api/products/${id}`);
-
 	await axios.get(`/api/products/${id}`)
 		.then((response) => {
 			Store.commit('ProductsStore/setProducts', response.data.data);
@@ -50,4 +47,8 @@ export const updateProduct = (id, data) => {
 
 export const deleteProduct = (id, category) => {
 	return axios.post(`/api/product/delete/${id}`, category);
+};
+
+export const updateUserData = (id, accountData) => {
+	return axios.put(`/api/my-account/update/${id}`, accountData);
 };

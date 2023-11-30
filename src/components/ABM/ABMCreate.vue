@@ -96,11 +96,6 @@
 										*
 									</span>
 								</p>
-								<!-- <InputSwitch
-									:id="field.name"
-									v-model="formData[field.modelName]"
-									@update:modelValue="(value) => handleInputChange(value, field.modelName)"
-								/> -->
 								<ToggleButton 
 									:id="field.name"
 									v-model="formData[field.modelName]" 
