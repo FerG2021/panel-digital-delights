@@ -10,6 +10,7 @@
 			headerStyle="text-align: center"
 			:scrollHeight="getHeightWindow()"
 			class="data-table"
+			
 		>
 			<template #header>
 				<div class="header-container">
@@ -161,7 +162,7 @@ export default {
 	},
 	methods: {
 		getHeightWindow() {
-			var heightWindow = window.innerHeight - 285;
+			var heightWindow = window.innerHeight - 260;
 			return heightWindow + 'px';
 		},
 

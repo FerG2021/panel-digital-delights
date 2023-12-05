@@ -37,10 +37,6 @@
         "newProduct": "New product",
         "placeholderSearch": "Type to search",
         "uploadImage": "Drag images to upload",
-        "headerAnswerDeleteConfirmation": "Confirmation",
-        "answerDeleteConfirmation": "Are you sure you want to delete the product?",
-        "headerDeleteConfirmation": "Confirmation message",
-        "deleteConfirmation": "Product successfully removed",
         "validations": {
             "name": "The name is required",
             "description": "The description is required",

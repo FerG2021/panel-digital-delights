@@ -15,7 +15,7 @@
 					for="email"
 					:class="{ 'p-error': v$.email.$invalid && submitted }"
 				>
-					{{ $t("login.formLogin.email") }}
+					{{ $t('login.formLogin.email') }}
 					<span style="color: red">*</span>
 				</label>
 			</div>
@@ -87,7 +87,6 @@ export default {
 
 	methods: {
 		async login() {
-			let error = 0;
 			this.loading = true;
 			await this.axios.get('/sanctum/csrf-cookie');
 			await this.axios
@@ -95,10 +94,14 @@ export default {
 				.then(() => {
 					this.$store.dispatch('UsersStore/getUser');
 				})
-				.catch(function (error) {
-					error = 1;
+				.catch((error) => {
 					if (error.response) {
-						// La respuesta fue hecha y el servidor respondió con un código de estado
+						this.$toast.add({
+							severity: 'error',
+							summary: this.$t('login.errorOcurred'),
+							detail: error.response.data.message,
+							life: 3000,
+						});
 					} else if (error.request) {
 						// La petición fue hecha pero no se recibió respuesta
 						// `error.request` es una instancia de XMLHttpRequest en el navegador y una instancia de
@@ -110,18 +113,8 @@ export default {
 
 			this.loading = false;
 
-			if (error === 1) {
-				this.$toast.add({
-					severity: 'error',
-					summary: this.$t('login.errorOcurred'),
-					detail: this.$t('login.loginError'),
-					life: 3000,
-				});
-			}
-
 			return this.$router.replace('/');
 		},
-
 		handleSubmit(isFormValid) {
 			this.isFormValid = isFormValid;
 			this.submitted = true;
@@ -130,12 +123,10 @@ export default {
 			}
 			this.toggleDialog();
 		},
-
 		toggleDialog() {
 			this.showMessage = !this.showMessage;
 			this.login();
 		},
-
 		resetForm() {
 			this.loading = false;
 			this.email = null;

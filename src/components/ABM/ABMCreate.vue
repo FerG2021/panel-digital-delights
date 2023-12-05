@@ -9,7 +9,7 @@
 			@hide="handleModalClose()"
 		>
 			<template #header>
-				<TitleModal :header="data.header"></TitleModal>
+				<TitleModal :header="data.header" />
 			</template>
 
 			<div class="form-container">

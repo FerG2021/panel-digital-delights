@@ -1,5 +1,5 @@
 const configuration = {
-	account: 'chinis',
+	account: 'bunker',
 	formConfiguration: [
 		{
 			modelName: 'name',

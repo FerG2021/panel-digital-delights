@@ -1,31 +1,31 @@
 <template>
 	<aside :class="`${is_expanded && 'is-expanded'}`">
-		<LogoSidebar/>
+		<SidebarLogo/>
 
-		<BtnExpanSidebar @expandSidebar="expandSidebar"/>
+		<SidebarBtnExpand @expandSidebar="expandSidebar"/>
 
-		<h3>MENU</h3>
+		<h3> {{ $t('sidebar.title') }} </h3>
 		<div class="menu">
 			<div
 				v-for="item in items"
 				:key="item"
 			>
-				<ItemSidebar 
+				<SidebarItem 
 					v-if="loadedModule(item)"
 					:item="item" 
 					:is_expanded="is_expanded"
-				></ItemSidebar>
+				/>
 			</div>
 		</div>
 
 		<div class="flex"></div>
 
 		<div class="menu">
-			<ItemSidebar 
+			<SidebarItem 
 				:item="account" 
 				:is_expanded="is_expanded"
 			/>
-			<Logout
+			<LogOut
 				:is_expanded="is_expanded"
 			/>
 		</div>
@@ -37,16 +37,16 @@ import { mapGetters } from 'vuex';
 import { getAllCategories, getAllProducts } from '../../managers/api/api';
 
 
-import ItemSidebar from './ItemSidebar.vue';
-import Logout from '../common/Logout.vue';
-import LogoSidebar from './LogoSidebar.vue';
-import BtnExpanSidebar from './BtnExpanSidebar.vue';
+import SidebarItem from './SidebarItem.vue';
+import LogOut from '../common/LogOut.vue';
+import SidebarLogo from './SidebarLogo.vue';
+import SidebarBtnExpand from './SidebarBtnExpand.vue';
 
 
 export default {
 	name: 'SideBar',
 
-	components: { ItemSidebar, Logout, LogoSidebar, BtnExpanSidebar },
+	components: { SidebarItem, LogOut, SidebarLogo, SidebarBtnExpand },
   
 	data() {
 		return {
@@ -99,11 +99,9 @@ export default {
 			this.loadCategories();
 			this.loadProducts();
 		},
-
 		async loadCategories() {
 			await getAllCategories(this.user.account_id);
 		},
-
 		async loadProducts() {
 			await getAllProducts(this.user.account_id);
 		},
@@ -179,7 +177,7 @@ aside {
 		z-index: 99;
 	}
 
-	.logout {
+	.logOut {
 		cursor: pointer;
 	}
 }

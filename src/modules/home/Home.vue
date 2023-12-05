@@ -1,35 +1,39 @@
 <template>
     <main>
-        <div class="home">
-            <TitleComponent :title="sectionTitle" />
+        <MainCard>
+			<template #header>
+				<h1> {{ $t('homeSection.title') }} </h1>
+			</template>
 
-            <div class="grid">
-                <div
-                    class="col-4 contenedor-card"
-                    v-for="(section, index) in sections"
-                    :key="index"
-                >
-                    <Card 
-                        @click="$router.push(section.path)"  
-                        :section="section"
-						class="card"
-                    ></Card>
-                </div>
-            </div>
-        </div>
+			<template #content>
+				<div class="home-container">
+					<div 
+						class="item-container"
+						v-for="(section, index) in sections"
+						:key="index"
+					>
+						<Card 
+							@click="$router.push(section.path)"  
+							:section="section"
+							class="item"
+						></Card>
+					</div>
+				</div>
+			</template>
+        </MainCard>
     </main>
 </template>
 
 <script>
 import Card from '../../components/common/Card.vue';
-import TitleComponent from '../../components/common/Title.vue';
 import { mapGetters } from 'vuex';
+import MainCard from '../../components/common/MainCard.vue';
 
 export default {
 	name: 'HomeComponent',
 	components: {
 		Card,
-		TitleComponent,
+		MainCard
 	},
 
 	data() {
@@ -62,6 +66,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.home-container {
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
+	.item-container {
+		margin: 10px;
+		.item {
+			width: 300px;
+		}
+	}
+}
+
 .home {
 	height: 100%;
 	background-color: var(--white);

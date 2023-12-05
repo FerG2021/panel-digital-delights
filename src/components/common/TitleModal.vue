@@ -1,6 +1,10 @@
 <template>
     <h3 class="title-modal">
-        <span :class="header.class">{{ header.icon }}</span> 
+        <span 
+			:class="header.class"
+		>
+			{{ header.icon }}
+		</span> 
         {{ header.headerName }}
     </h3>
 </template>

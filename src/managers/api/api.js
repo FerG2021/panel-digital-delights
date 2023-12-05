@@ -49,6 +49,6 @@ export const deleteProduct = (id, category) => {
 	return axios.post(`/api/product/delete/${id}`, category);
 };
 
-export const updateUserData = (id, accountData) => {
-	return axios.put(`/api/my-account/update/${id}`, accountData);
+export const updateUser = (id, userData) => {
+	return axios.put(`/api/my-account/update/${id}`, userData);
 };

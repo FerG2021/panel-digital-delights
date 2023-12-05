@@ -1,8 +1,8 @@
 <template>
     <main class="about-page" v-if="Configuration">
-        <Card>
+        <MainCard>
             <template #header>
-                <h1 style="margin-top: 15px; margin-left: 15px">Categorías</h1>
+                <h1>Categorías</h1>
             </template>
 
             <template #content>
@@ -18,7 +18,7 @@
                     />
                 </div>
             </template>
-        </Card>
+        </MainCard>
 
         <ConfirmDialog></ConfirmDialog>
 
@@ -35,6 +35,7 @@ import {
 	newCategory,
 	updateCategory,
 	deleteCategory,
+	getAllProducts
 } from '../../managers/api/api';
 import { mapGetters } from 'vuex';
 import { setConfigurationFileByAccount } from '../../utils/utils';
@@ -42,6 +43,7 @@ import { setConfigurationFileByAccount } from '../../utils/utils';
 import DynamicTable from '../../components/datatable/DynamicTable.vue';
 import ABMCreate from '../../components/ABM/ABMCreate.vue';
 import ABMUpdate from '../../components/ABM/ABMUpdate.vue';
+import MainCard from '../../components/common/MainCard.vue';
 
 export default {
 	name: 'CategoriesComponent',
@@ -49,6 +51,7 @@ export default {
 		DynamicTable,
 		ABMCreate,
 		ABMUpdate,
+		MainCard
 	},
 	data() {
 		return {
@@ -87,6 +90,10 @@ export default {
 
 		async loadCategories() {
 			await getAllCategories(this.user.account_id);
+		},
+
+		async loadProducts() {
+			await getAllProducts(this.user.account_id);
 		},
 
 		async deleteCategory(element) {
@@ -161,6 +168,7 @@ export default {
 				.then(() => {
 					this.Configuration.update.modalVisible = false;
 					this.loadCategories();
+					this.loadProducts();
 					this.loading = false;
 					this.$toast.add({
 						severity: 'success',

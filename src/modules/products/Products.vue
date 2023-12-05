@@ -1,8 +1,8 @@
 <template>
 	<main class="about-page" v-if="Configuration">
-		<Card class="card">
+		<MainCard>
 			<template #header>
-				<TitleComponent :title="sectionTitle" />
+				<h1>Productos</h1>
 			</template>
 			<template #content>
 				<div>
@@ -17,7 +17,7 @@
 					/>
 				</div>
 			</template>
-		</Card>
+		</MainCard>
 
 		<ABMCreate 
 			:data="Configuration.create" 
@@ -44,6 +44,7 @@ import TitleComponent from '../../components/common/Title.vue';
 import DynamicTable from '../../components/datatable/DynamicTable.vue';
 import ABMCreate from '../../components/ABM/ABMCreate.vue';
 import ABMUpdate from '../../components/ABM/ABMUpdate.vue';
+import MainCard from '../../components/common/MainCard.vue';
 
 export default {
 	name: 'ProductsComponent',
@@ -52,7 +53,8 @@ export default {
 		DynamicTable, 
 		ABMCreate,
 		ABMUpdate,
-		TitleComponent 
+		TitleComponent ,
+		MainCard
 	},
 
 	data() {

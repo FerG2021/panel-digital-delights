@@ -19,6 +19,14 @@
         }
     },
 
+    "sidebar": {
+        "title": "Menú"
+    },
+
+    "footer": {
+        "message": "Desarrollado por FSSolutions"
+    },
+
     "logout": "Salir",
     "save": "Guardar",
 
@@ -27,6 +35,9 @@
         "error": "Se ha producido un error"
     },
 
+    "homeSection": {
+        "title": "Home"
+    },
 
     "productsSection": {
         "sectionTitle": "Productos",
@@ -44,10 +55,6 @@
         "newProduct": "Nuevo producto",
         "placeholderSearch": "Escriba para buscar",
         "uploadImage": "Arrastre las imágenes para subirlas",
-        "headerAnswerDeleteConfirmation": "Confirmación",
-        "answerDeleteConfirmation": "¿Está seguro que desea eliminar el producto?",
-        "headerDeleteConfirmation": "Mensaje de confirmación",
-        "deleteConfirmation": "Producto eliminado con éxito",
         "validations": {
             "name": "El nombre es requerido",
             "description": "La descripición es requerida",
@@ -60,6 +67,10 @@
         "createConfirmation": "Categoría creada con éxito",
         "updateConfirmation": "Categoría actualizada con éxito",
         "deleteConfirmation": "Categoría eliminada con éxito"
+    },
 
+    "myaccount": {
+        "title": "Mi cuenta",
+        "alert": "Al modificar algunos de los datos de su cuenta la sesión se cerrará y deberá voler a ingresar"
     }
 }

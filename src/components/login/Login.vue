@@ -11,7 +11,6 @@
 			</Card>
 		</div>
 	</div>
-
 	<Toast />
 </template>
 

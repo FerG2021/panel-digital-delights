@@ -1,20 +1,25 @@
 <template>
-  <div class="container">
-    <a href="http://fssolutions.com.ar" target="_blank" :class="screen">
-        Desarrollado por FSSolutions
-    </a>
-  </div>
+	<div class="container">
+		<a 
+			href="http://fssolutions.com.ar" 
+			target="_blank" 
+			:class="screen"
+		>
+			{{ $t('footer.message') }}
+		</a>
+	</div>
 </template>
 
 <script>
 export default {
-    props: {
-        screen: {
-            type: String,
-            required: true,
-        }
-    }
-}
+	name: 'FooterComponent',
+	props: {
+		screen: {
+			type: String,
+			required: true,
+		}
+	}
+};
 </script>
 
 <style scoped lang="scss">
