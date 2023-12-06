@@ -32,6 +32,15 @@ export default function loadModulesByAccount(store, router, account) {
 				showInHome: true,
 			},
 			{
+				name: 'promotions',
+				componentName: 'Promotions',
+				title: 'Promociones',
+				path: '/promotions',
+				icon: 'campaign',
+				store: true,
+				showInHome: true,
+			},
+			{
 				name: 'myaccount',
 				componentName: 'MyAccount',
 				title: 'Mi cuenta',

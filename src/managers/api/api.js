@@ -52,3 +52,25 @@ export const deleteProduct = (id, category) => {
 export const updateUser = (id, userData) => {
 	return axios.put(`/api/my-account/update/${id}`, userData);
 };
+
+export const getAllPromotions = async (id) => {
+	await axios.get(`/api/promotions/${id}`)
+		.then((response) => {
+			Store.commit('PromotionsStore/setPromotions', response.data.data);
+		})
+		.catch((error) => {
+			console.log(error);
+		});
+};
+
+export const newPromotion = (id, data) => {
+	return axios.post(`/api/promotion/${id}`, data);
+};
+
+export const updatePromotion = (id, data) => {
+	return axios.post(`/api/promotion/update/${id}`, data);
+};
+
+export const deletePromotion = (id, category) => {
+	return axios.post(`/api/promotion/delete/${id}`, category);
+};
