@@ -44,6 +44,7 @@ import DynamicTable from '../../components/datatable/DynamicTable.vue';
 import ABMCreate from '../../components/ABM/ABMCreate.vue';
 import ABMUpdate from '../../components/ABM/ABMUpdate.vue';
 import MainCard from '../../components/common/MainCard.vue';
+import Store from '../../managers/store/store';
 
 export default {
 	name: 'PromontionsComponent',
@@ -116,6 +117,7 @@ export default {
 						life: 3000,
 					});
 					this.loadPromotions();
+					Store.commit('UsersStore/setLoadingServerRequest', false);
 				})
 				.catch((error) => {
 					console.log(error);
@@ -125,6 +127,7 @@ export default {
 						detail: error.response.data.message,
 						life: 3000,
 					});
+					Store.commit('UsersStore/setLoadingServerRequest', false);
 				});
 		},
 
@@ -159,6 +162,7 @@ export default {
 						detail: response.data.message,
 						life: 3000,
 					});
+					Store.commit('UsersStore/setLoadingServerRequest', false);
 				})
 				.catch((error) => {
 					this.$toast.add({
@@ -167,6 +171,7 @@ export default {
 						detail: error.response.data.message,
 						life: 3000,
 					});
+					Store.commit('UsersStore/setLoadingServerRequest', false);
 				});
 		},
 
@@ -181,9 +186,11 @@ export default {
 						life: 3000,
 					});
 					this.loadPromotions();
+					Store.commit('UsersStore/setLoadingServerRequest', false);
 				})
 				.catch((error) => {
 					console.log(error);
+					Store.commit('UsersStore/setLoadingServerRequest', false);
 				});
 		},
 	}

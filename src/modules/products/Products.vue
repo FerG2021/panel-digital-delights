@@ -170,16 +170,17 @@ export default {
 						detail: response.data.message,
 						life: 3000,
 					});
+					Store.commit('UsersStore/setLoadingServerRequest', false);
 					this.loadProducts();
 				})
 				.catch((error) => {
-					console.log(error);
 					this.$toast.add({
 						severity: 'error',
 						summary: this.$t('toast.error'),
 						detail: error.response.data.message,
 						life: 3000,
 					});
+					Store.commit('UsersStore/setLoadingServerRequest', false);
 				});
 		},
 
@@ -215,6 +216,7 @@ export default {
 						detail: response.data.message,
 						life: 3000,
 					});
+					Store.commit('UsersStore/setLoadingServerRequest', false);
 				})
 				.catch((error) => {
 					this.$toast.add({
@@ -223,6 +225,7 @@ export default {
 						detail: error.response.data.message,
 						life: 3000,
 					});
+					Store.commit('UsersStore/setLoadingServerRequest', false);
 				});
 		},
 
@@ -237,9 +240,11 @@ export default {
 						life: 3000,
 					});
 					this.loadProducts();
+					Store.commit('UsersStore/setLoadingServerRequest', false);
 				})
 				.catch((error) => {
 					console.log(error);
+					Store.commit('UsersStore/setLoadingServerRequest', false);
 				});
 		},
 	}

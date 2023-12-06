@@ -155,7 +155,7 @@
 					<Button
 						label="Guardar"
 						class="mt-2"
-						:loading="loadingBtnSave"
+						:loading="loadingServerRequest"
 						@click="save()"
 					/>
 				</form>
@@ -167,7 +167,9 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import TitleModal from '../common/TitleModal.vue';
+import Store from '../../managers/store/store';
 
 export default {
 	components: { TitleModal },
@@ -183,6 +185,9 @@ export default {
 			formData: {},
 			errors: null,
 		};
+	},
+	computed: {
+		...mapGetters('UsersStore', ['loadingServerRequest']),
 	},
 	methods: {
 		handleDialogShow() {
@@ -224,7 +229,7 @@ export default {
 			}
 		},
 		save() {
-			this.loadingBtnSave = true;
+			Store.commit('UsersStore/setLoadingServerRequest', true);
 			this.errors = this.validateForm();
 
 			if (this.errors === null) {
@@ -237,9 +242,7 @@ export default {
 		validateForm() {
 			for (const item of this.data.formConfiguration) {
 				if (item.required && (this.formData[item.modelName] === null || this.formData[item.modelName] === '')) {
-
-					// if (item.required && !this.formData[item.modelName
-					// ]) {
+					Store.commit('UsersStore/setLoadingServerRequest', false);
 					return `El campo ${item.label} es requerido`;
 				}
 			}

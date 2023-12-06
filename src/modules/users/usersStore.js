@@ -7,6 +7,7 @@ export default {
 		user: null,
 		auth: false,
 		modules: null,
+		loadingServerRequest: false,
 	},
 
 	mutations: {
@@ -14,9 +15,11 @@ export default {
 			state.user = user;
 			state.auth = Boolean(user);
 		},
-
 		setModules(state, modules) {
 			state.modules = modules;
+		},
+		setLoadingServerRequest(state, status) {
+			state.loadingServerRequest = status;
 		}
 	},
 
@@ -29,6 +32,9 @@ export default {
 		},
 		modules(state) {
 			return state.modules;
+		},
+		loadingServerRequest(state) {
+			return state.loadingServerRequest;
 		},
 	},
 
