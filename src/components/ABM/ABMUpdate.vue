@@ -175,6 +175,7 @@ export default {
 		data: {
 			type: Array,
 			required: true,
+			loadingBtnSave: false,
 		},
 	},
 	data() {
@@ -223,12 +224,15 @@ export default {
 			}
 		},
 		save() {
+			this.loadingBtnSave = true;
 			this.errors = this.validateForm();
 
 			if (this.errors === null) {
 				this.formData.id = this.data.id;
 				this.$emit('formDataUpdate', this.formData);
 			}
+
+			this.loadingBtnSave = false;
 		},
 		validateForm() {
 			for (const item of this.data.formConfiguration) {

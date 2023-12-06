@@ -173,6 +173,7 @@ export default {
 		return {
 			formData: {},
 			errors: null,
+			loadingBtnSave: false
 		};
 	},
 	methods: {
@@ -184,6 +185,7 @@ export default {
 			this.formData[moduleName] = value;
 		},
 		save() {
+			this.loadingBtnSave = true;
 			this.errors = this.validateForm();
 			let formData = new FormData();
 
@@ -194,6 +196,8 @@ export default {
 			if (this.errors === null) {
 				this.$emit('formDataCreate', this.formData);
 			}
+
+			this.loadingBtnSave = false;
 
 		},
 		validateForm() {
