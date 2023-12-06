@@ -24,7 +24,6 @@ export const formatNumberToDecimal = (number) => {
 export const setConfigurationFileByAccount = async (module, account) => {
 	const configuration = configurations[`${account}${module}`];
 	if (configuration) {
-		console.log('configuration', configuration);
 		return configuration;
 	} else {
 		console.error('Configuración no encontrada para la cuenta', account);
