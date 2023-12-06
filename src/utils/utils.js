@@ -1,3 +1,15 @@
+import bunkerproducts from '../modules/products/bunker.configuration';
+import bunkercategories from '../modules/categories/bunker.configuration';
+import bunkerpromotions from '../modules/promotions/bunker.configuration';
+import bunkermyaccount from '../modules/myaccount/bunker.configuration';
+
+const configurations = {
+	bunkerproducts: bunkerproducts,
+	bunkercategories: bunkercategories,
+	bunkerpromotions: bunkerpromotions,
+	bunkermyaccount: bunkermyaccount
+};
+
 export const formatNumberToDecimal = (number) => {
 	const options = {
 		style: 'decimal',
@@ -10,18 +22,12 @@ export const formatNumberToDecimal = (number) => {
 };
 
 export const setConfigurationFileByAccount = async (module, account) => {
-	console.log('module');
-	console.log(module);
-
-	console.log('account');
-	console.log(account);
-	try {
-		const configuration = await import(`../modules/${module}/${account}.configuration`);
-		console.log('configuration');
-		console.log(configuration);
-		return configuration.default;
-	} catch (error) {
-		console.error('Error al importar el archivo de configuración', error);
-		throw error; 
+	const configuration = configurations[`${account}${module}`];
+	if (configuration) {
+		console.log('configuration', configuration);
+		return configuration;
+	} else {
+		console.error('Configuración no encontrada para la cuenta', account);
+		throw new Error('Configuración no encontrada');
 	}
 };
