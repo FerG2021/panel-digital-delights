@@ -10,6 +10,11 @@ export const formatNumberToDecimal = (number) => {
 };
 
 export const setConfigurationFileByAccount = async (module, account) => {
+	console.log('module');
+	console.log(module);
+
+	console.log('account');
+	console.log(account);
 	try {
 		const configuration = await import(`../modules/${module}/${account}.configuration`);
 		return configuration.default;
