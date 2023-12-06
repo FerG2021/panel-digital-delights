@@ -17,6 +17,8 @@ export const setConfigurationFileByAccount = async (module, account) => {
 	console.log(account);
 	try {
 		const configuration = await import(`../modules/${module}/${account}.configuration`);
+		console.log('configuration');
+		console.log(configuration);
 		return configuration.default;
 	} catch (error) {
 		console.error('Error al importar el archivo de configuración', error);
