@@ -1,13 +1,28 @@
+// bunker
 import bunkerproducts from '../modules/products/bunker.configuration';
 import bunkercategories from '../modules/categories/bunker.configuration';
 import bunkerpromotions from '../modules/promotions/bunker.configuration';
 import bunkermyaccount from '../modules/myaccount/bunker.configuration';
 
+// lalo-automotores
+import lalomarks from '../modules/categories/lalo.configuration';
+import laloproducts from '../modules/products/lalo.configuration';
+import lalopromotions from '../modules/promotions/lalo.configuration';
+import lalomyaccount from '../modules/myaccount/lalo.configuration';
+
 const configurations = {
-	bunkerproducts: bunkerproducts,
-	bunkercategories: bunkercategories,
-	bunkerpromotions: bunkerpromotions,
-	bunkermyaccount: bunkermyaccount
+	bunker: {
+		products: bunkerproducts,
+		categories: bunkercategories,
+		promotions: bunkerpromotions,
+		myaccount: bunkermyaccount
+	},
+	lalo: {
+		categories: lalomarks,
+		products: laloproducts,
+		promotions: lalopromotions,
+		myaccount: lalomyaccount
+	}
 };
 
 export const formatNumberToDecimal = (number) => {
@@ -22,7 +37,7 @@ export const formatNumberToDecimal = (number) => {
 };
 
 export const setConfigurationFileByAccount = async (module, account) => {
-	const configuration = configurations[`${account}${module}`];
+	const configuration = configurations[account][module];
 	if (configuration) {
 		return configuration;
 	} else {

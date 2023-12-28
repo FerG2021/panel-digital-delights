@@ -73,9 +73,9 @@ import VueAxios from 'vue-axios';
 axios.defaults.withCredentials = true;
 axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 
-import loadModulesByAccount from './utils/modulesLoader';
-const account = 'admin';
-loadModulesByAccount(store, router, account);
+// import { loadModulesByAccount } from './utils/modulesLoader';
+// const account = 'lalo';
+// loadModulesByAccount(store, router, account);
 
 createApp(App)
 	.component('Button', Button)

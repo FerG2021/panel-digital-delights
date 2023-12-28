@@ -36,7 +36,7 @@
 <script>
 import { FilterMatchMode } from 'primevue/api';
 import { mapGetters } from 'vuex';
-import { getAllPromotions, newPromotion, updatePromotion, deletePromotion } from '../../managers/api/api';
+import { getAllPromotions, newPromotion, updatePromotion, deletePromotion } from '../../managers/api/digitalDelightsApi';
 import { setConfigurationFileByAccount } from '../../utils/utils';
 
 

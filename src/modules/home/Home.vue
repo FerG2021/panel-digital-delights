@@ -46,6 +46,8 @@ export default {
 		...mapGetters('UsersStore', ['modules']),
 
 		sections() {
+			console.log('this.modules');
+			console.log(this.modules);
 			let sections = [];
 
 			for (const module of this.modules) {

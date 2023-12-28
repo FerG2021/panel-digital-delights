@@ -21,12 +21,12 @@
 
 		<ABMCreate 
 			:data="Configuration.create" 
-			@formDataCreate='formDataCreate'
+			@formDataCreate='create'
 		/>
 
 		<ABMUpdate
 			:data="Configuration.update" 
-			@formDataUpdate='formDataUpdate'
+			@formDataUpdate='update'
 		/>
 
 		<ConfirmDialog></ConfirmDialog>
@@ -37,7 +37,7 @@
 import { FilterMatchMode } from 'primevue/api';
 import { mapGetters } from 'vuex';
 import Store from '../../managers/store/store';
-import { getAllCategories, getAllProducts, newProduct, updateProduct, deleteProduct } from '../../managers/api/api';
+import { getAllCategories, getAllProducts } from '../../managers/api/digitalDelightsApi';
 import { setConfigurationFileByAccount } from '../../utils/utils';
 
 import DynamicTable from '../../components/datatable/DynamicTable.vue';
@@ -85,73 +85,12 @@ export default {
 
 			this.setCategories();
 		},
-		
-		getHeightWindow() {
-			var heightWindow = window.innerHeight - 285;
-			return heightWindow + 'px';
-		},
-
-		setCategories() {
-			this.loading = true;
-
-			for (const configuration of this.Configuration.create.formConfiguration) {
-				if (configuration.modelName === 'category') {
-					configuration.defaultValue = this.categories;
-				}
-			}
-
-			for (const configuration of this.Configuration.update.formConfiguration) {
-				if (configuration.modelName === 'category') {
-					configuration.options = this.categories;
-				}
-			}
-
-			this.loading = false;
-		},
-
-		async loadProducts() {
-			await getAllProducts(this.user.account_id);
-		},
-
-		async reloadCategories() {
-			getAllCategories(this.user.account_id)
-				.then((response) => {
-					Store.commit('CategoriesStore/setCategories', response.data.data);
-				})
-				.catch((error) => {
-					console.log(error);
-				});
-		},
-
-		async getProducts() {
-			this.loading = true;
-
-			if (this.products && this.products.length !== 0) {
-				console.log('existen productos');
-			} else {
-				console.log('no existen productos');
-
-				this.loadProducts();
-			}
-
-			this.loading = false;
-		},
-
-		async reloadProducts() {
-			getAllProducts(this.user.account_id)
-				.then((response) => {
-					Store.commit('ProductsStore/setProducts', response.data.data);
-				})
-				.catch((error) => {
-					console.log(error);
-				});
-		},
 
 		add() {
 			this.Configuration.create.modalVisible = true;
 		},
 
-		async formDataCreate(value) {
+		async create(value) {
 			value.category_id = value.category.id;
 
 			let formData = new FormData();
@@ -160,7 +99,7 @@ export default {
 				formData.append(key, value[key]);
 			}
 
-			newProduct(this.user.account_id, formData)
+			this.Configuration.methods.add(this.user.account_id, formData)
 				.then((response) => {
 					this.Configuration.create.modalVisible = false;
 					this.loading = false;
@@ -197,7 +136,7 @@ export default {
 			this.Configuration.update.modalVisible = true;
 		},
 
-		formDataUpdate(value) {
+		update(value) {
 			value.category_id = value.category.id;
 			let formData = new FormData();
 
@@ -205,7 +144,7 @@ export default {
 				formData.append(key, value[key]);
 			}
 
-			updateProduct(this.user.account_id, formData)
+			this.Configuration.methods.update(this.user.account_id, formData)
 				.then((response) => {
 					this.Configuration.update.modalVisible = false;
 					this.loadProducts();
@@ -230,7 +169,7 @@ export default {
 		},
 
 		async deleteProduct(element) {
-			deleteProduct(this.user.account_id, element)
+			this.Configuration.methods.delete(this.user.account_id, element)
 				.then((response) => {
 					this.loading = false;
 					this.$toast.add({
@@ -246,6 +185,69 @@ export default {
 					console.log(error);
 					Store.commit('UsersStore/setLoadingServerRequest', false);
 				});
+		},
+
+		setCategories() {
+			this.loading = true;
+
+			for (const configuration of this.Configuration.create.formConfiguration) {
+				if (configuration.modelName === 'category') {
+					configuration.defaultValue = this.categories;
+				}
+			}
+
+			for (const configuration of this.Configuration.update.formConfiguration) {
+				if (configuration.modelName === 'category') {
+					configuration.options = this.categories;
+				}
+			}
+
+			this.loading = false;
+		},
+
+		async loadProducts() {
+			await this.Configuration.methods.getAll(this.user.account_id);
+		},
+
+		async reloadCategories() {
+			getAllCategories(this.user.account_id)
+				.then((response) => {
+					Store.commit('CategoriesStore/setCategories', response.data.data);
+				})
+				.catch((error) => {
+					console.log(error);
+				});
+		},
+
+		async getProducts() {
+			this.loading = true;
+
+			if (this.products && this.products.length !== 0) {
+				console.log('existen productos');
+			} else {
+				console.log('no existen productos');
+
+				this.loadProducts();
+			}
+
+			this.loading = false;
+		},
+
+		async reloadProducts() {
+			getAllProducts(this.user.account_id)
+				.then((response) => {
+					Store.commit('ProductsStore/setProducts', response.data.data);
+				})
+				.catch((error) => {
+					console.log(error);
+				});
+		},
+
+		
+
+		getHeightWindow() {
+			var heightWindow = window.innerHeight - 285;
+			return heightWindow + 'px';
 		},
 	}
 };

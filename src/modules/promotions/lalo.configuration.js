@@ -1,20 +1,13 @@
-import * as api from '../../managers/api/digitalDelightsApi';
-
 const configuration = {
 	account: 'bunker',
 	labels: {
-		new: 'Nuevo producto',
+		new: 'Nueva promoción',
 		delete: {
 			header: 'Confirmación',
-			message: '¿Está seguro que desea eliminar el producto?'
+			message: '¿Está seguro que desea eliminar la promoción?'
 		}
 	},
-	methods: {
-		getAll: api.getAllProducts,
-		add: api.newProduct,
-		update: api.updateProduct,
-		delete: api.deleteProduct
-	},
+
 	tableColumns: [
 		{ 
 			field: 'image', 
@@ -23,8 +16,8 @@ const configuration = {
 			variation: '' 
 		},
 		{ 
-			field: 'name', 
-			header: 'Nombre', 
+			field: 'title', 
+			header: 'Títilo', 
 			type: 'normal', 
 			variation: '' 
 		},
@@ -35,20 +28,14 @@ const configuration = {
 			variation: '' 
 		},
 		{ 
-			field: 'category.name', 
-			header: 'Categoría', 
-			type: 'normal', 
-			variation: '' 
-		},
-		{ 
 			field: 'price', 
 			header: 'Precio', 
 			type: 'price', 
 			variation: '' 
 		},
 		{ 
-			field: 'stock', 
-			header: 'Stock', 
+			field: 'available', 
+			header: 'Disponible', 
 			type: 'boolean', 
 			variation: '' 
 		},
@@ -71,21 +58,13 @@ const configuration = {
 		header: {
 			class: 'material-icons',
 			icon: 'edit',
-			headerName: 'Nuevo producto',
+			headerName: 'Nueva promoción',
 		},
 		formConfiguration: [
 			{
-				modelName: 'name',
-				label: 'Nombre',
+				modelName: 'title',
+				label: 'Título',
 				type: 'text', 
-				required: true,
-				defaultValue: null,
-			},
-			{
-				modelName: 'category',
-				label: 'Categoría',
-				type: 'select', 
-				placeholder: 'Seleccione una categoría',
 				required: true,
 				defaultValue: null,
 			},
@@ -104,8 +83,8 @@ const configuration = {
 				defaultValue: null,
 			},
 			{
-				modelName: 'stock',
-				label: 'Stock',
+				modelName: 'available',
+				label: 'Disponible',
 				type: 'switch', 
 				required: true,
 				defaultValue: null,
@@ -125,25 +104,16 @@ const configuration = {
 		header: {
 			class: 'material-icons',
 			icon: 'edit',
-			headerName: 'Modificar producto',
+			headerName: 'Modificar promoción',
 		},
 		id: null,
 		formConfiguration: [
 			{
-				modelName: 'name',
-				label: 'Nombre',
+				modelName: 'title',
+				label: 'Título',
 				type: 'text', 
 				required: true,
 				defaultValue: null,
-			},
-			{
-				modelName: 'category',
-				label: 'Categoría',
-				type: 'select', 
-				placeholder: 'Seleccione una categoría',
-				required: true,
-				defaultValue: null,
-				options: null
 			},
 			{
 				modelName: 'description',
@@ -160,8 +130,8 @@ const configuration = {
 				defaultValue: null,
 			},
 			{
-				modelName: 'stock',
-				label: 'Stock',
+				modelName: 'available',
+				label: 'Disponible',
 				type: 'switch', 
 				required: true,
 				defaultValue: null,

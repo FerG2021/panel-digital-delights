@@ -8,12 +8,14 @@
         </div>
     </div>
     <div v-else>
-        <div class="app">
-            <Sidebar />   
-            <router-view></router-view>
-        </div>
-        <div class="footer">
-            <FooterComponent screen="main"></FooterComponent>
+        <div v-if="loaded">
+             <div class="app">
+                <Sidebar />   
+                <router-view></router-view>
+            </div>
+            <div class="footer">
+                <FooterComponent screen="main"></FooterComponent>
+            </div>
         </div>
     </div>
 </template>
@@ -31,7 +33,7 @@ export default {
 		FooterComponent
 	},
 	computed: {
-		...mapGetters('UsersStore', ['user', 'auth']),
+		...mapGetters('UsersStore', ['user', 'auth', 'loaded']),
 		...mapActions('UsersStore', ['getUser']),
 	}
 };

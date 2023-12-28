@@ -2,7 +2,7 @@
     <main class="about-page" v-if="Configuration">
         <MainCard>
             <template #header>
-                <h1>Categorías</h1>
+                <h1> {{ Configuration.labels.sectionTitle }} </h1>
             </template>
 
             <template #content>
@@ -22,21 +22,15 @@
 
         <ConfirmDialog></ConfirmDialog>
 
-        <ABMCreate :data="Configuration.create" @formDataCreate="formDataCreate" />
+        <ABMCreate :data="Configuration.create" @formDataCreate="create" />
 
-        <ABMUpdate :data="Configuration.update" @formDataUpdate="formDataUpdate" />
+        <ABMUpdate :data="Configuration.update" @formDataUpdate="update" />
     </main>
 </template>
 
 <script>
 import { FilterMatchMode } from 'primevue/api';
-import {
-	getAllCategories,
-	newCategory,
-	updateCategory,
-	deleteCategory,
-	getAllProducts
-} from '../../managers/api/api';
+import { getAllCategories, getAllProducts } from '../../managers/api/digitalDelightsApi';
 import { mapGetters } from 'vuex';
 import { setConfigurationFileByAccount } from '../../utils/utils';
 
@@ -77,50 +71,21 @@ export default {
 	methods: {
 		async setCongigurationFile() {
 			const account = this.user.email.split('.')[1];
+			console.log('account');
+			console.log(account);
 			this.Configuration = await setConfigurationFileByAccount(
 				'categories',
 				account
 			);
-			console.log(this.Configuration.account);
-		},
-
-		getHeightWindow() {
-			var alturaPestana = window.innerHeight - 285;
-			return alturaPestana + 'px';
-		},
-
-		async loadCategories() {
-			await getAllCategories(this.user.account_id);
-		},
-
-		async loadProducts() {
-			await getAllProducts(this.user.account_id);
-		},
-
-		async deleteCategory(element) {
-			deleteCategory(this.user.account_id, element)
-				.then((response) => {
-					this.loadCategories();
-					this.loading = false;
-					this.$toast.add({
-						severity: 'success',
-						summary: this.$t('toast.success'),
-						detail: response.data.message,
-						life: 3000,
-					});
-					Store.commit('UsersStore/setLoadingServerRequest', false);
-				})
-				.catch((error) => {
-					console.log(error);
-					Store.commit('UsersStore/setLoadingServerRequest', false);
-				});
 		},
 
 		add() {
+			console.log('this.Configuration');
+			console.log(this.Configuration);
 			this.Configuration.create.modalVisible = true;
 		},
 
-		async formDataCreate(value) {
+		async create(value) {
 			this.formData = value;
 
 			let formData = new FormData();
@@ -129,10 +94,10 @@ export default {
 				formData.append(key, value[key]);
 			}
 
-			newCategory(this.user.account_id, formData)
+			this.Configuration.methods.add(this.user.account_id, formData)
 				.then(() => {
 					this.Configuration.create.modalVisible = false;
-					this.loadCategories();
+					this.getAllCategories();
 					this.loading = false;
 					this.$toast.add({
 						severity: 'success',
@@ -162,18 +127,18 @@ export default {
 			this.Configuration.update.modalVisible = true;
 		},
 
-		formDataUpdate(value) {
+		update(value) {
 			let formData = new FormData();
 
 			for (let key in value) {
 				formData.append(key, value[key]);
 			}
 
-			updateCategory(this.user.account_id, formData)
+			this.Configuration.methods.update(this.user.account_id, formData)
 				.then(() => {
 					this.Configuration.update.modalVisible = false;
-					this.loadCategories();
-					this.loadProducts();
+					this.getAllCategories();
+					this.getAllProducts();
 					this.loading = false;
 					this.$toast.add({
 						severity: 'success',
@@ -192,6 +157,38 @@ export default {
 					});
 					Store.commit('UsersStore/setLoadingServerRequest', false);
 				});
+		},
+
+		async deleteCategory(element) {
+			this.Configuration.methods.delete(this.user.account_id, element)
+				.then((response) => {
+					this.getAllCategories();
+					this.loading = false;
+					this.$toast.add({
+						severity: 'success',
+						summary: this.$t('toast.success'),
+						detail: response.data.message,
+						life: 3000,
+					});
+					Store.commit('UsersStore/setLoadingServerRequest', false);
+				})
+				.catch((error) => {
+					console.log(error);
+					Store.commit('UsersStore/setLoadingServerRequest', false);
+				});
+		},
+
+		async getAllCategories() {
+			await getAllCategories(this.user.account_id);
+		},
+
+		async getAllProducts() {
+			await getAllProducts(this.user.account_id);
+		},
+
+		getHeightWindow() {
+			var alturaPestana = window.innerHeight - 285;
+			return alturaPestana + 'px';
 		},
 	},
 };

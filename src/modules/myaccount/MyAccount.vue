@@ -83,7 +83,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import { setConfigurationFileByAccount } from '../../utils/utils';
-import { updateUser } from '../../managers/api/api';
+import { updateUser } from '../../managers/api/digitalDelightsApi';
 import Store from '../../managers/store/store';
 
 

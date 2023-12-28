@@ -34,7 +34,8 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { getAllCategories, getAllProducts, getAllPromotions } from '../../managers/api/api';
+// import { getAllCategories, getAllProducts, getAllPromotions } from '../../managers/api/api';
+import { loadEndpointsByAccount } from '../../utils/modulesLoader';
 
 
 import SidebarItem from './SidebarItem.vue';
@@ -91,24 +92,24 @@ export default {
 	},
 
 	mounted() {
-		this.setStores();
+		loadEndpointsByAccount(this.user?.account_id);
 	},
 
 	methods: {
-		setStores() {
-			this.loadCategories();
-			this.loadProducts();
-			this.loadPromotions();
-		},
-		async loadCategories() {
-			await getAllCategories(this.user.account_id);
-		},
-		async loadProducts() {
-			await getAllProducts(this.user.account_id);
-		},
-		async loadPromotions() {
-			await getAllPromotions(this.user.account_id);
-		},
+		// setStores() {
+		// 	this.loadCategories();
+		// 	// this.loadProducts();
+		// 	this.loadPromotions();
+		// },
+		// async loadCategories() {
+		// 	await getAllCategories(this.user.account_id);
+		// },
+		// async loadProducts() {
+		// 	await getAllProducts(this.user.account_id);
+		// },
+		// async loadPromotions() {
+		// 	await getAllPromotions(this.user.account_id);
+		// },
 		expandSidebar(data) {
 			this.is_expanded = data;
 			this.account.name = `${this.user.name}`;

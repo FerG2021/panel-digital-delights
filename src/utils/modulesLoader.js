@@ -1,72 +1,77 @@
 import Store from '../managers/store/store';
+import bunker from '../managers/accounts/bunker';
+import lalo from '../managers/accounts/lalo';
 
-export default function loadModulesByAccount(store, router, account) {
-	const accountsModules = {
-		// Agrega otros tipos de account y los módulos correspondientes aquí
-		admin: [
-			{
-				name: 'home',
-				componentName: 'Home',
-				title: 'Home',
-				path: '/',
-				icon: 'home',
-				store: false,
-				showInHome: false,
-			},
-			{
-				name: 'products',
-				componentName: 'Products',
-				title: 'Productos',
-				path: '/products',
-				icon: 'inventory_2',
-				store: true,
-				showInHome: true,
-			},
-			{
-				name: 'categories',
-				componentName: 'Categories',
-				title: 'Categorías',
-				path: '/categories',
-				icon: 'category',
-				store: true,
-				showInHome: true,
-			},
-			{
-				name: 'promotions',
-				componentName: 'Promotions',
-				title: 'Promociones',
-				path: '/promotions',
-				icon: 'campaign',
-				store: true,
-				showInHome: true,
-			},
-			{
-				name: 'myaccount',
-				componentName: 'MyAccount',
-				title: 'Mi cuenta',
-				path: '/my-account',
-				icon: 'manage_accounts',
-				store: false,
-				showInHome: true,
-			},
-			
-		]
-	};
+const accounts = {
+	bunker: bunker,
+	lalo: lalo
+};
 
-	const processModules = accountsModules[account] || [];
+let accountConfig = null;
 
-	processModules.forEach(module => {
-		if (module.store === true) {
-			import(`../modules/${module.name}/${module.name}Store.js`).then(moduleStore => {
-				store.registerModule(`${module.componentName}Store`, moduleStore.default);
+
+
+export const loadModulesByAccount = (store, router, account) => {
+	// accountConfig = import(`../managers/accounts/${account}.js`);
+
+	accountConfig = accounts[account];
+
+	console.log('accountConfig');
+	console.log(accountConfig);
+
+	for (const config of accountConfig) {
+		if (config.store === true) {
+			import(`../modules/${config.name}/${config.name}Store.js`).then((moduleStore) => {
+				store.registerModule(`${config.componentName}Store`, moduleStore.default);
 			});
 		}
 
 		router.addRoute({
-			path: `${module.path}`,
-			component: () => import(`../modules/${module.name}/${module.componentName}.vue`)
+			path: `${config.path}`,
+			component: () => import(`../modules/${config.name}/${config.componentName}.vue`),
 		});
 
-		Store.commit('UsersStore/setModules', processModules);
-	});
-}
+	}
+	Store.commit('UsersStore/setModules', accountConfig);
+
+	// accountConfig.then((config) => {
+	// 	const processModules = config.default || [];
+
+	// 	processModules.forEach((module) => {
+	// 		if (module.store === true) {
+	// 			import(`../modules/${module.name}/${module.name}Store.js`).then((moduleStore) => {
+	// 				store.registerModule(`${module.componentName}Store`, moduleStore.default);
+	// 			});
+	// 		}
+
+	// 		router.addRoute({
+	// 			path: `${module.path}`,
+	// 			component: () => import(`../modules/${module.name}/${module.componentName}.vue`),
+	// 		});
+
+	// 		Store.commit('UsersStore/setModules', processModules);
+
+	// 		// const myGetterValue = store.getters['UsersStore/user'];
+	// 		// console.log('myGetterValue');
+	// 		// console.log(myGetterValue);
+
+	// 	});
+	// });
+	Store.commit('UsersStore/loaded');
+};
+
+export const loadEndpointsByAccount = async (account_id) => {
+	const config = await accountConfig;  
+  
+	const processModules = config.default || [];
+  
+	await Promise.all(processModules.map(async (module) => {
+		if (module.loaderMethod) {
+			try {
+				await module.loaderMethod(account_id);
+			} catch (error) {
+				console.error(`Error al cargar el módulo ${module.name}:`, error);
+			}
+		}
+	}));
+};
