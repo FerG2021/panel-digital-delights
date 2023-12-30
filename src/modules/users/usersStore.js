@@ -1,31 +1,27 @@
 import axios from 'axios';
+import loadModulesByAccount from '../../utils/modulesLoader';
+import store from '../../managers/store/store';
+import router from '../../managers/router/Router';
 
 export default {
 	namespaced: true,
 
 	state: {
 		user: null,
+		account: null,
 		auth: false,
 		modules: null,
 		loadingServerRequest: false,
-	},
-
-	mutations: {
-		SET_USER(state, user) {
-			state.user = user;
-			state.auth = Boolean(user);
-		},
-		setModules(state, modules) {
-			state.modules = modules;
-		},
-		setLoadingServerRequest(state, status) {
-			state.loadingServerRequest = status;
-		}
+		loading: false,
+		loaded: false
 	},
 
 	getters: {
 		user(state) {
 			return state.user;
+		},
+		account(state) {
+			return state.account;
 		},
 		auth(state) {
 			return state.auth;
@@ -36,6 +32,39 @@ export default {
 		loadingServerRequest(state) {
 			return state.loadingServerRequest;
 		},
+		loading(state) {
+			return state.loading;
+		},
+		loaded(state) {
+			return state.loaded;
+		},
+	},
+
+	mutations: {
+		SET_USER(state, user) {
+			state.user = user;
+			state.auth = Boolean(user);
+			if (user) {
+				state.account = user.email.split('.')[1];
+				loadModulesByAccount(store, router, state.account);
+
+			} else {
+				state.account = null;
+			}
+		},
+		setModules(state, modules) {
+			state.modules = modules;
+		},
+		setLoadingServerRequest(state, status) {
+			state.loadingServerRequest = status;
+		},
+		loading(state) {
+			state.loading = true;
+		},
+		loaded(state) {
+			state.loaded = true;
+			state.loading = false;
+		}
 	},
 
 	actions: {
@@ -54,9 +83,13 @@ export default {
 			axios
 				.get('/api/user')
 				.then((res) => {
+					console.log('res');
+					console.log('res.data');
+					console.log(res.data);
 					commit('SET_USER', res.data);
 				})
 				.catch(() => {
+					console.log('catch');
 					commit('SET_USER', null);
 				});
 		},

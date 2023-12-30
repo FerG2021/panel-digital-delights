@@ -91,7 +91,7 @@ export default {
 	},
 
 	mounted() {
-		this.setStores();
+		// this.setStores();
 	},
 
 	methods: {

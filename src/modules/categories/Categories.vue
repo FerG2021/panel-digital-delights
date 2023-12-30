@@ -2,7 +2,9 @@
     <main class="about-page" v-if="Configuration">
         <MainCard>
             <template #header>
-                <h1>Categorías</h1>
+                <h1> 
+					{{ Configuration.labels.sectionTitle }} 
+				</h1>
             </template>
 
             <template #content>
@@ -30,13 +32,6 @@
 
 <script>
 import { FilterMatchMode } from 'primevue/api';
-import {
-	getAllCategories,
-	newCategory,
-	updateCategory,
-	deleteCategory,
-	getAllProducts
-} from '../../managers/api/api';
 import { mapGetters } from 'vuex';
 import { setConfigurationFileByAccount } from '../../utils/utils';
 
@@ -65,7 +60,7 @@ export default {
 	},
 
 	computed: {
-		...mapGetters('UsersStore', ['user', 'auth', 'modules']),
+		...mapGetters('UsersStore', ['user', 'auth', 'modules', 'account']),
 		...mapGetters('CategoriesStore', ['categories']),
 	},
 
@@ -76,44 +71,10 @@ export default {
 
 	methods: {
 		async setCongigurationFile() {
-			const account = this.user.email.split('.')[1];
 			this.Configuration = await setConfigurationFileByAccount(
 				'categories',
-				account
+				this.account
 			);
-			console.log(this.Configuration.account);
-		},
-
-		getHeightWindow() {
-			var alturaPestana = window.innerHeight - 285;
-			return alturaPestana + 'px';
-		},
-
-		async loadCategories() {
-			await getAllCategories(this.user.account_id);
-		},
-
-		async loadProducts() {
-			await getAllProducts(this.user.account_id);
-		},
-
-		async deleteCategory(element) {
-			deleteCategory(this.user.account_id, element)
-				.then((response) => {
-					this.loadCategories();
-					this.loading = false;
-					this.$toast.add({
-						severity: 'success',
-						summary: this.$t('toast.success'),
-						detail: response.data.message,
-						life: 3000,
-					});
-					Store.commit('UsersStore/setLoadingServerRequest', false);
-				})
-				.catch((error) => {
-					console.log(error);
-					Store.commit('UsersStore/setLoadingServerRequest', false);
-				});
 		},
 
 		add() {
@@ -129,10 +90,9 @@ export default {
 				formData.append(key, value[key]);
 			}
 
-			newCategory(this.user.account_id, formData)
+			this.Configuration.endpoints.new(this.user.account_id, formData)
 				.then(() => {
 					this.Configuration.create.modalVisible = false;
-					this.loadCategories();
 					this.loading = false;
 					this.$toast.add({
 						severity: 'success',
@@ -141,6 +101,7 @@ export default {
 						life: 3000,
 					});
 					Store.commit('UsersStore/setLoadingServerRequest', false);
+					this.getAllCategories();
 				})
 				.catch((error) => {
 					console.log(error);
@@ -169,11 +130,9 @@ export default {
 				formData.append(key, value[key]);
 			}
 
-			updateCategory(this.user.account_id, formData)
+			this.Configuration.endpoints.update(this.user.account_id, formData)
 				.then(() => {
 					this.Configuration.update.modalVisible = false;
-					this.loadCategories();
-					this.loadProducts();
 					this.loading = false;
 					this.$toast.add({
 						severity: 'success',
@@ -182,6 +141,7 @@ export default {
 						life: 3000,
 					});
 					Store.commit('UsersStore/setLoadingServerRequest', false);
+					this.getAllCategories();
 				})
 				.catch((error) => {
 					this.$toast.add({
@@ -192,6 +152,34 @@ export default {
 					});
 					Store.commit('UsersStore/setLoadingServerRequest', false);
 				});
+		},
+
+		async deleteCategory(element) {
+			this.Configuration.endpoints.delete(this.user.account_id, element)
+				.then((response) => {
+					this.loading = false;
+					this.$toast.add({
+						severity: 'success',
+						summary: this.$t('toast.success'),
+						detail: response.data.message,
+						life: 3000,
+					});
+					Store.commit('UsersStore/setLoadingServerRequest', false);
+					this.getAllCategories();
+				})
+				.catch((error) => {
+					console.log(error);
+					Store.commit('UsersStore/setLoadingServerRequest', false);
+				});
+		},
+
+		async getAllCategories() {
+			await this.Configuration.endpoints.getAllCategories(this.user.account_id);
+		},
+
+		getHeightWindow() {
+			var alturaPestana = window.innerHeight - 285;
+			return alturaPestana + 'px';
 		},
 	},
 };

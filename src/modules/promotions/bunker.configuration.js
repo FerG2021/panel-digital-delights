@@ -1,13 +1,21 @@
+import * as api from '../../managers/api/api';
+
 const configuration = {
 	account: 'bunker',
 	labels: {
+		sectionTitle: 'Promociones',
 		new: 'Nueva promoción',
 		delete: {
 			header: 'Confirmación',
 			message: '¿Está seguro que desea eliminar la promoción?'
 		}
 	},
-
+	endpoints: {
+		getAllPromotions: api.getAllPromotions,
+		new: api.newPromotion,
+		update: api.updatePromotion,
+		delete: api.deletePromotion
+	},
 	tableColumns: [
 		{ 
 			field: 'image', 

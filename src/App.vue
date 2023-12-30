@@ -8,12 +8,14 @@
         </div>
     </div>
     <div v-else>
-        <div class="app">
-            <Sidebar />   
-            <router-view></router-view>
-        </div>
-        <div class="footer">
-            <FooterComponent screen="main"></FooterComponent>
+        <div v-if="isAuthenticated">
+            <div class="app">
+                <Sidebar />   
+                <router-view></router-view>
+            </div>
+            <div class="footer">
+                <FooterComponent screen="main"></FooterComponent>
+            </div>
         </div>
     </div>
 </template>
@@ -31,8 +33,11 @@ export default {
 		FooterComponent
 	},
 	computed: {
-		...mapGetters('UsersStore', ['user', 'auth']),
+		...mapGetters('UsersStore', ['user', 'auth', 'account', 'loading']),
 		...mapActions('UsersStore', ['getUser']),
+		isAuthenticated() {
+			return this.auth && this.account !== null && !this.loading;
+		}
 	}
 };
 </script>

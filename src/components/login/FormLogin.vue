@@ -72,6 +72,8 @@
 import { required } from '@vuelidate/validators';
 import { useVuelidate } from '@vuelidate/core';
 import { helpers } from '@vuelidate/validators';
+import { mapGetters } from 'vuex';
+import Store from '../../managers/store/store';
 
 export default {
 	name: 'FormLogin',
@@ -84,6 +86,9 @@ export default {
 			password: '',
 		};
 	},
+	computed: {
+		...mapGetters('UsersStore', ['loading'])
+	},
 
 	methods: {
 		async login() {
@@ -92,7 +97,9 @@ export default {
 			await this.axios
 				.post('/login', { email: this.email, password: this.password })
 				.then(() => {
+					Store.commit('UsersStore/loading');
 					this.$store.dispatch('UsersStore/getUser');
+
 				})
 				.catch((error) => {
 					if (error.response) {

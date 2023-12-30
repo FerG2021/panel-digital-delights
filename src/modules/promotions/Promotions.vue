@@ -36,9 +36,7 @@
 <script>
 import { FilterMatchMode } from 'primevue/api';
 import { mapGetters } from 'vuex';
-import { getAllPromotions, newPromotion, updatePromotion, deletePromotion } from '../../managers/api/api';
 import { setConfigurationFileByAccount } from '../../utils/utils';
-
 
 import DynamicTable from '../../components/datatable/DynamicTable.vue';
 import ABMCreate from '../../components/ABM/ABMCreate.vue';
@@ -48,14 +46,12 @@ import Store from '../../managers/store/store';
 
 export default {
 	name: 'PromontionsComponent',
-
 	components: {
 		DynamicTable, 
 		ABMCreate,
 		ABMUpdate,
 		MainCard
 	},
-
 	data() {
 		return {
 			sectionTitle: this.$t('promotions'),
@@ -66,39 +62,24 @@ export default {
 			},
 		};
 	},
-
 	computed: {
-		...mapGetters('UsersStore', ['user', 'auth', 'modules']),
+		...mapGetters('UsersStore', ['user', 'auth', 'modules', 'account']),
 		...mapGetters('CategoriesStore', ['categories']),
 		...mapGetters('ProductsStore', ['products']),
 		...mapGetters('PromotionsStore', ['promotions']),
 	},
-
 	mounted() {
 		this.setCongigurationFile();
 		this.getHeightWindow();
 	},
-
 	methods: {
 		async setCongigurationFile() {
-			const account = this.user.email.split('.')[1];
-			this.Configuration = await setConfigurationFileByAccount('promotions', account);
-			console.log(this.Configuration.account);
+			this.Configuration = await setConfigurationFileByAccount('promotions', this.account);
 		},
 		
-		getHeightWindow() {
-			var heightWindow = window.innerHeight - 285;
-			return heightWindow + 'px';
-		},
-
-		async loadPromotions() {
-			await getAllPromotions(this.user.account_id);
-		},
-
 		add() {
 			this.Configuration.create.modalVisible = true;
 		},
-
 		async formDataCreate(value) {
 			let formData = new FormData();
 
@@ -106,7 +87,7 @@ export default {
 				formData.append(key, value[key]);
 			}
 
-			newPromotion(this.user.account_id, formData)
+			this.Configuration.endpoints.new(this.user.account_id, formData)
 				.then((response) => {
 					this.Configuration.create.modalVisible = false;
 					this.loading = false;
@@ -116,8 +97,8 @@ export default {
 						detail: response.data.message,
 						life: 3000,
 					});
-					this.loadPromotions();
 					Store.commit('UsersStore/setLoadingServerRequest', false);
+					this.getAllPromotions();
 				})
 				.catch((error) => {
 					console.log(error);
@@ -143,7 +124,6 @@ export default {
 
 			this.Configuration.update.modalVisible = true;
 		},
-
 		formDataUpdate(value) {
 			let formData = new FormData();
 
@@ -151,10 +131,9 @@ export default {
 				formData.append(key, value[key]);
 			}
 
-			updatePromotion(this.user.account_id, formData)
+			this.Configuration.endpoints.update(this.user.account_id, formData)
 				.then((response) => {
 					this.Configuration.update.modalVisible = false;
-					this.loadPromotions();
 					this.loading = false;
 					this.$toast.add({
 						severity: 'success',
@@ -163,6 +142,7 @@ export default {
 						life: 3000,
 					});
 					Store.commit('UsersStore/setLoadingServerRequest', false);
+					this.getAllPromotions();
 				})
 				.catch((error) => {
 					this.$toast.add({
@@ -176,7 +156,7 @@ export default {
 		},
 
 		async deletePromotion(element) {
-			deletePromotion(this.user.account_id, element)
+			this.Configuration.endpoints.delete(this.user.account_id, element)
 				.then((response) => {
 					this.loading = false;
 					this.$toast.add({
@@ -185,13 +165,21 @@ export default {
 						detail: response.data.message,
 						life: 3000,
 					});
-					this.loadPromotions();
+					this.getAllPromotions();
 					Store.commit('UsersStore/setLoadingServerRequest', false);
 				})
 				.catch((error) => {
 					console.log(error);
 					Store.commit('UsersStore/setLoadingServerRequest', false);
 				});
+		},
+		
+		getHeightWindow() {
+			var heightWindow = window.innerHeight - 285;
+			return heightWindow + 'px';
+		},
+		async getAllPromotions() {
+			await this.Configuration.endpoints.getAllPromotions(this.user.account_id);
 		},
 	}
 };

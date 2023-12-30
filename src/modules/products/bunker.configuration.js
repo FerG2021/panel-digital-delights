@@ -1,11 +1,21 @@
+import * as api from '../../managers/api/api';
 const configuration = {
 	account: 'bunker',
 	labels: {
+		sectionTile: 'Productos',
 		new: 'Nuevo producto',
 		delete: {
 			header: 'Confirmación',
 			message: '¿Está seguro que desea eliminar el producto?'
 		}
+	},
+
+	endpoints: {
+		getAllProducts: api.getAllProducts,
+		getAllCategories: api.getAllCategories,
+		new: api.newProduct,
+		update: api.updateProduct,
+		delete: api.deleteProduct
 	},
 
 	tableColumns: [

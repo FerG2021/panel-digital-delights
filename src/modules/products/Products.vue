@@ -2,7 +2,9 @@
 	<main class="about-page" v-if="Configuration">
 		<MainCard>
 			<template #header>
-				<h1>Productos</h1>
+				<h1>
+					{{ Configuration.labels.sectionTile }}
+				</h1>
 			</template>
 			<template #content>
 				<div>
@@ -37,7 +39,6 @@
 import { FilterMatchMode } from 'primevue/api';
 import { mapGetters } from 'vuex';
 import Store from '../../managers/store/store';
-import { getAllCategories, getAllProducts, newProduct, updateProduct, deleteProduct } from '../../managers/api/api';
 import { setConfigurationFileByAccount } from '../../utils/utils';
 
 import DynamicTable from '../../components/datatable/DynamicTable.vue';
@@ -67,84 +68,27 @@ export default {
 	},
 
 	computed: {
-		...mapGetters('UsersStore', ['user', 'auth', 'modules']),
+		...mapGetters('UsersStore', ['user', 'auth', 'modules', 'account']),
 		...mapGetters('CategoriesStore', ['categories']),
 		...mapGetters('ProductsStore', ['products']),
 	},
 
 	mounted() {
-		this.setCongigurationFile();
+		this.setConfigurationFile();
 		this.getHeightWindow();
 	},
 
 	methods: {
-		async setCongigurationFile() {
-			const account = this.user.email.split('.')[1];
-			this.Configuration = await setConfigurationFileByAccount('products', account);
-			console.log(this.Configuration.account);
+		async setConfigurationFile() {
+			this.Configuration = await setConfigurationFileByAccount('products', this.account);
 
+			this.getAllProducts();
 			this.setCategories();
 		},
 		
 		getHeightWindow() {
 			var heightWindow = window.innerHeight - 285;
 			return heightWindow + 'px';
-		},
-
-		setCategories() {
-			this.loading = true;
-
-			for (const configuration of this.Configuration.create.formConfiguration) {
-				if (configuration.modelName === 'category') {
-					configuration.defaultValue = this.categories;
-				}
-			}
-
-			for (const configuration of this.Configuration.update.formConfiguration) {
-				if (configuration.modelName === 'category') {
-					configuration.options = this.categories;
-				}
-			}
-
-			this.loading = false;
-		},
-
-		async loadProducts() {
-			await getAllProducts(this.user.account_id);
-		},
-
-		async reloadCategories() {
-			getAllCategories(this.user.account_id)
-				.then((response) => {
-					Store.commit('CategoriesStore/setCategories', response.data.data);
-				})
-				.catch((error) => {
-					console.log(error);
-				});
-		},
-
-		async getProducts() {
-			this.loading = true;
-
-			if (this.products && this.products.length !== 0) {
-				console.log('existen productos');
-			} else {
-				console.log('no existen productos');
-
-				this.loadProducts();
-			}
-
-			this.loading = false;
-		},
-
-		async reloadProducts() {
-			getAllProducts(this.user.account_id)
-				.then((response) => {
-					Store.commit('ProductsStore/setProducts', response.data.data);
-				})
-				.catch((error) => {
-					console.log(error);
-				});
 		},
 
 		add() {
@@ -160,7 +104,7 @@ export default {
 				formData.append(key, value[key]);
 			}
 
-			newProduct(this.user.account_id, formData)
+			this.Configuration.endpoints.new(this.user.account_id, formData)
 				.then((response) => {
 					this.Configuration.create.modalVisible = false;
 					this.loading = false;
@@ -171,7 +115,7 @@ export default {
 						life: 3000,
 					});
 					Store.commit('UsersStore/setLoadingServerRequest', false);
-					this.loadProducts();
+					this.getAllProducts();
 				})
 				.catch((error) => {
 					this.$toast.add({
@@ -205,10 +149,9 @@ export default {
 				formData.append(key, value[key]);
 			}
 
-			updateProduct(this.user.account_id, formData)
+			this.Configuration.endpoints.update(this.user.account_id, formData)
 				.then((response) => {
 					this.Configuration.update.modalVisible = false;
-					this.loadProducts();
 					this.loading = false;
 					this.$toast.add({
 						severity: 'success',
@@ -217,6 +160,7 @@ export default {
 						life: 3000,
 					});
 					Store.commit('UsersStore/setLoadingServerRequest', false);
+					this.getAllProducts();
 				})
 				.catch((error) => {
 					this.$toast.add({
@@ -230,7 +174,7 @@ export default {
 		},
 
 		async deleteProduct(element) {
-			deleteProduct(this.user.account_id, element)
+			this.Configuration.endpoints.delete(this.user.account_id, element)
 				.then((response) => {
 					this.loading = false;
 					this.$toast.add({
@@ -239,13 +183,39 @@ export default {
 						detail: response.data.message,
 						life: 3000,
 					});
-					this.loadProducts();
 					Store.commit('UsersStore/setLoadingServerRequest', false);
+					this.getAllProducts();
 				})
 				.catch((error) => {
 					console.log(error);
 					Store.commit('UsersStore/setLoadingServerRequest', false);
 				});
+		},
+
+		setCategories() {
+			this.loading = true;
+
+			for (const configuration of this.Configuration.create.formConfiguration) {
+				if (configuration.modelName === 'category') {
+					configuration.defaultValue = this.categories;
+				}
+			}
+
+			for (const configuration of this.Configuration.update.formConfiguration) {
+				if (configuration.modelName === 'category') {
+					configuration.options = this.categories;
+				}
+			}
+
+			this.loading = false;
+		},
+
+		getAllCategories() {
+			this.Configuration.endpoints.getAllCategories(this.user.account_id);
+		},
+
+		async getAllProducts() {
+			await this.Configuration.endpoints.getAllProducts(this.user.account_id);
 		},
 	}
 };

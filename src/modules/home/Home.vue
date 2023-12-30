@@ -35,13 +35,14 @@ export default {
 		Card,
 		MainCard
 	},
-
 	data() {
 		return {
 			sectionTitle: 'Home',
 		};
 	},
-
+	mounted() {
+		console.log('Mounted home');
+	},
 	computed: {
 		...mapGetters('UsersStore', ['modules']),
 
