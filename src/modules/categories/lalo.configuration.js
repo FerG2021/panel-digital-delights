@@ -1,7 +1,7 @@
-import * as api from '../../managers/api/digitalDelightsApi';
+import * as api from '../../managers/api/carsAgencyApi';
 
 const configuration = {
-	account: 'bunker',
+	account: 'lalo',
 	labels: {
 		sectionTitle: 'Categorías',
 		new: 'Nueva categoría',
@@ -17,12 +17,6 @@ const configuration = {
 		delete: api.deleteCategory
 	},
 	tableColumns: [
-		{ 
-			field: 'image', 
-			header: 'Imagen', 
-			type: 'image', 
-			variation: '' 
-		},
 		{ 
 			field: 'name', 
 			header: 'Nombre', 
@@ -57,13 +51,6 @@ const configuration = {
 				required: true,
 				defaultValue: null,
 			},
-			{
-				modelName: 'image',
-				label: 'Imagen',
-				type: 'image', 
-				required: true,
-				defaultValue: null,
-			},
 		]
 	},
 	update: {
@@ -82,13 +69,6 @@ const configuration = {
 				required: true,
 				defaultValue: null,
 			},
-			{
-				modelName: 'image',
-				label: 'Imagen',
-				type: 'image', 
-				required: true,
-				defaultValue: null,
-			}
 		]
 	}
 };

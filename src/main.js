@@ -46,6 +46,7 @@ import TreeSelect from 'primevue/treeselect';
 import Rating from 'primevue/rating';
 import Textarea from 'primevue/textarea';
 import Image from 'primevue/image';
+import Calendar from 'primevue/calendar';
 import 'primeflex/primeflex.css';
 
 // Scroll
@@ -104,6 +105,7 @@ createApp(App)
 	.component('VirtualScroller', VirtualScroller)
 	.component('ToggleButton', ToggleButton)
 	.component('InlineMessage', InlineMessage)
+	.component('Calendar', Calendar)
 	.use(router)
 	.use(ElementPlus, { locale })
 	.use(ElMessage)

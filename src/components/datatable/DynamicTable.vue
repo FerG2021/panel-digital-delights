@@ -55,19 +55,30 @@
 					:key="column.field"
 					:field="column.field"
 					:header="column.header"
+					v-if="column.type === 'date'"
+				>
+					<template #body="slotProps">
+						{{  `${formatDate(slotProps.data[column.field]) }` }}
+					</template>
+				</Column>
+
+				<Column
+					:key="column.field"
+					:field="column.field"
+					:header="column.header"
 					v-if="column.type === 'boolean'"
 				>
 					<template #body="slotProps">
 						<InlineMessage 
 							severity="success" 
-							v-if="slotProps.data[column.field] === 1 || slotProps.data[column.field] === true"
+							v-if="slotProps.data[column.field] === 1 || slotProps.data[column.field] === true || slotProps.data[column.field] !== null"
 						>
 							SI
 						</InlineMessage>
 
 						<InlineMessage 
 							severity="error"
-							v-if="slotProps.data[column.field] === 0 || slotProps.data[column.field] === false"
+							v-if="slotProps.data[column.field] === 0 || slotProps.data[column.field] === false | slotProps.data[column.field] === null"
 						>
 							NO
 						</InlineMessage>
@@ -95,6 +106,18 @@
 									icon="pi pi-trash"
 									class="p-button-rounded p-button-danger"
 									@click="deleteRow(slotProps.data)"
+								/>
+								<Button
+									v-if="column.variation === 'sell' && slotProps.data.buyer_id === null"
+									icon="pi pi-ticket"
+									class="p-button-rounded p-button-primary mr-2"
+									@click="$emit('sell', slotProps.data)"
+								/>
+								<Button
+									v-if="column.variation === 'sell' && slotProps.data.buyer_id !== null"
+									icon="pi pi-eye"
+									class="p-button-rounded p-button-primary mr-2"
+									@click="$emit('sell-detail', slotProps.data)"
 								/>
 							</div>
 						</div>
@@ -131,7 +154,7 @@
 
 <script>
 import { FilterMatchMode } from 'primevue/api';
-import { formatNumberToDecimal } from '../../utils/utils';
+import { formatNumberToDecimal, formatDate } from '../../utils/utils';
 
 export default {
 	name: 'TableComponent',
@@ -184,6 +207,11 @@ export default {
 
 		formatNumber(number) {
 			return formatNumberToDecimal(number);
+		},
+
+		formatDate(date) {
+			console.log('formatDate');
+			return formatDate(date, 'DD/MM/YYYY');
 		}
 	},
 };

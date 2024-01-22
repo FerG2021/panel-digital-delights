@@ -1,5 +1,6 @@
 import Store from '../managers/store/store';
-import * as api from '../managers/api/api';
+import * as digitalDelightsApi from '../managers/api/digitalDelightsApi';
+import * as carsAgencyApi from '../managers/api/carsAgencyApi';
 
 export default function loadModulesByAccount(store, router, account) {
 	const accountsModules = {
@@ -22,7 +23,7 @@ export default function loadModulesByAccount(store, router, account) {
 				icon: 'inventory_2',
 				store: true,
 				showInHome: true,
-				loadedMethod: api.getAllProducts
+				loadedMethod: digitalDelightsApi.getAllProducts
 			},
 			{
 				name: 'categories',
@@ -32,7 +33,7 @@ export default function loadModulesByAccount(store, router, account) {
 				icon: 'category',
 				store: true,
 				showInHome: true,
-				loadedMethod: api.getAllCategories
+				loadedMethod: digitalDelightsApi.getAllCategories
 			},
 			{
 				name: 'promotions',
@@ -42,7 +43,7 @@ export default function loadModulesByAccount(store, router, account) {
 				icon: 'campaign',
 				store: true,
 				showInHome: true,
-				loadedMethod: api.getAllPromotions
+				loadedMethod: digitalDelightsApi.getAllPromotions
 			},
 			{
 				name: 'myaccount',
@@ -66,13 +67,24 @@ export default function loadModulesByAccount(store, router, account) {
 				showInHome: false,
 			},
 			{
-				name: 'products',
-				componentName: 'Products',
+				name: 'cars',
+				componentName: 'Cars',
 				title: 'Vehículos',
-				path: '/products',
-				icon: 'inventory_2',
+				path: '/cars',
+				icon: 'directions_car',
 				store: true,
 				showInHome: true,
+				loadedMethod: carsAgencyApi.getAllCars
+			},
+			{
+				name: 'marks',
+				componentName: 'Marks',
+				title: 'Marcas',
+				path: '/marks',
+				icon: 'stars',
+				store: true,
+				showInHome: true,
+				loadedMethod: carsAgencyApi.getAllMarks
 			},
 			{
 				name: 'categories',
@@ -82,15 +94,17 @@ export default function loadModulesByAccount(store, router, account) {
 				icon: 'category',
 				store: true,
 				showInHome: true,
+				loadedMethod: carsAgencyApi.getAllCategories
 			},
 			{
-				name: 'promotions',
-				componentName: 'Promotions',
-				title: 'Promociones',
-				path: '/promotions',
-				icon: 'campaign',
+				name: 'clients',
+				componentName: 'Clients',
+				title: 'Clientes',
+				path: '/clients',
+				icon: 'group',
 				store: true,
 				showInHome: true,
+				loadedMethod: carsAgencyApi.getAllClients
 			},
 			{
 				name: 'myaccount',
@@ -108,8 +122,6 @@ export default function loadModulesByAccount(store, router, account) {
 	const processModules = accountsModules[account] || [];
 
 	processModules.forEach(module => {
-		console.log('module');
-		console.log(module);
 		// if (module.store === true) {
 		// 	import(`../modules/${module.name}/${module.name}Store.js`).then(moduleStore => {
 		// 		console.log(moduleStore);

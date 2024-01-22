@@ -5,14 +5,12 @@
 			icon="pi pi-refresh"
 			class="flex justify-content-center dialog"
 			:draggable="false"
-			style="width: 30vw"
+			style="width: 30vw "
 			@hide="handleModalClose()"
-			@show="handleDialogShow()"
 		>
 			<template #header>
 				<TitleModal :header="data.header" />
 			</template>
-			
 
 			<div class="form-container">
 				<form
@@ -24,7 +22,7 @@
 						:key="field.name"
 						class="form-item"
 					>
-						<div class="field" v-if="field.type === 'text'">
+						<div class="field" v-if="field.type === 'text' || data.selled">
 							<div class="p-float-label">
 								<p>
 									{{ field.label }} 
@@ -38,7 +36,8 @@
 								<InputText
 									:id="field.name"
 									v-model="formData[field.modelName]"
-									@update:modelValue="(value) => handleInputChange(value, field.modelName)"
+									@update:modelValue="(value) => handleInputChange(field.defaultValue, field.modelName)"
+									:disabled="field.disabled"
 								/>
 							</div>
 						</div>
@@ -86,7 +85,7 @@
 							</div>
 						</div>
 
-						<div class="field" v-if="field.type === 'select'">
+						<div class="field" v-if="field.type === 'select' && !data.selled">
 							<div class="p-float-label">
 								<p>
 									{{ field.label }} 
@@ -99,11 +98,25 @@
 								</p>
 								<Dropdown 
 									v-model="formData[field.modelName]" 
-									:options="field.options" 
+									:options="field.defaultValue" 
 									optionLabel="name" 
 									:placeholder="field.placeholder" 
-								/>
+								>
+									<template #option="slotProps">
+										<div class="flex align-items-center">
+											<div>{{ getOptionLabel(slotProps.option) }}</div>
+										</div>
+									</template>
 
+									<template #value="slotProps">
+										<div v-if="slotProps.value" class="flex align-items-center">
+											<div>{{ getOptionLabel(slotProps.value) }}</div>
+										</div>
+										<span v-else>
+											{{ slotProps.placeholder }}
+										</span>
+									</template>
+								</Dropdown>
 							</div>
 						</div>
 
@@ -142,12 +155,6 @@
 										*
 									</span>
 								</p>
-								<Image 
-									:src="formData[field.modelName]" 
-									alt="Image" 
-									width="150"
-									v-if="isObject(field.modelName)"
-								/>
 								<FileUpload
 									name="form.demo"
 									url="./upload.php"
@@ -167,7 +174,7 @@
 							</div>
 						</div>
 
-						<div class="field" v-if="field.type === 'date'">
+						<div class="field" v-if="field.type === 'date' && !data.selled">
 							<div class="p-float-label">
 								<p>
 									{{ field.label }} 
@@ -209,8 +216,8 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import TitleModal from '../common/TitleModal.vue';
-import Store from '../../managers/store/store';
+import TitleModal from '../../../components/common/TitleModal.vue';
+import Store from '../../../managers/store/store';
 
 export default {
 	components: { TitleModal },
@@ -218,34 +225,52 @@ export default {
 		data: {
 			type: Array,
 			required: true,
-			loadingBtnSave: false,
 		},
 	},
 	data() {
 		return {
 			formData: {},
-			errors: null,
+			errors: null
 		};
+	},
+	mounted() {
+		console.log('mounted');
 	},
 	computed: {
 		...mapGetters('UsersStore', ['loadingServerRequest']),
 	},
 	methods: {
-		handleDialogShow() {
-			for (const field of this.data.formConfiguration) {
-				if (field.defaultValue !== undefined) {
-					this.formData[field.modelName] = field.defaultValue;
-				} else {
-					this.formData[field.modelName] = '';
-				}
-			}
-		},
 		handleModalClose() {
 			this.errors = null;
 			this.formData = {};
 		},
 		handleInputChange(value, moduleName) {
 			this.formData[moduleName] = value;
+		},
+		save() {
+			Store.commit('UsersStore/setLoadingServerRequest', true);
+			
+			this.errors = this.validateForm();
+			let formData = new FormData();
+
+			for (let key in this.formData) {
+				formData.append(key, this.formData[key]);
+			}
+
+			if (this.errors === null) {
+				this.$emit('formDataSellCar', this.formData);
+			}
+		},
+		validateForm() {
+			for (const item of this.data.formConfiguration) {
+				if (item.required && !this.formData[item.modelName
+				]) {
+					Store.commit('UsersStore/setLoadingServerRequest', false);
+					return `El campo ${item.label} es requerido`;
+				}
+			}
+
+			return null;
 		},
 		onUpload() {
 			this.$toast.add({
@@ -262,33 +287,8 @@ export default {
 				}
 			}
 		},
-		isObject(attribute) {
-			if (typeof this.formData[attribute] !== 'object') {
-				return true;
-			} else {
-				return false;
-			}
-		},
-		save() {
-			Store.commit('UsersStore/setLoadingServerRequest', true);
-			this.errors = this.validateForm();
-
-			if (this.errors === null) {
-				this.formData.id = this.data.id;
-				this.$emit('formDataUpdate', this.formData);
-			}
-
-			this.loadingBtnSave = false;
-		},
-		validateForm() {
-			for (const item of this.data.formConfiguration) {
-				if (item.required && (this.formData[item.modelName] === null || this.formData[item.modelName] === '')) {
-					Store.commit('UsersStore/setLoadingServerRequest', false);
-					return `El campo ${item.label} es requerido`;
-				}
-			}
-
-			return null;
+		getOptionLabel(option) {
+			return `${option.lastname}, ${option.name}`;
 		}
 	}	
 };

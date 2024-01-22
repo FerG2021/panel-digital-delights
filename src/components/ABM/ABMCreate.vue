@@ -64,6 +64,26 @@
 							</div>
 						</div>
 
+						<div class="field" v-if="field.type === 'number'">
+							<div class="p-float-label">
+								<p>
+									{{ field.label }} 
+									<span 
+										v-if="field.required"
+										class="required"
+									>
+										*
+									</span>
+								</p>
+								<InputNumber
+									:id="field.name"
+									v-model="formData[field.modelName]"
+									:useGrouping="false"
+									@update:modelValue="(value) => handleInputChange(value, field.modelName)"
+								/>
+							</div>
+						</div>
+
 						<div class="field" v-if="field.type === 'select'">
 							<div class="p-float-label">
 								<p>
@@ -136,6 +156,27 @@
 										</p>
 									</template>
 								</FileUpload>
+							</div>
+						</div>
+
+						<div class="field" v-if="field.type === 'date'">
+							<div class="p-float-label">
+								<p>
+									{{ field.label }} 
+									<span 
+										v-if="field.required"
+										class="required"
+									>
+										*
+									</span>
+									<input 
+										type="date" 
+										id="fecha" 
+										v-model="formData[field.modelName]"
+										@update:modelValue="(value) => handleInputChange(value, field.modelName)"
+										class="input-date"
+									/>
+								</p>
 							</div>
 						</div>
 					</div>
@@ -227,7 +268,7 @@ export default {
 					this.formData[configuration.modelName] = event.files[0];
 				}
 			}
-		},
+		}
 	}	
 };
 </script>
@@ -243,6 +284,12 @@ export default {
 						.required {
 							color: var(--error-color);
 						}
+					}
+					.input-date {
+						border: 1px solid #cecdcd;
+						width: 100%;
+						height: 40px;
+						border-radius: 3px;
 					}
 				}
 			}

@@ -34,7 +34,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { getAllCategories, getAllProducts, getAllPromotions } from '../../managers/api/api';
+import { getAllCategories, getAllProducts, getAllPromotions } from '../../managers/api/digitalDelightsApi';
 
 
 import SidebarItem from './SidebarItem.vue';

@@ -1,50 +1,44 @@
-import * as api from '../../managers/api/digitalDelightsApi';
+import * as api from '../../managers/api/carsAgencyApi';
 
 const configuration = {
-	account: 'bunker',
+	account: 'lalo',
 	labels: {
-		sectionTitle: 'Promociones',
-		new: 'Nueva promoción',
+		sectionTitle: 'Clientes',
+		new: 'Nuevo cliente',
 		delete: {
 			header: 'Confirmación',
-			message: '¿Está seguro que desea eliminar la promoción?'
+			message: '¿Está seguro que desea eliminar el cliente?'
 		}
 	},
 	endpoints: {
-		getAllPromotions: api.getAllPromotions,
-		new: api.newPromotion,
-		update: api.updatePromotion,
-		delete: api.deletePromotion
+		getAllClients: api.getAllClients,
+		new: api.newClient,
+		update: api.updateClient,
+		delete: api.deleteClient
 	},
 	tableColumns: [
 		{ 
-			field: 'image', 
-			header: 'Imagen', 
-			type: 'image', 
-			variation: '' 
-		},
-		{ 
-			field: 'title', 
-			header: 'Títilo', 
+			field: 'lastname', 
+			header: 'Apellido', 
 			type: 'normal', 
 			variation: '' 
 		},
 		{ 
-			field: 'description', 
-			header: 'Descripción', 
+			field: 'name', 
+			header: 'Nombre', 
 			type: 'normal', 
 			variation: '' 
 		},
 		{ 
-			field: 'price', 
-			header: 'Precio', 
-			type: 'price', 
+			field: 'birthday', 
+			header: 'Fecha de nacimiento', 
+			type: 'date', 
 			variation: '' 
 		},
 		{ 
-			field: 'available', 
-			header: 'Disponible', 
-			type: 'boolean', 
+			field: 'address', 
+			header: 'Dirección', 
+			type: 'normal', 
 			variation: '' 
 		},
 		{ 
@@ -60,99 +54,97 @@ const configuration = {
 			variation: 'delete' 
 		},
 	],
-
 	create: {
 		modalVisible: false,
 		header: {
 			class: 'material-icons',
 			icon: 'edit',
-			headerName: 'Nueva promoción',
+			headerName: 'Nuevo cliente',
 		},
 		formConfiguration: [
 			{
-				modelName: 'title',
-				label: 'Título',
+				modelName: 'name',
+				label: 'Nombre',
 				type: 'text', 
 				required: true,
 				defaultValue: null,
 			},
 			{
-				modelName: 'description',
-				label: 'Descripción',
+				modelName: 'lastname',
+				label: 'Apellido',
 				type: 'text', 
 				required: true,
 				defaultValue: null,
 			},
 			{
-				modelName: 'price',
-				label: 'Precio',
-				type: 'price', 
+				modelName: 'birthday',
+				label: 'Fecha de nacimiento',
+				type: 'date', 
 				required: true,
 				defaultValue: null,
 			},
 			{
-				modelName: 'available',
-				label: 'Disponible',
-				type: 'switch', 
+				modelName: 'phone_number',
+				label: 'Teléfono',
+				type: 'number', 
 				required: true,
 				defaultValue: null,
 			},
 			{
-				modelName: 'image',
-				label: 'Imagen',
-				type: 'image', 
+				modelName: 'address',
+				label: 'Dirección',
+				type: 'text', 
 				required: true,
 				defaultValue: null,
-			},
+			}			
 		]
 	},
-
 	update: {
 		modalVisible: false,
 		header: {
 			class: 'material-icons',
 			icon: 'edit',
-			headerName: 'Modificar promoción',
+			headerName: 'Modificar cliente',
 		},
 		id: null,
 		formConfiguration: [
 			{
-				modelName: 'title',
-				label: 'Título',
+				modelName: 'name',
+				label: 'Nombre',
 				type: 'text', 
 				required: true,
 				defaultValue: null,
 			},
 			{
-				modelName: 'description',
-				label: 'Descripción',
+				modelName: 'lastname',
+				label: 'Apellido',
 				type: 'text', 
 				required: true,
 				defaultValue: null,
 			},
 			{
-				modelName: 'price',
-				label: 'Precio',
-				type: 'price', 
+				modelName: 'birthday',
+				label: 'Fecha de nacimiento',
+				type: 'date', 
 				required: true,
 				defaultValue: null,
 			},
 			{
-				modelName: 'available',
-				label: 'Disponible',
-				type: 'switch', 
+				modelName: 'phone_number',
+				label: 'Teléfono',
+				type: 'number', 
 				required: true,
 				defaultValue: null,
 			},
 			{
-				modelName: 'image',
-				label: 'Imagen',
-				type: 'image', 
+				modelName: 'address',
+				label: 'Dirección',
+				type: 'text', 
 				required: true,
 				defaultValue: null,
-			},
+			}			
 		]
 	}
 };
-  
+
 export default configuration;

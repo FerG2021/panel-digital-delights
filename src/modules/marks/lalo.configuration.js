@@ -1,28 +1,22 @@
-import * as api from '../../managers/api/digitalDelightsApi';
+import * as api from '../../managers/api/carsAgencyApi';
 
 const configuration = {
-	account: 'bunker',
+	account: 'lalo',
 	labels: {
-		sectionTitle: 'Categorías',
-		new: 'Nueva categoría',
+		sectionTitle: 'Marcas',
+		new: 'Nueva marca',
 		delete: {
 			header: 'Confirmación',
-			message: '¿Está seguro que desea eliminar la categoría?'
+			message: '¿Está seguro que desea eliminar la marca?'
 		}
 	},
 	endpoints: {
-		getAllCategories: api.getAllCategories,
-		new: api.newCategory,
-		update: api.updateCategory,
-		delete: api.deleteCategory
+		getAllMarks: api.getAllMarks,
+		new: api.newMark,
+		update: api.updateMark,
+		delete: api.deleteMark
 	},
 	tableColumns: [
-		{ 
-			field: 'image', 
-			header: 'Imagen', 
-			type: 'image', 
-			variation: '' 
-		},
 		{ 
 			field: 'name', 
 			header: 'Nombre', 
@@ -47,20 +41,13 @@ const configuration = {
 		header: {
 			class: 'material-icons',
 			icon: 'edit',
-			headerName: 'Nueva categoría',
+			headerName: 'Nueva marca',
 		},
 		formConfiguration: [
 			{
 				modelName: 'name',
 				label: 'Nombre',
 				type: 'text', 
-				required: true,
-				defaultValue: null,
-			},
-			{
-				modelName: 'image',
-				label: 'Imagen',
-				type: 'image', 
 				required: true,
 				defaultValue: null,
 			},
@@ -71,7 +58,7 @@ const configuration = {
 		header: {
 			class: 'material-icons',
 			icon: 'edit',
-			headerName: 'Modificar categoría',
+			headerName: 'Modificar marca',
 		},
 		id: null,
 		formConfiguration: [
@@ -79,13 +66,6 @@ const configuration = {
 				modelName: 'name',
 				label: 'Nombre',
 				type: 'text', 
-				required: true,
-				defaultValue: null,
-			},
-			{
-				modelName: 'image',
-				label: 'Imagen',
-				type: 'image', 
 				required: true,
 				defaultValue: null,
 			}

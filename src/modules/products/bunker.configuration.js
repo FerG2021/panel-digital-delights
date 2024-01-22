@@ -1,4 +1,5 @@
-import * as api from '../../managers/api/api';
+import * as api from '../../managers/api/digitalDelightsApi';
+
 const configuration = {
 	account: 'bunker',
 	labels: {
