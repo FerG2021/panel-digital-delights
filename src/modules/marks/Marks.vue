@@ -97,7 +97,7 @@ export default {
 					this.$toast.add({
 						severity: 'success',
 						summary: this.$t('toast.success'),
-						detail: response.data.data,
+						detail: response.data.message,
 						life: 3000,
 					});
 					Store.commit('UsersStore/setLoadingServerRequest', false);

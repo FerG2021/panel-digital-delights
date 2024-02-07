@@ -11,6 +11,7 @@ import lalocategories from '../modules/categories/lalo.configuration';
 import lalomarks from '../modules/marks/lalo.configuration';
 import laloclients from '../modules/clients/lalo.configuration';
 import lalocars from '../modules/cars/lalo.configuration';
+import lalomyaccount from '../modules/myaccount/lalo.configuration';
 
 const configurations = {
 	bunkerproducts: bunkerproducts,
@@ -21,7 +22,8 @@ const configurations = {
 	lalocategories: lalocategories,
 	lalomarks: lalomarks,
 	laloclients: laloclients,
-	lalocars: lalocars
+	lalocars: lalocars,
+	lalomyaccount: lalomyaccount
 };
 
 export const formatNumberToDecimal = (number) => {

@@ -1,4 +1,5 @@
 import * as api from '../../managers/api/carsAgencyApi';
+import Store from '../../managers/store/store';
 
 const configuration = {
 	account: 'lalo',
@@ -62,6 +63,12 @@ const configuration = {
 		},
 		{ 
 			field: 'name', 
+			header: 'Detalles', 
+			type: 'button', 
+			variation: 'detail' 
+		},
+		{ 
+			field: 'name', 
 			header: 'Editar', 
 			type: 'button', 
 			variation: 'update' 
@@ -87,7 +94,7 @@ const configuration = {
 				type: 'select', 
 				placeholder: 'Seleccione una marca',
 				required: true,
-				defaultValue: null,
+				defaultValue: Store.getters['MarksStore/marks'],
 			},
 			{
 				modelName: 'patent',
@@ -109,7 +116,7 @@ const configuration = {
 				type: 'select', 
 				placeholder: 'Seleccione una categoría',
 				required: true,
-				defaultValue: null,
+				defaultValue: Store.getters['CategoriesStore/categories'],
 			},
 			{
 				modelName: 'description',
@@ -131,7 +138,7 @@ const configuration = {
 				type: 'select', 
 				placeholder: 'Seleccione una condición',
 				required: true,
-				defaultValue: null,
+				defaultValue: Store.getters['CarsStore/conditionsOptions'],
 			},
 			{
 				modelName: 'kilometres',
@@ -146,7 +153,7 @@ const configuration = {
 				type: 'select', 
 				placeholder: 'Seleccione un combustible',
 				required: true,
-				defaultValue: null,
+				defaultValue: Store.getters['CarsStore/fuelOptions']
 			},
 			{
 				modelName: 'tank_space',
@@ -194,6 +201,7 @@ const configuration = {
 				placeholder: 'Seleccione una marca',
 				required: true,
 				defaultValue: null,
+				options: Store.getters['MarksStore/marks'],
 			},
 			{
 				modelName: 'patent',
@@ -216,6 +224,7 @@ const configuration = {
 				placeholder: 'Seleccione una categoría',
 				required: true,
 				defaultValue: null,
+				options: Store.getters['CategoriesStore/categories']
 			},
 			{
 				modelName: 'description',
@@ -238,6 +247,7 @@ const configuration = {
 				placeholder: 'Seleccione una condición',
 				required: true,
 				defaultValue: null,
+				options: Store.getters['CarsStore/conditionsOptions'],
 			},
 			{
 				modelName: 'kilometres',
@@ -253,6 +263,117 @@ const configuration = {
 				placeholder: 'Seleccione un combustible',
 				required: true,
 				defaultValue: null,
+				options: Store.getters['CarsStore/fuelOptions']
+			},
+			{
+				modelName: 'tank_space',
+				label: 'Capacidad del tanque',
+				type: 'number', 
+				required: false,
+				defaultValue: null,
+			},
+			{
+				modelName: 'trunk_space',
+				label: 'Capacidad del baúl',
+				type: 'number', 
+				required: false,
+				defaultValue: null,
+			},
+			{
+				modelName: 'weight',
+				label: 'Peso',
+				type: 'number', 
+				required: false,
+				defaultValue: null,
+			},
+			{
+				modelName: 'image',
+				label: 'Imagen',
+				type: 'image', 
+				required: true,
+				defaultValue: null,
+			},
+		]
+	},
+	detail: {
+		modalVisible: false,
+		header: {
+			class: 'material-icons',
+			icon: 'info',
+			headerName: 'Detalles del vehículo',
+		},
+		id: null,
+		formConfiguration: [
+			{
+				modelName: 'mark',
+				label: 'Marca',
+				type: 'select', 
+				placeholder: 'Seleccione una marca',
+				required: true,
+				defaultValue: null,
+				options: Store.getters['MarksStore/marks'],
+			},
+			{
+				modelName: 'patent',
+				label: 'Patente',
+				type: 'text', 
+				required: true,
+				defaultValue: null,
+			},
+			{
+				modelName: 'name',
+				label: 'Nombre',
+				type: 'text', 
+				required: true,
+				defaultValue: null,
+			},
+			{
+				modelName: 'category',
+				label: 'Categoría',
+				type: 'select', 
+				placeholder: 'Seleccione una categoría',
+				required: true,
+				defaultValue: null,
+				options: Store.getters['CategoriesStore/categories']
+			},
+			{
+				modelName: 'description',
+				label: 'Descripción',
+				type: 'text', 
+				required: false,
+				defaultValue: null,
+			},
+			{
+				modelName: 'year',
+				label: 'Año',
+				type: 'number', 
+				required: true,
+				defaultValue: null,
+			},
+			{
+				modelName: 'condition',
+				label: 'Condición',
+				type: 'select', 
+				placeholder: 'Seleccione una condición',
+				required: true,
+				defaultValue: null,
+				options: Store.getters['CarsStore/conditionsOptions'],
+			},
+			{
+				modelName: 'kilometres',
+				label: 'Kilómetros',
+				type: 'number', 
+				required: true,
+				defaultValue: null,
+			},
+			{
+				modelName: 'fuel',
+				label: 'Combustible',
+				type: 'select', 
+				placeholder: 'Seleccione un combustible',
+				required: true,
+				defaultValue: null,
+				options: Store.getters['CarsStore/fuelOptions']
 			},
 			{
 				modelName: 'tank_space',

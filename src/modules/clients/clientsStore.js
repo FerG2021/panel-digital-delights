@@ -13,7 +13,6 @@ export default {
 
 	mutations: {
 		setClients(state, clients) {
-			console.log('setClients');
 			state.clients = clients;
 		},
 		clearStore(state) {

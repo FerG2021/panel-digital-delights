@@ -83,13 +83,9 @@ export default {
 			axios
 				.get('/api/user')
 				.then((res) => {
-					console.log('res');
-					console.log('res.data');
-					console.log(res.data);
 					commit('SET_USER', res.data);
 				})
 				.catch(() => {
-					console.log('catch');
 					commit('SET_USER', null);
 				});
 		},

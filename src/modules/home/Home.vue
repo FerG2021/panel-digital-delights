@@ -40,9 +40,6 @@ export default {
 			sectionTitle: 'Home',
 		};
 	},
-	mounted() {
-		console.log('Mounted home');
-	},
 	computed: {
 		...mapGetters('UsersStore', ['modules']),
 

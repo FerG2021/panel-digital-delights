@@ -102,6 +102,12 @@
 									@click="$emit('edit', slotProps.data)"
 								/>
 								<Button
+									v-if="column.variation === 'detail'"
+									icon="pi pi-eye"
+									class="p-button-rounded p-button-primary mr-2"
+									@click="$emit('detail', slotProps.data)"
+								/>
+								<Button
 									v-if="column.variation === 'delete'"
 									icon="pi pi-trash"
 									class="p-button-rounded p-button-danger"
@@ -210,7 +216,6 @@ export default {
 		},
 
 		formatDate(date) {
-			console.log('formatDate');
 			return formatDate(date, 'DD/MM/YYYY');
 		}
 	},

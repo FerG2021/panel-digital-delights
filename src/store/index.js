@@ -40,7 +40,6 @@ export default createStore({
 		},
 
 		getUser({ commit }) {
-			console.log('getUser');
 			axios.get('/user')
 				.then(res => {
 					commit('SET_USER', res.data);

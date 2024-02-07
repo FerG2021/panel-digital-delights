@@ -83,12 +83,6 @@ export default {
 		},
 
 		async formDataCreate(value) {
-			// this.formData = value;
-
-			console.log('value');
-			console.log(value);
-
-
 			this.formatDate(value, 'birthday');
 
 			let formData = new FormData();
@@ -104,7 +98,7 @@ export default {
 					this.$toast.add({
 						severity: 'success',
 						summary: this.$t('toast.success'),
-						detail: response.data.data,
+						detail: response.data.message,
 						life: 3000,
 					});
 					Store.commit('UsersStore/setLoadingServerRequest', false);
@@ -124,9 +118,6 @@ export default {
 
 		formatDate(value, valueName) {
 			value[valueName] = moment(value[valueName]).format('YYYY-MM-DD HH:mm:ss');
-
-			console.log('value');
-			console.log(value);
 
 			return value;
 		},
@@ -153,7 +144,7 @@ export default {
 					this.$toast.add({
 						severity: 'success',
 						summary: this.$t('toast.success'),
-						detail: response.data.data,
+						detail: response.data.message,
 						life: 3000,
 					});
 					Store.commit('UsersStore/setLoadingServerRequest', false);

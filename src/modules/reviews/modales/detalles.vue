@@ -75,140 +75,120 @@
 </template>
 
 <script>
-import { email, required } from "@vuelidate/validators";
-import { useVuelidate } from "@vuelidate/core";
-import { helpers } from "@vuelidate/validators";
-import { FilterMatchMode, FilterOperator } from "primevue/api";
+import { email, required } from '@vuelidate/validators';
+import { useVuelidate } from '@vuelidate/core';
+import { helpers } from '@vuelidate/validators';
+import { FilterMatchMode, FilterOperator } from 'primevue/api';
 
 export default {
-  components: {},
-  setup: () => ({ v$: useVuelidate() }),
+	components: {},
+	setup: () => ({ v$: useVuelidate() }),
 
-  data() {
-    return {
-      display: false,
-      submitted: false,
-      isFormValid: false,
-      loadingBtnGuardar: false,
-      loading: true,
-      filters: {
-        global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-      },
-      // form
-      id: null,
-      resenia: null,
-    };
-  },
+	data() {
+		return {
+			display: false,
+			submitted: false,
+			isFormValid: false,
+			loadingBtnGuardar: false,
+			loading: true,
+			filters: {
+				global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+			},
+			// form
+			id: null,
+			resenia: null,
+		};
+	},
 
-  validations() {
-    return {
-      nombre: {
-        required: helpers.withMessage("El nombre es requerido", required),
-        // email,
-      },
-    };
-  },
+	validations() {
+		return {
+			nombre: {
+				required: helpers.withMessage('El nombre es requerido', required),
+				// email,
+			},
+		};
+	},
 
-  methods: {
-    abrir(id) {
-      this.id = id;
-      this.submitted = false;
-      this.display = true;
-      this.loading = true;
-      // this.isFormValid = false;
-      this.getDatos();
-    },
+	methods: {
+		abrir(id) {
+			this.id = id;
+			this.submitted = false;
+			this.display = true;
+			this.loading = true;
+			// this.isFormValid = false;
+			this.getDatos();
+		},
 
-    cerrar() {
-      this.$toast.add({
-        severity: "error",
-        summary: "Ventana cerrada con éxito",
-        detail: "Message Content",
-        life: 3000,
-      });
-      this.display = false;
-    },
+		cerrar() {
+			this.$toast.add({
+				severity: 'error',
+				summary: 'Ventana cerrada con éxito',
+				detail: 'Message Content',
+				life: 3000,
+			});
+			this.display = false;
+		},
 
-    async getDatos() {
-      this.loading = true;
+		async getDatos() {
+			this.loading = true;
 
-      await this.axios.get("/api/resenia/" + this.id).then((response) => {
-        console.log(response.data);
-        if (response.data.code == 200) {
-          console.log("response.data.data");
-          console.log(response.data.data);
+			await this.axios.get('/api/resenia/' + this.id).then((response) => {
+				console.log(response.data);
+				if (response.data.code == 200) {
+					this.resenia = response.data.data;
+				} else {
+					for (const property in response.data.data) {
+						this.$toast.add({
+							severity: 'error',
+							summary: 'Se ha producido un error',
+							detail: `${response.data.data[property]}`,
+							life: 5000,
+						});
+					}
+				}
 
-          this.resenia = response.data.data;
+				this.loading = false;
+			});
 
-          console.log("this.resenia");
-          console.log(this.resenia);
-        } else {
-          console.log("response.data.data");
-          console.log(response.data.data);
+			this.loadingBtnGuardar = false;
+		},
 
-          for (const property in response.data.data) {
-            // console.log(`${property}: ${response.data.data[property]}`);
-            this.$toast.add({
-              severity: "error",
-              summary: "Se ha producido un error",
-              detail: `${response.data.data[property]}`,
-              life: 5000,
-            });
-          }
-          // this.$toast.add({
-          //   severity: "success",
-          //   summary: "Se ha producido un error",
-          //   detail: response.data.data,
-          //   life: 5000,
-          // });
-        }
+		async eliminar(row) {
+			this.$confirm.require({
+				header: 'Confirmación',
+				message: '¿Está seguro que desea eliminar la subcategoría?',
+				icon: 'pi pi-info-circle',
+				acceptClass: 'p-button-danger',
+				acceptIcon: 'pi pi-check',
+				rejectIcon: 'pi pi-times',
+				accept: () => {
+					this.eliminarSubcategoria(row);
+				},
+				reject: () => {
+					// this.$toast.add({severity:'error', summary:'Rejected', detail:'You have rejected', life: 3000});
+				},
+				onHide: () => {
+					// this.$toast.add({severity:'error', summary:'Hide', detail:'You have hidden', life: 3000});
+				},
+			});
+		},
 
-        this.loading = false;
-      });
-
-      this.loadingBtnGuardar = false;
-    },
-
-    async eliminar(row) {
-      console.log("row");
-      console.log(row);
-
-      this.$confirm.require({
-        header: "Confirmación",
-        message: "¿Está seguro que desea eliminar la subcategoría?",
-        icon: "pi pi-info-circle",
-        acceptClass: "p-button-danger",
-        acceptIcon: "pi pi-check",
-        rejectIcon: "pi pi-times",
-        accept: () => {
-          this.eliminarSubcategoria(row);
-        },
-        reject: () => {
-          // this.$toast.add({severity:'error', summary:'Rejected', detail:'You have rejected', life: 3000});
-        },
-        onHide: () => {
-          // this.$toast.add({severity:'error', summary:'Hide', detail:'You have hidden', life: 3000});
-        },
-      });
-    },
-
-    async eliminarSubcategoria(row) {
-      console.log("entra");
-      await this.axios
-        .delete("/api/subcategoria/" + row.data.id)
-        .then((response) => {
-          if (response.data.code == 200) {
-            this.$toast.add({
-              severity: "success",
-              summary: "Mensaje de confirmación",
-              detail: "Subcategoría eliminada con éxito",
-              life: 3000,
-            });
-            this.getDatos();
-          }
-        });
-    },
-  },
+		async eliminarSubcategoria(row) {
+			await this.axios
+				.delete('/api/subcategoria/' + row.data.id)
+				.then((response) => {
+					if (response.data.code == 200) {
+						this.$toast.add({
+							severity: 'success',
+							summary: 'Mensaje de confirmación',
+							detail: 'Subcategoría eliminada con éxito',
+							life: 3000,
+						});
+						this.getDatos();
+					}
+				});
+		},
+	},
 };
 </script>
 

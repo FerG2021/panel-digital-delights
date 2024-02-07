@@ -16,6 +16,7 @@
                         :loading="loading"
                         @add="add"
                         @edit="edit"
+                        @detail="detail"
                         @delete="deleteCar"
 						@sell="sell"
 						@sell-detail="sellDetail"
@@ -32,6 +33,10 @@
 		/>
         <ABMUpdate 
 			:data="Configuration.update" 
+			@formDataUpdate="formDataUpdate" 
+		/>
+		<ABMDetail 
+			:data="Configuration.detail" 
 			@formDataUpdate="formDataUpdate" 
 		/>
 		<SellCar 
@@ -52,10 +57,12 @@ import { setConfigurationFileByAccount } from '../../utils/utils';
 import DynamicTable from '../../components/datatable/DynamicTable.vue';
 import ABMCreate from '../../components/ABM/ABMCreate.vue';
 import ABMUpdate from '../../components/ABM/ABMUpdate.vue';
+import ABMDetail from '../../components/ABM/ABMDetail.vue';
 import MainCard from '../../components/common/MainCard.vue';
 import Store from '../../managers/store/store';
 import SellCar from './modals/SellCar.vue';
 import SelledDetails from './modals/SelledDetails.vue';
+import moment from 'moment';
 
 export default {
 	name: 'CarsComponent',
@@ -63,6 +70,7 @@ export default {
 		DynamicTable,
 		ABMCreate,
 		ABMUpdate,
+		ABMDetail,
 		MainCard,
 		SellCar,
 		SelledDetails
@@ -103,9 +111,9 @@ export default {
 		setSelectOptions() {
 			this.loading = true;
 			this.setCategoriesOptions();
-			this.setFuelOptions();
-			this.setMarksOptions();	
-			this.setConditionOptions();
+			// this.setFuelOptions();
+			// this.setMarksOptions();	
+			// this.setConditionOptions();
 			this.setClients();
 
 			this.loading = false;
@@ -123,9 +131,6 @@ export default {
 					configuration.options = this.categories;
 				}
 			}
-
-			console.log('this.Configuration');
-			console.log(this.Configuration);
 		},
 
 		setFuelOptions() {
@@ -168,9 +173,6 @@ export default {
 					configuration.options = this.conditions;
 				}
 			}
-
-			console.log('this.Configuration');
-			console.log(this.Configuration);
 		},
 
 		
@@ -206,7 +208,6 @@ export default {
 					this.getAllCars();
 				})
 				.catch((error) => {
-					console.log(error);
 					this.$toast.add({
 						severity: 'error',
 						summary: this.$t('toast.error'),
@@ -263,6 +264,16 @@ export default {
 					});
 					Store.commit('UsersStore/setLoadingServerRequest', false);
 				});
+		},
+		
+		detail(data) {
+			this.Configuration.detail.id = data.id;
+
+			for (const configuration of this.Configuration.detail.formConfiguration) {
+				configuration.defaultValue = data[configuration.modelName];
+			}
+
+			this.Configuration.detail.modalVisible = true;
 		},
 
 		async deleteCar(element) {
@@ -323,13 +334,9 @@ export default {
 		},
 
 		formDataSellCar(value) {
-			console.log('value');
-			console.log(value);
-			console.log('this.currentCar');
-			console.log(this.currentCar);
-
 			value.car_id = this.currentCar.id;
 			value.buyer_id = value.buyer.id;
+			value.buy_date = moment(value.buy_date).format('YYYY-MM-DD HH:mm:ss');
 
 			let formData = new FormData();
 
@@ -365,12 +372,7 @@ export default {
 		},
 
 		sellDetail(data) {
-			
 			this.currentCar = data;
-
-			console.log('this.currentCar');
-			console.log(this.currentCar);
-
 			this.Configuration.selleddetails.modalVisible = true;
 			this.Configuration.selleddetails.data = data;
 		},

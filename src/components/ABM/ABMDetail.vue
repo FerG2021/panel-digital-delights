@@ -5,12 +5,14 @@
 			icon="pi pi-refresh"
 			class="flex justify-content-center dialog"
 			:draggable="false"
-			style="width: 30vw "
+			style="width: 30vw"
 			@hide="handleModalClose()"
+			@show="handleDialogShow()"
 		>
 			<template #header>
 				<TitleModal :header="data.header" />
 			</template>
+			
 
 			<div class="form-container">
 				<form
@@ -22,22 +24,16 @@
 						:key="field.name"
 						class="form-item"
 					>
-						<div class="field" v-if="field.type === 'text' || data.selled">
+						<div class="field" v-if="field.type === 'text'">
 							<div class="p-float-label">
 								<p>
 									{{ field.label }} 
-									<span 
-										v-if="field.required"
-										class="required"
-									>
-										*
-									</span>
 								</p>
 								<InputText
 									:id="field.name"
 									v-model="formData[field.modelName]"
-									@update:modelValue="(value) => handleInputChange(field.defaultValue, field.modelName)"
-									:disabled="field.disabled"
+									@update:modelValue="(value) => handleInputChange(value, field.modelName)"
+									disabled
 								/>
 							</div>
 						</div>
@@ -46,12 +42,6 @@
 							<div class="p-float-label">
 								<p>
 									{{ field.label }} 
-									<span 
-										v-if="field.required"
-										class="required"
-									>
-										*
-									</span>
 								</p>
 								<InputNumber
 									:id="field.name"
@@ -61,6 +51,7 @@
 									locale="de-DE" 
 									:minFractionDigits="2"
 									@update:modelValue="(value) => handleInputChange(value, field.modelName)"
+									disabled
 								/>
 							</div>
 						</div>
@@ -69,54 +60,30 @@
 							<div class="p-float-label">
 								<p>
 									{{ field.label }} 
-									<span 
-										v-if="field.required"
-										class="required"
-									>
-										*
-									</span>
 								</p>
 								<InputNumber
 									:id="field.name"
 									v-model="formData[field.modelName]"
 									:useGrouping="false"
 									@update:modelValue="(value) => handleInputChange(value, field.modelName)"
+									disabled
 								/>
 							</div>
 						</div>
 
-						<div class="field" v-if="field.type === 'select' && !data.selled">
+						<div class="field" v-if="field.type === 'select'">
 							<div class="p-float-label">
 								<p>
 									{{ field.label }} 
-									<span 
-										v-if="field.required"
-										class="required"
-									>
-										*
-									</span>
 								</p>
 								<Dropdown 
 									v-model="formData[field.modelName]" 
-									:options="field.defaultValue" 
+									:options="field.options" 
 									optionLabel="name" 
 									:placeholder="field.placeholder" 
-								>
-									<template #option="slotProps">
-										<div class="flex align-items-center">
-											<div>{{ getOptionLabel(slotProps.option) }}</div>
-										</div>
-									</template>
+									disabled
+								/>
 
-									<template #value="slotProps">
-										<div v-if="slotProps.value" class="flex align-items-center">
-											<div>{{ getOptionLabel(slotProps.value) }}</div>
-										</div>
-										<span v-else>
-											{{ slotProps.placeholder }}
-										</span>
-									</template>
-								</Dropdown>
 							</div>
 						</div>
 
@@ -124,12 +91,6 @@
 							<div class="p-float-label">
 								<p>
 									{{ field.label }} 
-									<span 
-										v-if="field.required"
-										class="required"
-									>
-										*
-									</span>
 								</p>
 								<ToggleButton 
 									:id="field.name"
@@ -140,6 +101,7 @@
 									offIcon="pi pi-times" 
 									class="w-9rem" 
 									@update:modelValue="(value) => handleInputChange(value === true ? 1 : 0, field.modelName)"
+									disabled
 								/>
 							</div>
 						</div>
@@ -148,64 +110,33 @@
 							<div class="p-float-label">
 								<p>
 									{{ field.label }} 
-									<span 
-										v-if="field.required"
-										class="required"
-									>
-										*
-									</span>
 								</p>
-								<FileUpload
-									name="form.demo"
-									url="./upload.php"
-									@upload="onUpload"
-									@select="selectedImage"
-									:multiple="false"
-									accept="image/*"
-									:maxFileSize="1000000"
-									invalidFileSizeMessage="{0}: Tamaño de archivo inválido, debe ser menor a {1}."
-								>
-									<template #empty>
-										<p>
-											{{ $t("productsSection.uploadImage") }}
-										</p>
-									</template>
-								</FileUpload>
+								<Image 
+									:src="formData[field.modelName]" 
+									alt="Image" 
+									width="150"
+									v-if="isObject(field.modelName)"
+									preview
+								/>
 							</div>
 						</div>
 
-						<div class="field" v-if="field.type === 'date' && !data.selled">
+						<div class="field" v-if="field.type === 'date'">
 							<div class="p-float-label">
 								<p>
 									{{ field.label }} 
-									<span 
-										v-if="field.required"
-										class="required"
-									>
-										*
-									</span>
 									<input 
 										type="date" 
 										id="fecha" 
 										v-model="formData[field.modelName]"
 										@update:modelValue="(value) => handleInputChange(value, field.modelName)"
 										class="input-date"
+										disabled
 									/>
 								</p>
 							</div>
 						</div>
 					</div>
-
-					<div v-if="errors" class="show-errors">
-						{{ errors }}
-					</div>
-
-					<Button
-						label="Guardar"
-						class="mt-2"
-						:loading="loadingServerRequest"
-						@click="save()"
-					/>
 				</form>
 			</div>
 		</Dialog>
@@ -216,8 +147,8 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import TitleModal from '../../../components/common/TitleModal.vue';
-import Store from '../../../managers/store/store';
+import TitleModal from '../common/TitleModal.vue';
+import Store from '../../managers/store/store';
 
 export default {
 	components: { TitleModal },
@@ -225,49 +156,34 @@ export default {
 		data: {
 			type: Array,
 			required: true,
+			loadingBtnSave: false,
 		},
 	},
 	data() {
 		return {
 			formData: {},
-			errors: null
+			errors: null,
 		};
 	},
 	computed: {
 		...mapGetters('UsersStore', ['loadingServerRequest']),
 	},
 	methods: {
+		handleDialogShow() {
+			for (const field of this.data.formConfiguration) {
+				if (field.defaultValue !== undefined) {
+					this.formData[field.modelName] = field.defaultValue;
+				} else {
+					this.formData[field.modelName] = '';
+				}
+			}
+		},
 		handleModalClose() {
 			this.errors = null;
 			this.formData = {};
 		},
 		handleInputChange(value, moduleName) {
 			this.formData[moduleName] = value;
-		},
-		save() {
-			Store.commit('UsersStore/setLoadingServerRequest', true);
-			
-			this.errors = this.validateForm();
-			let formData = new FormData();
-
-			for (let key in this.formData) {
-				formData.append(key, this.formData[key]);
-			}
-
-			if (this.errors === null) {
-				this.$emit('formDataSellCar', this.formData);
-			}
-		},
-		validateForm() {
-			for (const item of this.data.formConfiguration) {
-				if (item.required && !this.formData[item.modelName
-				]) {
-					Store.commit('UsersStore/setLoadingServerRequest', false);
-					return `El campo ${item.label} es requerido`;
-				}
-			}
-
-			return null;
 		},
 		onUpload() {
 			this.$toast.add({
@@ -284,8 +200,33 @@ export default {
 				}
 			}
 		},
-		getOptionLabel(option) {
-			return `${option.lastname}, ${option.name}`;
+		isObject(attribute) {
+			if (typeof this.formData[attribute] !== 'object') {
+				return true;
+			} else {
+				return false;
+			}
+		},
+		save() {
+			Store.commit('UsersStore/setLoadingServerRequest', true);
+			this.errors = this.validateForm();
+
+			if (this.errors === null) {
+				this.formData.id = this.data.id;
+				this.$emit('formDataUpdate', this.formData);
+			}
+
+			this.loadingBtnSave = false;
+		},
+		validateForm() {
+			for (const item of this.data.formConfiguration) {
+				if (item.required && (this.formData[item.modelName] === null || this.formData[item.modelName] === '')) {
+					Store.commit('UsersStore/setLoadingServerRequest', false);
+					return `El campo ${item.label} es requerido`;
+				}
+			}
+
+			return null;
 		}
 	}	
 };

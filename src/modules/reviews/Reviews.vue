@@ -132,9 +132,6 @@ export default {
 			this.loading = true;
 			await this.axios.get('/api/resenia').then((response) => {
 				if (response.data.code == 200) {
-					console.log('response.data');
-					console.log(response.data);
-
 					this.resenias = response.data.data;
 				}
 			});
@@ -142,33 +139,7 @@ export default {
 			this.loading = false;
 		},
 
-		async nuevaMesa() {
-			await this.axios.post('/api/mesa').then((response) => {
-				if (response.data.code == 200) {
-					console.log('response.data');
-					console.log(response.data);
-				}
-			});
-		},
-
-		async generarQR(id) {
-			this.loadingBtnQR = true;
-			await this.axios.get('/api/generarqr/' + id).then((response) => {
-				if (response.data.code == 200) {
-					console.log('response.data');
-					console.log(response.data);
-
-					window.open(response.data.data);
-
-					this.loadingBtnQR = false;
-				}
-			});
-		},
-
 		async eliminar(row) {
-			console.log('row');
-			console.log(row);
-
 			this.$confirm.require({
 				header: 'Confirmación',
 				message: '¿Está seguro que desea eliminar la mesa ?',

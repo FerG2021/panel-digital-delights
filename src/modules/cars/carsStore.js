@@ -7,25 +7,25 @@ export default {
 		conditions: [],
 		fuelOptions: [
 			{
-				id: 'naphtha',
+				id: 1,
 				name: 'Nafta'
 			},
 			{
-				id: 'gasoil',
+				id: 2,
 				name: 'Gasoil'
 			},
 			{
-				id: 'gnc',
+				id: '3',
 				name: 'GNC'
 			}
 		],
 		conditionsOptions: [
 			{
-				id: 'new',
+				id: 1,
 				name: 'Nuevo'
 			},
 			{
-				id: 'used',
+				id: 2,
 				name:'Usado'
 			}
 		]
