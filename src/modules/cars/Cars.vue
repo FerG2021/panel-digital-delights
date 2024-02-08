@@ -111,9 +111,7 @@ export default {
 		setSelectOptions() {
 			this.loading = true;
 			this.setCategoriesOptions();
-			// this.setFuelOptions();
-			// this.setMarksOptions();	
-			// this.setConditionOptions();
+			this.setMarksOptions();	
 			this.setClients();
 
 			this.loading = false;
@@ -178,6 +176,8 @@ export default {
 		
 
 		add() {
+			console.log('this.Configuration.create');
+			console.log(this.Configuration.create);
 			this.Configuration.create.modalVisible = true;
 		},
 
