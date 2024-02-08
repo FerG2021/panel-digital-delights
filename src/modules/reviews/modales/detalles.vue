@@ -133,7 +133,6 @@ export default {
 			this.loading = true;
 
 			await this.axios.get('/api/resenia/' + this.id).then((response) => {
-				console.log(response.data);
 				if (response.data.code == 200) {
 					this.resenia = response.data.data;
 				} else {

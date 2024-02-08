@@ -101,8 +101,6 @@
 </template>
 
 <script>
-import { ElMessage, ElMessageBox } from 'element-plus';
-import { FilterMatchMode, FilterOperator } from 'primevue/api';
 
 import ModalDetalles from './modales/detalles.vue';
 
@@ -160,7 +158,6 @@ export default {
 		},
 
 		async eliminarCategoria(row) {
-			console.log('entra');
 			await this.axios.delete('/api/mesa/' + row.data.id).then((response) => {
 				if (response.data.code == 200) {
 					this.$toast.add({

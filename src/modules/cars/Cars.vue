@@ -176,8 +176,6 @@ export default {
 		
 
 		add() {
-			console.log('this.Configuration.create');
-			console.log(this.Configuration.create);
 			this.Configuration.create.modalVisible = true;
 		},
 
