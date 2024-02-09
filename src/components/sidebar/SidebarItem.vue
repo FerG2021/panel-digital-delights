@@ -1,47 +1,47 @@
-<template>
-    <div>
-        <router-link 
-            class="button" 
-            :to="item.route" 
-            v-if="is_expanded"
-        >
-            <span class="material-icons">{{ item.icon }}</span>
-            <span class="text">{{ item.name }}</span>
-        </router-link>
-
-        <el-tooltip
-            class="box-item"
-            effect="dark"
-            :content="item.name"
-            placement="right-start"
-            v-if="!is_expanded"
-        >
-            <router-link
-                class="button"
-                :to="item.route" 
-                v-if="!is_expanded || is_expanded"
-            >
-                <span class="material-icons">{{ item.icon }}</span>
-                <span class="text">{{ item.name }}</span>
-            </router-link>
-        </el-tooltip>
-      </div>
-</template>
-
 <script>
 export default {
 	props: {
 		item: {
 			type: Object,
-			required: true,
+			required: true
 		},
 		is_expanded: {
 			type: Boolean,
-			required: true,
+			required: true
 		}
 	}
 };
 </script>
+
+<template>
+	<div>
+		<router-link
+			class="button"
+			:to="item.route"
+			v-if="is_expanded"
+		>
+			<span class="material-icons">{{ item.icon }}</span>
+			<span class="text">{{ item.name }}</span>
+		</router-link>
+
+		<el-tooltip
+			class="box-item"
+			effect="dark"
+			:content="item.name"
+			placement="right-start"
+			v-if="!is_expanded"
+		>
+			<router-link
+				class="button"
+				:to="item.route"
+				v-if="!is_expanded || is_expanded"
+			>
+				<span class="material-icons">{{ item.icon }}</span>
+				<span class="text">{{ item.name }}</span>
+			</router-link>
+		</el-tooltip>
+	</div>
+</template>
 
 <style lang="scss" scoped>
 aside {

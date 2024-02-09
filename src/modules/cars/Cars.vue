@@ -1,54 +1,3 @@
-<template>
-	<main class="about-page" v-if="Configuration">
-		<MainCard>
-			<template #header>
-				<h1>
-					{{ Configuration.labels.sectionTitle }}
-				</h1>
-			</template>
-
-			<template #content>
-				<div>
-					<DynamicTable
-						:elements="cars"
-						:columns="Configuration.tableColumns"
-						:labels="Configuration.labels"
-						:loading="loading"
-						@add="add"
-						@edit="edit"
-						@detail="detail"
-						@delete="deleteCar"
-						@sell="sell"
-						@sell-detail="sellDetail"
-					/>
-				</div>
-			</template>
-		</MainCard>
-
-		<ConfirmDialog></ConfirmDialog>
-
-		<ABMCreate
-			:data="Configuration.create"
-			@formDataCreate="formDataCreate"
-		/>
-		<ABMUpdate
-			:data="Configuration.update"
-			@formDataUpdate="formDataUpdate"
-		/>
-		<ABMDetail
-			:data="Configuration.detail"
-			@formDataUpdate="formDataUpdate"
-		/>
-		<SellCar
-			:data="Configuration.sell"
-			@formDataSellCar="formDataSellCar"
-		/>
-		<SelledDetails
-			:data="Configuration.selleddetails"
-		/>
-	</main>
-</template>
-
 <script>
 import moment from 'moment';
 import { FilterMatchMode } from 'primevue/api';
@@ -392,6 +341,57 @@ export default {
 	}
 };
 </script>
+
+<template>
+	<main class="about-page" v-if="Configuration">
+		<MainCard>
+			<template #header>
+				<h1>
+					{{ Configuration.labels.sectionTitle }}
+				</h1>
+			</template>
+
+			<template #content>
+				<div>
+					<DynamicTable
+						:elements="cars"
+						:columns="Configuration.tableColumns"
+						:labels="Configuration.labels"
+						:loading="loading"
+						@add="add"
+						@edit="edit"
+						@detail="detail"
+						@delete="deleteCar"
+						@sell="sell"
+						@sell-detail="sellDetail"
+					/>
+				</div>
+			</template>
+		</MainCard>
+
+		<ConfirmDialog></ConfirmDialog>
+
+		<ABMCreate
+			:data="Configuration.create"
+			@formDataCreate="formDataCreate"
+		/>
+		<ABMUpdate
+			:data="Configuration.update"
+			@formDataUpdate="formDataUpdate"
+		/>
+		<ABMDetail
+			:data="Configuration.detail"
+			@formDataUpdate="formDataUpdate"
+		/>
+		<SellCar
+			:data="Configuration.sell"
+			@formDataSellCar="formDataSellCar"
+		/>
+		<SelledDetails
+			:data="Configuration.selleddetails"
+		/>
+	</main>
+</template>
 
 <style>
 .product-image {

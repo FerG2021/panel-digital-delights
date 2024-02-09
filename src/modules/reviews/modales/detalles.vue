@@ -1,79 +1,3 @@
-<template>
-	<div>
-		<Toast />
-
-		<Dialog
-			v-model:visible="display"
-			icon="pi pi-refresh"
-			:style="{ width: '45%' }"
-			class="flex justify-content-center"
-			:draggable="false"
-		>
-			<template #header>
-				<h3 style="margin: 0px">
-					<i class="pi pi-eye" style="font-size: 20px" /> Detalles de reseña
-				</h3>
-			</template>
-
-			<div style="display: flex" v-if="loading == true">
-				<ProgressSpinner
-					aria-label="Basic ProgressSpinner"
-					style="margin: auto"
-				/>
-			</div>
-
-			<div style="margin-top: 5px; width: 100%" v-else>
-				<!-- Nombre -->
-				<div style="margin-top: 10px">
-					<label for="nombre">Nombre</label>
-					<InputText
-						id="nombre"
-						v-model="resenia.name"
-						style="width: 100%"
-						disabled
-					/>
-				</div>
-
-				<!-- Email -->
-				<div style="margin-top: 10px">
-					<label for="email">Email</label>
-					<InputText
-						id="email"
-						v-model="resenia.email"
-						style="width: 100%"
-						disabled
-					/>
-				</div>
-
-				<!-- Rating -->
-				<div style="margin-top: 10px">
-					<label for="rating">Valoración</label>
-					<Rating
-						id="rating"
-						:modelValue="resenia.rating"
-						:readonly="true"
-						:cancel="false"
-					/>
-				</div>
-
-				<!-- Descripción -->
-				<div style="margin-top: 10px">
-					<label for="description">Descripción</label>
-					<Textarea
-						id="description"
-						v-model="resenia.description"
-						:autoResize="true"
-						rows="5"
-						cols="30"
-						disabled
-						style="width: 100%"
-					/>
-				</div>
-			</div>
-		</Dialog>
-	</div>
-</template>
-
 <script>
 import { useVuelidate } from '@vuelidate/core';
 import { email, helpers, required } from '@vuelidate/validators';
@@ -193,6 +117,82 @@ export default {
 	}
 };
 </script>
+
+<template>
+	<div>
+		<Toast />
+
+		<Dialog
+			v-model:visible="display"
+			icon="pi pi-refresh"
+			:style="{ width: '45%' }"
+			class="flex justify-content-center"
+			:draggable="false"
+		>
+			<template #header>
+				<h3 style="margin: 0px">
+					<i class="pi pi-eye" style="font-size: 20px" /> Detalles de reseña
+				</h3>
+			</template>
+
+			<div style="display: flex" v-if="loading == true">
+				<ProgressSpinner
+					aria-label="Basic ProgressSpinner"
+					style="margin: auto"
+				/>
+			</div>
+
+			<div style="margin-top: 5px; width: 100%" v-else>
+				<!-- Nombre -->
+				<div style="margin-top: 10px">
+					<label for="nombre">Nombre</label>
+					<InputText
+						id="nombre"
+						v-model="resenia.name"
+						style="width: 100%"
+						disabled
+					/>
+				</div>
+
+				<!-- Email -->
+				<div style="margin-top: 10px">
+					<label for="email">Email</label>
+					<InputText
+						id="email"
+						v-model="resenia.email"
+						style="width: 100%"
+						disabled
+					/>
+				</div>
+
+				<!-- Rating -->
+				<div style="margin-top: 10px">
+					<label for="rating">Valoración</label>
+					<Rating
+						id="rating"
+						:modelValue="resenia.rating"
+						:readonly="true"
+						:cancel="false"
+					/>
+				</div>
+
+				<!-- Descripción -->
+				<div style="margin-top: 10px">
+					<label for="description">Descripción</label>
+					<Textarea
+						id="description"
+						v-model="resenia.description"
+						:autoResize="true"
+						rows="5"
+						cols="30"
+						disabled
+						style="width: 100%"
+					/>
+				</div>
+			</div>
+		</Dialog>
+	</div>
+</template>
 
 <style scoped>
 .field {

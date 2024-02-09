@@ -1,45 +1,13 @@
-<template>
-    <main class="about-page" v-if="Configuration">
-        <MainCard>
-            <template #header>
-                <h1> 
-					{{ Configuration.labels.sectionTitle }} 
-				</h1>
-            </template>
-
-            <template #content>
-                <div>
-                    <DynamicTable
-                        :elements="marks"
-                        :columns="Configuration.tableColumns"
-                        :labels="Configuration.labels"
-                        :loading="loading"
-                        @add="add"
-                        @edit="edit"
-                        @delete="deleteCategory"
-                    />
-                </div>
-            </template>
-        </MainCard>
-
-        <ConfirmDialog></ConfirmDialog>
-
-        <ABMCreate :data="Configuration.create" @formDataCreate="formDataCreate" />
-
-        <ABMUpdate :data="Configuration.update" @formDataUpdate="formDataUpdate" />
-    </main>
-</template>
-
 <script>
 import { FilterMatchMode } from 'primevue/api';
 import { mapGetters } from 'vuex';
-import { setConfigurationFileByAccount, setFormConfiguration } from '../../utils/utils';
 
-import DynamicTable from '../../components/datatable/DynamicTable.vue';
 import ABMCreate from '../../components/ABM/ABMCreate.vue';
 import ABMUpdate from '../../components/ABM/ABMUpdate.vue';
 import MainCard from '../../components/common/MainCard.vue';
+import DynamicTable from '../../components/datatable/DynamicTable.vue';
 import Store from '../../managers/store/store';
+import { setConfigurationFileByAccount, setFormConfiguration } from '../../utils/utils';
 
 export default {
 	name: 'MarksComponent',
@@ -54,14 +22,22 @@ export default {
 			loading: false,
 			Configuration: null,
 			filters: {
-				global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-			},
+				global: {
+					value: null,
+					matchMode: FilterMatchMode.CONTAINS
+				}
+			}
 		};
 	},
 
 	computed: {
-		...mapGetters('UsersStore', ['user', 'auth', 'modules', 'account']),
-		...mapGetters('MarksStore', ['marks']),
+		...mapGetters('UsersStore', [
+			'user',
+			'auth',
+			'modules',
+			'account'
+		]),
+		...mapGetters('MarksStore', ['marks'])
 	},
 
 	mounted() {
@@ -98,7 +74,7 @@ export default {
 						severity: 'success',
 						summary: this.$t('toast.success'),
 						detail: response.data.message,
-						life: 3000,
+						life: 3000
 					});
 					Store.commit('UsersStore/setLoadingServerRequest', false);
 					this.getAllMarks();
@@ -109,7 +85,7 @@ export default {
 						severity: 'error',
 						summary: this.$t('toast.error'),
 						detail: error.response.data.message,
-						life: 3000,
+						life: 3000
 					});
 					Store.commit('UsersStore/setLoadingServerRequest', false);
 				});
@@ -134,7 +110,7 @@ export default {
 						severity: 'success',
 						summary: this.$t('toast.success'),
 						detail: this.$t('categoriesSection.updateConfirmation'),
-						life: 3000,
+						life: 3000
 					});
 					Store.commit('UsersStore/setLoadingServerRequest', false);
 					this.getAllMarks();
@@ -144,7 +120,7 @@ export default {
 						severity: 'error',
 						summary: this.$t('toast.error'),
 						detail: error.response.data.message,
-						life: 3000,
+						life: 3000
 					});
 					Store.commit('UsersStore/setLoadingServerRequest', false);
 				});
@@ -158,7 +134,7 @@ export default {
 						severity: 'success',
 						summary: this.$t('toast.success'),
 						detail: response.data.message,
-						life: 3000,
+						life: 3000
 					});
 					Store.commit('UsersStore/setLoadingServerRequest', false);
 					this.getAllMarks();
@@ -175,11 +151,44 @@ export default {
 
 		getHeightWindow() {
 			var alturaPestana = window.innerHeight - 285;
+
 			return alturaPestana + 'px';
-		},
-	},
+		}
+	}
 };
 </script>
+
+<template>
+	<main class="about-page" v-if="Configuration">
+		<MainCard>
+			<template #header>
+				<h1>
+					{{ Configuration.labels.sectionTitle }}
+				</h1>
+			</template>
+
+			<template #content>
+				<div>
+					<DynamicTable
+						:elements="marks"
+						:columns="Configuration.tableColumns"
+						:labels="Configuration.labels"
+						:loading="loading"
+						@add="add"
+						@edit="edit"
+						@delete="deleteCategory"
+					/>
+				</div>
+			</template>
+		</MainCard>
+
+		<ConfirmDialog></ConfirmDialog>
+
+		<ABMCreate :data="Configuration.create" @formDataCreate="formDataCreate" />
+
+		<ABMUpdate :data="Configuration.update" @formDataUpdate="formDataUpdate" />
+	</main>
+</template>
 
 <style>
 .product-image {

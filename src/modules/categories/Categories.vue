@@ -1,35 +1,3 @@
-<template>
-	<main class="about-page" v-if="Configuration">
-		<MainCard>
-			<template #header>
-				<h1>
-					{{ Configuration.labels.sectionTitle }}
-				</h1>
-			</template>
-
-			<template #content>
-				<div>
-					<DynamicTable
-						:elements="categories"
-						:columns="Configuration.tableColumns"
-						:labels="Configuration.labels"
-						:loading="loading"
-						@add="add"
-						@edit="edit"
-						@delete="deleteCategory"
-					/>
-				</div>
-			</template>
-		</MainCard>
-
-		<ConfirmDialog></ConfirmDialog>
-
-		<ABMCreate :data="Configuration.create" @formDataCreate="formDataCreate" />
-
-		<ABMUpdate :data="Configuration.update" @formDataUpdate="formDataUpdate" />
-	</main>
-</template>
-
 <script>
 import { FilterMatchMode } from 'primevue/api';
 import { mapGetters } from 'vuex';
@@ -189,6 +157,38 @@ export default {
 	}
 };
 </script>
+
+<template>
+	<main class="about-page" v-if="Configuration">
+		<MainCard>
+			<template #header>
+				<h1>
+					{{ Configuration.labels.sectionTitle }}
+				</h1>
+			</template>
+
+			<template #content>
+				<div>
+					<DynamicTable
+						:elements="categories"
+						:columns="Configuration.tableColumns"
+						:labels="Configuration.labels"
+						:loading="loading"
+						@add="add"
+						@edit="edit"
+						@delete="deleteCategory"
+					/>
+				</div>
+			</template>
+		</MainCard>
+
+		<ConfirmDialog></ConfirmDialog>
+
+		<ABMCreate :data="Configuration.create" @formDataCreate="formDataCreate" />
+
+		<ABMUpdate :data="Configuration.update" @formDataUpdate="formDataUpdate" />
+	</main>
+</template>
 
 <style>
 .product-image {

@@ -1,3 +1,7 @@
+<script>
+export default { name: 'LoginGreeting' };
+</script>
+
 <template>
 	<div class="greeting-container">
 		<div class="contenedor-img-login">
@@ -8,13 +12,6 @@
 		</h1>
 	</div>
 </template>
-
-<script>
-export default {
-	name: 'LoginGreeting',
-
-};
-</script>
 
 <style lang="scss" scoped>
 .greeting-container {

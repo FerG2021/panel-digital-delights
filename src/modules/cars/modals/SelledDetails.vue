@@ -1,3 +1,34 @@
+<script>
+import DetailsInfo from '../../../components/common/DetailsInfo.vue';
+import TitleModal from '../../../components/common/TitleModal.vue';
+import { formatDate } from '../../../utils/utils';
+
+export default {
+	components: {
+		TitleModal,
+		DetailsInfo
+	},
+	props: {
+		data: {
+			type: Array,
+			required: true
+		}
+	},
+	data() {
+		return {};
+	},
+	computed: {
+		buyName() {
+			return `${this.data.data.buyer.lastname}, ${this.data.data.buyer.name}`;
+		},
+		buyDate() {
+			return formatDate(this.data.data.buy_date, 'DD/MM/YYYY');
+		}
+	},
+	methods: {}
+};
+</script>
+
 <template>
 	<div>
 		<Dialog
@@ -12,13 +43,13 @@
 			</template>
 
 			<div class="form-container">
-				<DetailsInfo 
+				<DetailsInfo
 					:title="'Apellido y nombre'"
 					:detail="buyName"
 					class="details-info"
 				/>
 
-				<DetailsInfo 
+				<DetailsInfo
 					:title="'Fecha de la compra'"
 					:detail="buyDate"
 					class="details-info"
@@ -29,36 +60,6 @@
 		<Toast />
 	</div>
 </template>
-
-<script>
-import TitleModal from '../../../components/common/TitleModal.vue';
-import { formatDate } from '../../../utils/utils';
-import DetailsInfo from '../../../components/common/DetailsInfo.vue';
-
-export default {
-	components: { TitleModal, DetailsInfo },
-	props: {
-		data: {
-			type: Array,
-			required: true,
-		},
-	},
-	data() {
-		return {
-		};
-	},
-	computed: {
-		buyName() {
-			return `${this.data.data.buyer.lastname}, ${this.data.data.buyer.name}`;
-		},
-		buyDate() {
-			return formatDate(this.data.data.buy_date, 'DD/MM/YYYY'); 
-		}
-	},
-	methods: {
-	}	
-};
-</script>
 
 <style lang="scss" scoped>
 .form-container {

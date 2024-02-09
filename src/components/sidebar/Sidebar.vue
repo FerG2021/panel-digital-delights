@@ -1,61 +1,33 @@
-<template>
-	<aside :class="`${is_expanded && 'is-expanded'}`">
-		<SidebarLogo/>
-
-		<SidebarBtnExpand @expandSidebar="expandSidebar"/>
-
-		<h3> {{ $t('sidebar.title') }} </h3>
-		<div class="menu">
-			<div
-				v-for="item in items"
-				:key="item"
-			>
-				<SidebarItem 
-					v-if="loadedModule(item)"
-					:item="item" 
-					:is_expanded="is_expanded"
-				/>
-			</div>
-		</div>
-
-		<div class="flex"></div>
-
-		<div class="menu">
-			<SidebarItem 
-				:item="account" 
-				:is_expanded="is_expanded"
-			/>
-			<LogOut
-				:is_expanded="is_expanded"
-			/>
-		</div>
-  </aside>
-</template>
-
 <script>
 import { mapGetters } from 'vuex';
+
 import { getAllCategories, getAllProducts, getAllPromotions } from '../../managers/api/digitalDelightsApi';
-
-
-import SidebarItem from './SidebarItem.vue';
 import LogOut from '../common/LogOut.vue';
-import SidebarLogo from './SidebarLogo.vue';
-import SidebarBtnExpand from './SidebarBtnExpand.vue';
 
+import SidebarBtnExpand from './SidebarBtnExpand.vue';
+import SidebarItem from './SidebarItem.vue';
+import SidebarLogo from './SidebarLogo.vue';
 
 export default {
 	name: 'SideBar',
 
-	components: { SidebarItem, LogOut, SidebarLogo, SidebarBtnExpand },
-  
+	components: {
+		SidebarItem,
+		LogOut,
+		SidebarLogo,
+		SidebarBtnExpand
+	},
+
 	data() {
-		return {
-			is_expanded: false,
-		};
+		return { is_expanded: false };
 	},
 
 	computed: {
-		...mapGetters('UsersStore', ['user', 'auth', 'modules']),
+		...mapGetters('UsersStore', [
+			'user',
+			'auth',
+			'modules'
+		]),
 		items() {
 			let items = [];
 
@@ -66,7 +38,7 @@ export default {
 						icon: module.icon,
 						name: module.title,
 						id: module.name
-					});					
+					});
 				}
 			}
 
@@ -82,7 +54,7 @@ export default {
 						icon: module.icon,
 						name: module.title,
 						id: module.name
-					};					
+					};
 				}
 			}
 
@@ -115,14 +87,50 @@ export default {
 		},
 		loadedModule(item) {
 			let modulesName = [];
+
 			for (const module of this.modules) {
 				modulesName.push(module.name);
 			}
+
 			return modulesName.includes(item.id);
 		}
-	},
+	}
 };
 </script>
+
+<template>
+	<aside :class="`${is_expanded && 'is-expanded'}`">
+		<SidebarLogo/>
+
+		<SidebarBtnExpand @expandSidebar="expandSidebar"/>
+
+		<h3> {{ $t('sidebar.title') }} </h3>
+		<div class="menu">
+			<div
+				v-for="item in items"
+				:key="item"
+			>
+				<SidebarItem
+					v-if="loadedModule(item)"
+					:item="item"
+					:is_expanded="is_expanded"
+				/>
+			</div>
+		</div>
+
+		<div class="flex"></div>
+
+		<div class="menu">
+			<SidebarItem
+				:item="account"
+				:is_expanded="is_expanded"
+			/>
+			<LogOut
+				:is_expanded="is_expanded"
+			/>
+		</div>
+	</aside>
+</template>
 
 <style lang="scss" scoped>
 aside {
@@ -136,21 +144,21 @@ aside {
 	background-color: var(--dark);
 	color: var(--light);
 	transition: 0.2s ease-out;
-	
+
 	.flex {
 		flex: 1 1 0;
 	}
-	
+
 	h3,
 	.button .text {
 		opacity: 0;
 		transition: 0.3s ease-out;
 	}
-	
+
 	.menu {
 		margin: 0 -1rem;
 	}
-	
+
 	&.is-expanded {
 		width: var(--sidebar-width);
 		.menu-toggle-wrap {

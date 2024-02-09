@@ -1,9 +1,7 @@
 export default {
 	namespaced: true,
 
-	state: {
-		categories: null,
-	},
+	state: { categories: null },
 
 	mutations: {
 		setCategories(state, categories) {
@@ -17,8 +15,8 @@ export default {
 	getters: {
 		categories(state) {
 			return state.categories;
-		},
+		}
 	},
 
-	actions: { },
+	actions: { }
 };

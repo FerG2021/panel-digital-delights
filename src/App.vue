@@ -1,25 +1,3 @@
-<template>
-	<div v-if="!auth">
-		<div class="login">
-			<Login />
-		</div>
-		<div class="footer">
-			<FooterComponent screen="login"></FooterComponent>
-		</div>
-	</div>
-	<div v-else>
-		<div v-if="isAuthenticated">
-			<div class="app">
-				<Sidebar />
-				<router-view></router-view>
-			</div>
-			<div class="footer">
-				<FooterComponent screen="main"></FooterComponent>
-			</div>
-		</div>
-	</div>
-</template>
-
 <script>
 import { mapActions, mapGetters } from 'vuex';
 
@@ -47,6 +25,28 @@ export default {
 	}
 };
 </script>
+
+<template>
+	<div v-if="!auth">
+		<div class="login">
+			<Login />
+		</div>
+		<div class="footer">
+			<FooterComponent screen="login"></FooterComponent>
+		</div>
+	</div>
+	<div v-else>
+		<div v-if="isAuthenticated">
+			<div class="app">
+				<Sidebar />
+				<router-view></router-view>
+			</div>
+			<div class="footer">
+				<FooterComponent screen="main"></FooterComponent>
+			</div>
+		</div>
+	</div>
+</template>
 
 <style lang="scss">
     @import url('./assets/colors.css');

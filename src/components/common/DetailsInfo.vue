@@ -1,14 +1,3 @@
-<template>
-	<div class="container">
-		<div class="info-container">
-			{{ title }}
-		</div>
-		<div class="detail-container">
-			{{ detail }}
-		</div>
-	</div>
-</template>
-
 <script>
 export default {
 	props: {
@@ -23,6 +12,17 @@ export default {
 	}
 };
 </script>
+
+<template>
+	<div class="container">
+		<div class="info-container">
+			{{ title }}
+		</div>
+		<div class="detail-container">
+			{{ detail }}
+		</div>
+	</div>
+</template>
 
 <style lang="scss" scoped>
 .container {

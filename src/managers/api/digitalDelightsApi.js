@@ -1,4 +1,5 @@
 import axios from 'axios';
+
 import Store from '../store/store';
 
 export const getProducts = () => {

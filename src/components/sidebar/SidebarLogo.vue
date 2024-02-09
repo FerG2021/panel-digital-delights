@@ -1,14 +1,12 @@
+<script>
+export default { name: 'SidebarLogo' };
+</script>
+
 <template>
 	<div class="logo">
 		<img src="../../assets/logo.png" alt="Vue" />
-    </div>
+	</div>
 </template>
-
-<script>
-export default {
-	name: 'SidebarLogo',
-};
-</script>
 
 <style lang="scss" scoped>
 .logo {

@@ -1,32 +1,32 @@
-<template>
-    <Card class="card">
-        <template #title>
-            <h3 class="title-card">
-                {{ section.titulo }}
-            </h3>
-        </template>
-
-        <template #content>
-            <div class="icon-card-container">
-                <span class="material-icons icon-card">
-                    {{ section.icono }}
-                </span>
-            </div>
-        </template>
-    </Card>
-</template>
-
 <script>
 export default {
 	name: 'CardComponent',
 	props: {
 		section: {
 			type: Object,
-			required: true,
+			required: true
 		}
 	}
 };
 </script>
+
+<template>
+	<Card class="card">
+		<template #title>
+			<h3 class="title-card">
+				{{ section.titulo }}
+			</h3>
+		</template>
+
+		<template #content>
+			<div class="icon-card-container">
+				<span class="material-icons icon-card">
+					{{ section.icono }}
+				</span>
+			</div>
+		</template>
+	</Card>
+</template>
 
 <style lang="scss" scoped>
     .card {

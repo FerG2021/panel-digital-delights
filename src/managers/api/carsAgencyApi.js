@@ -1,4 +1,5 @@
 import axios from 'axios';
+
 import Store from '../store/store';
 
 export const getAllMarks = async (id) => {
@@ -58,6 +59,7 @@ export const getAllClients = async (id) => {
 export const newClient = (id, data) => {
 	console.log('data');
 	console.log(data);
+
 	return axios.post(`/api/client/${id}`, data);
 };
 

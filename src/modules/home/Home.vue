@@ -1,29 +1,3 @@
-<template>
-	<main>
-		<MainCard>
-			<template #header>
-				<h1> {{ $t('homeSection.title') }} </h1>
-			</template>
-
-			<template #content>
-				<div class="home-container">
-					<div
-						class="item-container"
-						v-for="(section, index) in sections"
-						:key="index"
-					>
-						<Card
-							@click="$router.push(section.path)"
-							:section="section"
-							class="item"
-						></Card>
-					</div>
-				</div>
-			</template>
-		</MainCard>
-	</main>
-</template>
-
 <script>
 import { mapGetters } from 'vuex';
 
@@ -61,6 +35,32 @@ export default {
 	}
 };
 </script>
+
+<template>
+	<main>
+		<MainCard>
+			<template #header>
+				<h1> {{ $t('homeSection.title') }} </h1>
+			</template>
+
+			<template #content>
+				<div class="home-container">
+					<div
+						class="item-container"
+						v-for="(section, index) in sections"
+						:key="index"
+					>
+						<Card
+							@click="$router.push(section.path)"
+							:section="section"
+							class="item"
+						></Card>
+					</div>
+				</div>
+			</template>
+		</MainCard>
+	</main>
+</template>
 
 <style lang="scss" scoped>
 .home-container {

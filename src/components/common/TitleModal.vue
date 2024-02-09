@@ -1,24 +1,24 @@
-<template>
-    <h3 class="title-modal">
-        <span 
-			:class="header.class"
-		>
-			{{ header.icon }}
-		</span> 
-        {{ header.headerName }}
-    </h3>
-</template>
-
 <script>
 export default {
 	props: {
 		header: {
 			type: Object,
-			required: true,
-		},
-	},
+			required: true
+		}
+	}
 };
 </script>
+
+<template>
+	<h3 class="title-modal">
+		<span
+			:class="header.class"
+		>
+			{{ header.icon }}
+		</span>
+		{{ header.headerName }}
+	</h3>
+</template>
 
 <style>
 .title-modal {

@@ -1,11 +1,26 @@
+<script>
+export default {
+	data() {
+		return { is_expanded: false };
+	},
+
+	methods: {
+		toggleMenu() {
+			this.is_expanded = !this.is_expanded;
+			this.$emit('expandSidebar', this.is_expanded);
+		}
+	}
+};
+</script>
+
 <template>
-	<div 
-		class="menu-toggle-wrap" 
+	<div
+		class="menu-toggle-wrap"
 		:class="`${is_expanded && 'is-expanded'}`"
 	>
 		<button class="menu-toggle">
-			<span 
-				class="material-icons" 
+			<span
+				class="material-icons"
 				@click="toggleMenu()"
 			>
 				keyboard_double_arrow_right
@@ -13,23 +28,6 @@
 		</button>
 	</div>
 </template>
-
-<script>
-export default {
-	data() {
-		return {
-			is_expanded: false,
-		};
-	},
-
-	methods: {
-		toggleMenu() {
-			this.is_expanded = !this.is_expanded;
-			this.$emit('expandSidebar', this.is_expanded);
-		},
-	},
-};
-</script>
 
 <style lang="scss" scoped>
 	.menu-toggle-wrap {
@@ -58,7 +56,7 @@ export default {
 			}
 		}
 	}
-	
+
 	.is-expanded {
 		padding-right: 20px;
 		width: var(--sidebar-width);

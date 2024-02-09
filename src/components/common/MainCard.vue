@@ -1,5 +1,17 @@
+<script>
+export default {
+	methods: {
+		getHeightWindow() {
+			var heightTab = window.innerHeight - 80;
+
+			return heightTab + 'px';
+		}
+	}
+};
+</script>
+
 <template>
-	<div 
+	<div
 		class="container"
 		:style="`height: ${getHeightWindow()}`"
 	>
@@ -11,17 +23,6 @@
 		</div>
 	</div>
 </template>
-
-<script>
-export default {
-	methods: {
-		getHeightWindow() {
-			var heightTab = window.innerHeight - 80;
-			return heightTab + 'px';
-		},
-	},
-};
-</script>
 
 <style lang="scss" scoped>
 .container {

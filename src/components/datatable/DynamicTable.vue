@@ -1,3 +1,72 @@
+<script>
+import { FilterMatchMode } from 'primevue/api';
+
+import { formatDate, formatNumberToDecimal } from '../../utils/utils';
+
+export default {
+	name: 'TableComponent',
+	props: {
+		elements: {
+			type: Array,
+			required: true
+		},
+		labels: {
+			type: Object,
+			required: true
+		},
+		columns: {
+			type: Array,
+			required: true
+		},
+		loading: {
+			type: Boolean,
+			required: true
+		}
+	},
+	data() {
+		return {
+			filters: {
+				global: {
+					value: null,
+					matchMode: FilterMatchMode.CONTAINS
+				}
+			}
+		};
+	},
+	methods: {
+		getHeightWindow() {
+			var heightWindow = window.innerHeight - 260;
+
+			return heightWindow + 'px';
+		},
+
+		async deleteRow(element) {
+			this.$confirm.require({
+				header: this.labels.delete.header,
+				message: this.labels.delete.message,
+				icon: 'pi pi-info-circle',
+				acceptClass: 'p-button-danger',
+				acceptIcon: 'pi pi-check',
+				rejectIcon: 'pi pi-times',
+				accept: () => {
+					this.$emit('delete', element);
+				},
+				reject: () => {	},
+				onHide: () => {	}
+			});
+		},
+
+		formatNumber(number) {
+			return formatNumberToDecimal(number);
+		},
+
+		formatDate(date) {
+			return formatDate(date, 'DD/MM/YYYY');
+		}
+	}
+};
+</script>
+
 <template>
 	<div>
 		<DataTable
@@ -156,75 +225,6 @@
 		</DataTable>
 	</div>
 </template>
-
-<script>
-import { FilterMatchMode } from 'primevue/api';
-
-import { formatDate, formatNumberToDecimal } from '../../utils/utils';
-
-export default {
-	name: 'TableComponent',
-	props: {
-		elements: {
-			type: Array,
-			required: true
-		},
-		labels: {
-			type: Object,
-			required: true
-		},
-		columns: {
-			type: Array,
-			required: true
-		},
-		loading: {
-			type: Boolean,
-			required: true
-		}
-	},
-	data() {
-		return {
-			filters: {
-				global: {
-					value: null,
-					matchMode: FilterMatchMode.CONTAINS
-				}
-			}
-		};
-	},
-	methods: {
-		getHeightWindow() {
-			var heightWindow = window.innerHeight - 260;
-
-			return heightWindow + 'px';
-		},
-
-		async deleteRow(element) {
-			this.$confirm.require({
-				header: this.labels.delete.header,
-				message: this.labels.delete.message,
-				icon: 'pi pi-info-circle',
-				acceptClass: 'p-button-danger',
-				acceptIcon: 'pi pi-check',
-				rejectIcon: 'pi pi-times',
-				accept: () => {
-					this.$emit('delete', element);
-				},
-				reject: () => {	},
-				onHide: () => {	}
-			});
-		},
-
-		formatNumber(number) {
-			return formatNumberToDecimal(number);
-		},
-
-		formatDate(date) {
-			return formatDate(date, 'DD/MM/YYYY');
-		}
-	}
-};
-</script>
 
 <style lang="scss" scoped>
 .without-image-product {

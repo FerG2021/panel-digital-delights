@@ -1,6 +1,6 @@
-import Store from '../managers/store/store';
-import * as digitalDelightsApi from '../managers/api/digitalDelightsApi';
 import * as carsAgencyApi from '../managers/api/carsAgencyApi';
+import * as digitalDelightsApi from '../managers/api/digitalDelightsApi';
+import Store from '../managers/store/store';
 
 export default function loadModulesByAccount(store, router, account) {
 	const accountsModules = {
@@ -13,7 +13,7 @@ export default function loadModulesByAccount(store, router, account) {
 				path: '/',
 				icon: 'home',
 				store: false,
-				showInHome: false,
+				showInHome: false
 			},
 			{
 				name: 'products',
@@ -52,9 +52,9 @@ export default function loadModulesByAccount(store, router, account) {
 				path: '/my-account',
 				icon: 'manage_accounts',
 				store: false,
-				showInHome: true,
-			},
-			
+				showInHome: true
+			}
+
 		],
 		lalo: [
 			{
@@ -64,7 +64,7 @@ export default function loadModulesByAccount(store, router, account) {
 				path: '/',
 				icon: 'home',
 				store: false,
-				showInHome: false,
+				showInHome: false
 			},
 			{
 				name: 'cars',
@@ -113,9 +113,9 @@ export default function loadModulesByAccount(store, router, account) {
 				path: '/my-account',
 				icon: 'manage_accounts',
 				store: false,
-				showInHome: true,
-			},
-			
+				showInHome: true
+			}
+
 		]
 	};
 

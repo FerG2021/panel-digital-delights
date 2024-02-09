@@ -1,40 +1,16 @@
-<template>
-    <div class="button logout" v-if="is_expanded" @click="logout()">
-        <span @click="logout()">
-            <i class="pi pi-sign-out material-icons"></i>
-        </span>
-        <span class="text">{{ $t("logout") }}</span>
-    </div>
-
-    <el-tooltip
-        class="box-item"
-        effect="dark"
-        content="Salir"
-        placement="right-start"
-        v-if="!is_expanded"
-    >
-        <div class="button logout" v-if="!is_expanded" @click="logout()">
-            <span>
-                <i class="pi pi-sign-out material-icons"></i>
-            </span>
-            <span class="text">{{ $t("logout") }}</span>
-        </div>
-    </el-tooltip>
-</template>
-
 <script>
 import { mapGetters } from 'vuex';
+
 import Store from '../../managers/store/store';
 
 export default {
 	name: 'LogOut',
-	computed: {
-		...mapGetters('UsersStore', ['modules'])
-	},
+	computed: { ...mapGetters('UsersStore', ['modules']) },
 	methods: {
 		async logout() {
 			this.clearStores();
 			await this.$store.dispatch('UsersStore/logout');
+
 			return this.$router.replace('/login');
 		},
 
@@ -45,9 +21,33 @@ export default {
 				}
 			}
 		}
-	},
+	}
 };
 </script>
+
+<template>
+	<div class="button logout" v-if="is_expanded" @click="logout()">
+		<span @click="logout()">
+			<i class="pi pi-sign-out material-icons"></i>
+		</span>
+		<span class="text">{{ $t("logout") }}</span>
+	</div>
+
+	<el-tooltip
+		class="box-item"
+		effect="dark"
+		content="Salir"
+		placement="right-start"
+		v-if="!is_expanded"
+	>
+		<div class="button logout" v-if="!is_expanded" @click="logout()">
+			<span>
+				<i class="pi pi-sign-out material-icons"></i>
+			</span>
+			<span class="text">{{ $t("logout") }}</span>
+		</div>
+	</el-tooltip>
+</template>
 
 <style lang="scss" scoped>
 aside {

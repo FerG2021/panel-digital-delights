@@ -17,59 +17,55 @@ const configuration = {
 		delete: api.deleteCategory
 	},
 	tableColumns: [
-		{ 
-			field: 'name', 
-			header: 'Nombre', 
-			type: 'normal', 
-			variation: '' 
+		{
+			field: 'name',
+			header: 'Nombre',
+			type: 'normal',
+			variation: ''
 		},
-		{ 
-			field: 'name', 
-			header: 'Editar', 
-			type: 'button', 
-			variation: 'update' 
+		{
+			field: 'name',
+			header: 'Editar',
+			type: 'button',
+			variation: 'update'
 		},
-		{ 
-			field: 'name', 
-			header: 'Eliminar', 
-			type: 'button', 
-			variation: 'delete' 
-		},
+		{
+			field: 'name',
+			header: 'Eliminar',
+			type: 'button',
+			variation: 'delete'
+		}
 	],
 	create: {
 		modalVisible: false,
 		header: {
 			class: 'material-icons',
 			icon: 'edit',
-			headerName: 'Nueva categoría',
+			headerName: 'Nueva categoría'
 		},
-		formConfiguration: [
-			{
-				modelName: 'name',
-				label: 'Nombre',
-				type: 'text', 
-				required: true,
-				defaultValue: null,
-			},
-		]
+		formConfiguration: [{
+			modelName: 'name',
+			label: 'Nombre',
+			type: 'text',
+			required: true,
+			defaultValue: null
+		}]
 	},
 	update: {
 		modalVisible: false,
 		header: {
 			class: 'material-icons',
 			icon: 'edit',
-			headerName: 'Modificar categoría',
+			headerName: 'Modificar categoría'
 		},
 		id: null,
-		formConfiguration: [
-			{
-				modelName: 'name',
-				label: 'Nombre',
-				type: 'text', 
-				required: true,
-				defaultValue: null,
-			},
-		]
+		formConfiguration: [{
+			modelName: 'name',
+			label: 'Nombre',
+			type: 'text',
+			required: true,
+			defaultValue: null
+		}]
 	}
 };
 

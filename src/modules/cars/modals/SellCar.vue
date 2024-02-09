@@ -1,3 +1,80 @@
+<script>
+import { mapGetters } from 'vuex';
+
+import TitleModal from '../../../components/common/TitleModal.vue';
+import Store from '../../../managers/store/store';
+
+export default {
+	components: { TitleModal },
+	props: {
+		data: {
+			type: Array,
+			required: true
+		}
+	},
+	data() {
+		return {
+			formData: {},
+			errors: null
+		};
+	},
+	computed: { ...mapGetters('UsersStore', ['loadingServerRequest']) },
+	methods: {
+		handleModalClose() {
+			this.errors = null;
+			this.formData = {};
+		},
+		handleInputChange(value, moduleName) {
+			this.formData[moduleName] = value;
+		},
+		save() {
+			Store.commit('UsersStore/setLoadingServerRequest', true);
+
+			this.errors = this.validateForm();
+			let formData = new FormData();
+
+			for (let key in this.formData) {
+				formData.append(key, this.formData[key]);
+			}
+
+			if (this.errors === null) {
+				this.$emit('formDataSellCar', this.formData);
+			}
+		},
+		validateForm() {
+			for (const item of this.data.formConfiguration) {
+				if (item.required && !this.formData[item.modelName
+				]) {
+					Store.commit('UsersStore/setLoadingServerRequest', false);
+
+					return `El campo ${item.label} es requerido`;
+				}
+			}
+
+			return null;
+		},
+		onUpload() {
+			this.$toast.add({
+				severity: 'info',
+				summary: 'Success',
+				detail: 'File Uploaded',
+				life: 3000
+			});
+		},
+		selectedImage(event) {
+			for (const configuration of this.data.formConfiguration) {
+				if (configuration.type === 'image') {
+					this.formData[configuration.modelName] = event.files[0];
+				}
+			}
+		},
+		getOptionLabel(option) {
+			return `${option.lastname}, ${option.name}`;
+		}
+	}
+};
+</script>
+
 <template>
 	<div>
 		<Dialog
@@ -17,16 +94,16 @@
 					@submit.prevent="handleSubmit(!v$.$invalid)"
 					class="p-fluid form"
 				>
-					<div 
-						v-for="field in data.formConfiguration" 
+					<div
+						v-for="field in data.formConfiguration"
 						:key="field.name"
 						class="form-item"
 					>
 						<div class="field" v-if="field.type === 'text' || data.selled">
 							<div class="p-float-label">
 								<p>
-									{{ field.label }} 
-									<span 
+									{{ field.label }}
+									<span
 										v-if="field.required"
 										class="required"
 									>
@@ -45,8 +122,8 @@
 						<div class="field" v-if="field.type === 'price'">
 							<div class="p-float-label">
 								<p>
-									{{ field.label }} 
-									<span 
+									{{ field.label }}
+									<span
 										v-if="field.required"
 										class="required"
 									>
@@ -57,8 +134,8 @@
 									:id="field.name"
 									v-model="formData[field.modelName]"
 									currency="USD"
-									inputId="locale-german" 
-									locale="de-DE" 
+									inputId="locale-german"
+									locale="de-DE"
 									:minFractionDigits="2"
 									@update:modelValue="(value) => handleInputChange(value, field.modelName)"
 								/>
@@ -68,8 +145,8 @@
 						<div class="field" v-if="field.type === 'number'">
 							<div class="p-float-label">
 								<p>
-									{{ field.label }} 
-									<span 
+									{{ field.label }}
+									<span
 										v-if="field.required"
 										class="required"
 									>
@@ -88,19 +165,19 @@
 						<div class="field" v-if="field.type === 'select' && !data.selled">
 							<div class="p-float-label">
 								<p>
-									{{ field.label }} 
-									<span 
+									{{ field.label }}
+									<span
 										v-if="field.required"
 										class="required"
 									>
 										*
 									</span>
 								</p>
-								<Dropdown 
-									v-model="formData[field.modelName]" 
-									:options="field.defaultValue" 
-									optionLabel="name" 
-									:placeholder="field.placeholder" 
+								<Dropdown
+									v-model="formData[field.modelName]"
+									:options="field.defaultValue"
+									optionLabel="name"
+									:placeholder="field.placeholder"
 								>
 									<template #option="slotProps">
 										<div class="flex align-items-center">
@@ -123,22 +200,22 @@
 						<div class="field" v-if="field.type === 'switch'">
 							<div class="p-float-label">
 								<p>
-									{{ field.label }} 
-									<span 
+									{{ field.label }}
+									<span
 										v-if="field.required"
 										class="required"
 									>
 										*
 									</span>
 								</p>
-								<ToggleButton 
+								<ToggleButton
 									:id="field.name"
-									v-model="formData[field.modelName]" 
-									onLabel="SI" 
+									v-model="formData[field.modelName]"
+									onLabel="SI"
 									offLabel="NO"
-									onIcon="pi pi-check" 
-									offIcon="pi pi-times" 
-									class="w-9rem" 
+									onIcon="pi pi-check"
+									offIcon="pi pi-times"
+									class="w-9rem"
 									@update:modelValue="(value) => handleInputChange(value === true ? 1 : 0, field.modelName)"
 								/>
 							</div>
@@ -147,8 +224,8 @@
 						<div class="field" v-if="field.type === 'image'">
 							<div class="p-float-label">
 								<p>
-									{{ field.label }} 
-									<span 
+									{{ field.label }}
+									<span
 										v-if="field.required"
 										class="required"
 									>
@@ -177,16 +254,16 @@
 						<div class="field" v-if="field.type === 'date' && !data.selled">
 							<div class="p-float-label">
 								<p>
-									{{ field.label }} 
-									<span 
+									{{ field.label }}
+									<span
 										v-if="field.required"
 										class="required"
 									>
 										*
 									</span>
-									<input 
-										type="date" 
-										id="fecha" 
+									<input
+										type="date"
+										id="fecha"
 										v-model="formData[field.modelName]"
 										@update:modelValue="(value) => handleInputChange(value, field.modelName)"
 										class="input-date"
@@ -213,83 +290,6 @@
 		<Toast />
 	</div>
 </template>
-
-<script>
-import { mapGetters } from 'vuex';
-import TitleModal from '../../../components/common/TitleModal.vue';
-import Store from '../../../managers/store/store';
-
-export default {
-	components: { TitleModal },
-	props: {
-		data: {
-			type: Array,
-			required: true,
-		},
-	},
-	data() {
-		return {
-			formData: {},
-			errors: null
-		};
-	},
-	computed: {
-		...mapGetters('UsersStore', ['loadingServerRequest']),
-	},
-	methods: {
-		handleModalClose() {
-			this.errors = null;
-			this.formData = {};
-		},
-		handleInputChange(value, moduleName) {
-			this.formData[moduleName] = value;
-		},
-		save() {
-			Store.commit('UsersStore/setLoadingServerRequest', true);
-			
-			this.errors = this.validateForm();
-			let formData = new FormData();
-
-			for (let key in this.formData) {
-				formData.append(key, this.formData[key]);
-			}
-
-			if (this.errors === null) {
-				this.$emit('formDataSellCar', this.formData);
-			}
-		},
-		validateForm() {
-			for (const item of this.data.formConfiguration) {
-				if (item.required && !this.formData[item.modelName
-				]) {
-					Store.commit('UsersStore/setLoadingServerRequest', false);
-					return `El campo ${item.label} es requerido`;
-				}
-			}
-
-			return null;
-		},
-		onUpload() {
-			this.$toast.add({
-				severity: 'info',
-				summary: 'Success',
-				detail: 'File Uploaded',
-				life: 3000,
-			});
-		},
-		selectedImage(event) {
-			for (const configuration of this.data.formConfiguration) {
-				if (configuration.type === 'image') {
-					this.formData[configuration.modelName] = event.files[0];
-				}
-			}
-		},
-		getOptionLabel(option) {
-			return `${option.lastname}, ${option.name}`;
-		}
-	}	
-};
-</script>
 
 <style lang="scss" scoped>
 .form-container {

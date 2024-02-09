@@ -1,3 +1,22 @@
+<script>
+import { mapActions, mapGetters } from 'vuex';
+
+import FormLogin from './FormLogin.vue';
+import Greeting from './Greeting.vue';
+
+export default {
+	name: 'LoginComponent',
+	components: {
+		Greeting,
+		FormLogin
+	},
+	computed: {
+		...mapGetters('UsersStore', ['user', 'auth']),
+		...mapActions('UsersStore', ['getUser'])
+	}
+};
+</script>
+
 <template>
 	<div class="main-container">
 		<div class="login-container">
@@ -13,25 +32,6 @@
 	</div>
 	<Toast />
 </template>
-
-<script>
-import { mapGetters, mapActions } from 'vuex';
-
-import Greeting from './Greeting.vue';
-import FormLogin from './FormLogin.vue';
-
-export default {
-	name: 'LoginComponent',
-	components: {
-		Greeting,
-		FormLogin
-	},
-	computed: {
-		...mapGetters('UsersStore', ['user', 'auth']),
-		...mapActions('UsersStore', ['getUser']),
-	},
-};
-</script>
 
 <style lang="scss" scoped>
 .main-container {

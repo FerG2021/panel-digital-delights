@@ -19,16 +19,14 @@ export default {
 				name: 'GNC'
 			}
 		],
-		conditionsOptions: [
-			{
-				id: 1,
-				name: 'Nuevo'
-			},
-			{
-				id: 2,
-				name:'Usado'
-			}
-		]
+		conditionsOptions: [{
+			id: 1,
+			name: 'Nuevo'
+		},
+		{
+			id: 2,
+			name: 'Usado'
+		}]
 	},
 
 	getters: {
@@ -64,5 +62,5 @@ export default {
 		}
 	},
 
-	actions: { },
+	actions: { }
 };

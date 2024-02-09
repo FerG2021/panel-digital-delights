@@ -19,138 +19,138 @@ const configuration = {
 		sellCar: api.sellCar
 	},
 	tableColumns: [
-		{ 
-			field: 'image', 
-			header: 'Imagen', 
-			type: 'image', 
-			variation: '' 
+		{
+			field: 'image',
+			header: 'Imagen',
+			type: 'image',
+			variation: ''
 		},
-		{ 
-			field: 'patent', 
-			header: 'Patente', 
-			type: 'normal', 
-			variation: '' 
+		{
+			field: 'patent',
+			header: 'Patente',
+			type: 'normal',
+			variation: ''
 		},
-		{ 
-			field: 'mark.name', 
-			header: 'Marca', 
-			type: 'normal', 
-			variation: '' 
+		{
+			field: 'mark.name',
+			header: 'Marca',
+			type: 'normal',
+			variation: ''
 		},
-		{ 
-			field: 'name', 
-			header: 'Modelo', 
-			type: 'normal', 
-			variation: '' 
+		{
+			field: 'name',
+			header: 'Modelo',
+			type: 'normal',
+			variation: ''
 		},
-		{ 
-			field: 'year', 
-			header: 'Año', 
-			type: 'normal', 
-			variation: '' 
+		{
+			field: 'year',
+			header: 'Año',
+			type: 'normal',
+			variation: ''
 		},
-		{ 
-			field: 'buyer_id', 
-			header: '¿Vendido?', 
-			type: 'boolean', 
-			variation: '' 
+		{
+			field: 'buyer_id',
+			header: '¿Vendido?',
+			type: 'boolean',
+			variation: ''
 		},
-		{ 
-			field: 'name', 
-			header: 'Vender', 
-			type: 'button', 
-			variation: 'sell' 
+		{
+			field: 'name',
+			header: 'Vender',
+			type: 'button',
+			variation: 'sell'
 		},
-		{ 
-			field: 'name', 
-			header: 'Detalles', 
-			type: 'button', 
-			variation: 'detail' 
+		{
+			field: 'name',
+			header: 'Detalles',
+			type: 'button',
+			variation: 'detail'
 		},
-		{ 
-			field: 'name', 
-			header: 'Editar', 
-			type: 'button', 
-			variation: 'update' 
+		{
+			field: 'name',
+			header: 'Editar',
+			type: 'button',
+			variation: 'update'
 		},
-		{ 
-			field: 'name', 
-			header: 'Eliminar', 
-			type: 'button', 
-			variation: 'delete' 
-		},
+		{
+			field: 'name',
+			header: 'Eliminar',
+			type: 'button',
+			variation: 'delete'
+		}
 	],
 	create: {
 		modalVisible: false,
 		header: {
 			class: 'material-icons',
 			icon: 'edit',
-			headerName: 'Nuevo vehículo',
+			headerName: 'Nuevo vehículo'
 		},
 		formConfiguration: [
 			{
 				modelName: 'mark',
 				label: 'Marca',
-				type: 'select', 
+				type: 'select',
 				placeholder: 'Seleccione una marca',
 				required: true,
-				defaultValue: Store.getters['MarksStore/marks'],
+				defaultValue: Store.getters['MarksStore/marks']
 			},
 			{
 				modelName: 'patent',
 				label: 'Patente',
-				type: 'text', 
+				type: 'text',
 				required: true,
-				defaultValue: null,
+				defaultValue: null
 			},
 			{
 				modelName: 'name',
 				label: 'Nombre',
-				type: 'text', 
+				type: 'text',
 				required: true,
-				defaultValue: null,
+				defaultValue: null
 			},
 			{
 				modelName: 'category',
 				label: 'Categoría',
-				type: 'select', 
+				type: 'select',
 				placeholder: 'Seleccione una categoría',
 				required: true,
-				defaultValue: Store.getters['CategoriesStore/categories'],
+				defaultValue: Store.getters['CategoriesStore/categories']
 			},
 			{
 				modelName: 'description',
 				label: 'Descripción',
-				type: 'text', 
+				type: 'text',
 				required: false,
-				defaultValue: null,
+				defaultValue: null
 			},
 			{
 				modelName: 'year',
 				label: 'Año',
-				type: 'number', 
+				type: 'number',
 				required: true,
-				defaultValue: null,
+				defaultValue: null
 			},
 			{
 				modelName: 'condition',
 				label: 'Condición',
-				type: 'select', 
+				type: 'select',
 				placeholder: 'Seleccione una condición',
 				required: true,
-				defaultValue: Store.getters['CarsStore/conditionsOptions'],
+				defaultValue: Store.getters['CarsStore/conditionsOptions']
 			},
 			{
 				modelName: 'kilometres',
 				label: 'Kilómetros',
-				type: 'number', 
+				type: 'number',
 				required: true,
-				defaultValue: null,
+				defaultValue: null
 			},
 			{
 				modelName: 'fuel',
 				label: 'Combustible',
-				type: 'select', 
+				type: 'select',
 				placeholder: 'Seleccione un combustible',
 				required: true,
 				defaultValue: Store.getters['CarsStore/fuelOptions']
@@ -158,31 +158,31 @@ const configuration = {
 			{
 				modelName: 'tank_space',
 				label: 'Capacidad del tanque',
-				type: 'number', 
+				type: 'number',
 				required: false,
-				defaultValue: null,
+				defaultValue: null
 			},
 			{
 				modelName: 'trunk_space',
 				label: 'Capacidad del baúl',
-				type: 'number', 
+				type: 'number',
 				required: false,
-				defaultValue: null,
+				defaultValue: null
 			},
 			{
 				modelName: 'weight',
 				label: 'Peso',
-				type: 'number', 
+				type: 'number',
 				required: false,
-				defaultValue: null,
+				defaultValue: null
 			},
 			{
 				modelName: 'image',
 				label: 'Imagen',
-				type: 'image', 
+				type: 'image',
 				required: true,
-				defaultValue: null,
-			},
+				defaultValue: null
+			}
 		]
 	},
 	update: {
@@ -190,37 +190,37 @@ const configuration = {
 		header: {
 			class: 'material-icons',
 			icon: 'edit',
-			headerName: 'Modificar vehículo',
+			headerName: 'Modificar vehículo'
 		},
 		id: null,
 		formConfiguration: [
 			{
 				modelName: 'mark',
 				label: 'Marca',
-				type: 'select', 
+				type: 'select',
 				placeholder: 'Seleccione una marca',
 				required: true,
 				defaultValue: null,
-				options: Store.getters['MarksStore/marks'],
+				options: Store.getters['MarksStore/marks']
 			},
 			{
 				modelName: 'patent',
 				label: 'Patente',
-				type: 'text', 
+				type: 'text',
 				required: true,
-				defaultValue: null,
+				defaultValue: null
 			},
 			{
 				modelName: 'name',
 				label: 'Nombre',
-				type: 'text', 
+				type: 'text',
 				required: true,
-				defaultValue: null,
+				defaultValue: null
 			},
 			{
 				modelName: 'category',
 				label: 'Categoría',
-				type: 'select', 
+				type: 'select',
 				placeholder: 'Seleccione una categoría',
 				required: true,
 				defaultValue: null,
@@ -229,37 +229,37 @@ const configuration = {
 			{
 				modelName: 'description',
 				label: 'Descripción',
-				type: 'text', 
+				type: 'text',
 				required: false,
-				defaultValue: null,
+				defaultValue: null
 			},
 			{
 				modelName: 'year',
 				label: 'Año',
-				type: 'number', 
+				type: 'number',
 				required: true,
-				defaultValue: null,
+				defaultValue: null
 			},
 			{
 				modelName: 'condition',
 				label: 'Condición',
-				type: 'select', 
+				type: 'select',
 				placeholder: 'Seleccione una condición',
 				required: true,
 				defaultValue: null,
-				options: Store.getters['CarsStore/conditionsOptions'],
+				options: Store.getters['CarsStore/conditionsOptions']
 			},
 			{
 				modelName: 'kilometres',
 				label: 'Kilómetros',
-				type: 'number', 
+				type: 'number',
 				required: true,
-				defaultValue: null,
+				defaultValue: null
 			},
 			{
 				modelName: 'fuel',
 				label: 'Combustible',
-				type: 'select', 
+				type: 'select',
 				placeholder: 'Seleccione un combustible',
 				required: true,
 				defaultValue: null,
@@ -268,31 +268,31 @@ const configuration = {
 			{
 				modelName: 'tank_space',
 				label: 'Capacidad del tanque',
-				type: 'number', 
+				type: 'number',
 				required: false,
-				defaultValue: null,
+				defaultValue: null
 			},
 			{
 				modelName: 'trunk_space',
 				label: 'Capacidad del baúl',
-				type: 'number', 
+				type: 'number',
 				required: false,
-				defaultValue: null,
+				defaultValue: null
 			},
 			{
 				modelName: 'weight',
 				label: 'Peso',
-				type: 'number', 
+				type: 'number',
 				required: false,
-				defaultValue: null,
+				defaultValue: null
 			},
 			{
 				modelName: 'image',
 				label: 'Imagen',
-				type: 'image', 
+				type: 'image',
 				required: true,
-				defaultValue: null,
-			},
+				defaultValue: null
+			}
 		]
 	},
 	detail: {
@@ -300,37 +300,37 @@ const configuration = {
 		header: {
 			class: 'material-icons',
 			icon: 'info',
-			headerName: 'Detalles del vehículo',
+			headerName: 'Detalles del vehículo'
 		},
 		id: null,
 		formConfiguration: [
 			{
 				modelName: 'mark',
 				label: 'Marca',
-				type: 'select', 
+				type: 'select',
 				placeholder: 'Seleccione una marca',
 				required: true,
 				defaultValue: null,
-				options: Store.getters['MarksStore/marks'],
+				options: Store.getters['MarksStore/marks']
 			},
 			{
 				modelName: 'patent',
 				label: 'Patente',
-				type: 'text', 
+				type: 'text',
 				required: true,
-				defaultValue: null,
+				defaultValue: null
 			},
 			{
 				modelName: 'name',
 				label: 'Nombre',
-				type: 'text', 
+				type: 'text',
 				required: true,
-				defaultValue: null,
+				defaultValue: null
 			},
 			{
 				modelName: 'category',
 				label: 'Categoría',
-				type: 'select', 
+				type: 'select',
 				placeholder: 'Seleccione una categoría',
 				required: true,
 				defaultValue: null,
@@ -339,37 +339,37 @@ const configuration = {
 			{
 				modelName: 'description',
 				label: 'Descripción',
-				type: 'text', 
+				type: 'text',
 				required: false,
-				defaultValue: null,
+				defaultValue: null
 			},
 			{
 				modelName: 'year',
 				label: 'Año',
-				type: 'number', 
+				type: 'number',
 				required: true,
-				defaultValue: null,
+				defaultValue: null
 			},
 			{
 				modelName: 'condition',
 				label: 'Condición',
-				type: 'select', 
+				type: 'select',
 				placeholder: 'Seleccione una condición',
 				required: true,
 				defaultValue: null,
-				options: Store.getters['CarsStore/conditionsOptions'],
+				options: Store.getters['CarsStore/conditionsOptions']
 			},
 			{
 				modelName: 'kilometres',
 				label: 'Kilómetros',
-				type: 'number', 
+				type: 'number',
 				required: true,
-				defaultValue: null,
+				defaultValue: null
 			},
 			{
 				modelName: 'fuel',
 				label: 'Combustible',
-				type: 'select', 
+				type: 'select',
 				placeholder: 'Seleccione un combustible',
 				required: true,
 				defaultValue: null,
@@ -378,31 +378,31 @@ const configuration = {
 			{
 				modelName: 'tank_space',
 				label: 'Capacidad del tanque',
-				type: 'number', 
+				type: 'number',
 				required: false,
-				defaultValue: null,
+				defaultValue: null
 			},
 			{
 				modelName: 'trunk_space',
 				label: 'Capacidad del baúl',
-				type: 'number', 
+				type: 'number',
 				required: false,
-				defaultValue: null,
+				defaultValue: null
 			},
 			{
 				modelName: 'weight',
 				label: 'Peso',
-				type: 'number', 
+				type: 'number',
 				required: false,
-				defaultValue: null,
+				defaultValue: null
 			},
 			{
 				modelName: 'image',
 				label: 'Imagen',
-				type: 'image', 
+				type: 'image',
 				required: true,
-				defaultValue: null,
-			},
+				defaultValue: null
+			}
 		]
 	},
 	sell: {
@@ -411,36 +411,34 @@ const configuration = {
 		header: {
 			class: 'material-icons',
 			icon: 'edit',
-			headerName: 'Vender vehículo',
+			headerName: 'Vender vehículo'
 		},
 		id: null,
-		formConfiguration: [
-			{
-				modelName: 'buyer',
-				label: 'Comprador',
-				type: 'select', 
-				placeholder: 'Seleccione el comprador',
-				required: true,
-				defaultValue: null,
-			},
-			{
-				field: 'buy_date', 
-				modelName: 'buy_date', 
-				label: 'Fecha de venta', 
-				type: 'date', 
-				variation: '' 
-			},
-		]
+		formConfiguration: [{
+			modelName: 'buyer',
+			label: 'Comprador',
+			type: 'select',
+			placeholder: 'Seleccione el comprador',
+			required: true,
+			defaultValue: null
+		},
+		{
+			field: 'buy_date',
+			modelName: 'buy_date',
+			label: 'Fecha de venta',
+			type: 'date',
+			variation: ''
+		}]
 	},
 	selleddetails: {
 		modalVisible: false,
 		header: {
 			class: 'material-icons',
 			icon: 'info',
-			headerName: 'Detalles de la venta',
+			headerName: 'Detalles de la venta'
 		},
 		data: null
-	} 
+	}
 };
 
 export default configuration;

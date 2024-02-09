@@ -1,26 +1,26 @@
-<template>
-	<div class="container">
-		<a 
-			href="http://fssolutions.com.ar" 
-			target="_blank" 
-			:class="screen"
-		>
-			{{ $t('footer.message') }}
-		</a>
-	</div>
-</template>
-
 <script>
 export default {
 	name: 'FooterComponent',
 	props: {
 		screen: {
 			type: String,
-			required: true,
+			required: true
 		}
 	}
 };
 </script>
+
+<template>
+	<div class="container">
+		<a
+			href="http://fssolutions.com.ar"
+			target="_blank"
+			:class="screen"
+		>
+			{{ $t('footer.message') }}
+		</a>
+	</div>
+</template>
 
 <style scoped lang="scss">
 @import url('../assets/colors.css');

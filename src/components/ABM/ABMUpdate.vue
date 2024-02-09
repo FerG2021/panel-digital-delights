@@ -1,216 +1,8 @@
-<template>
-	<div>
-		<Dialog
-			v-model:visible="data.modalVisible"
-			icon="pi pi-refresh"
-			class="flex justify-content-center dialog"
-			:draggable="false"
-			style="width: 30vw"
-			@hide="handleModalClose()"
-			@show="handleDialogShow()"
-		>
-			<template #header>
-				<TitleModal :header="data.header" />
-			</template>
-			
-
-			<div class="form-container">
-				<form
-					@submit.prevent="handleSubmit(!v$.$invalid)"
-					class="p-fluid form"
-				>
-					<div 
-						v-for="field in data.formConfiguration" 
-						:key="field.name"
-						class="form-item"
-					>
-						<div class="field" v-if="field.type === 'text'">
-							<div class="p-float-label">
-								<p>
-									{{ field.label }} 
-									<span 
-										v-if="field.required"
-										class="required"
-									>
-										*
-									</span>
-								</p>
-								<InputText
-									:id="field.name"
-									v-model="formData[field.modelName]"
-									@update:modelValue="(value) => handleInputChange(value, field.modelName)"
-								/>
-							</div>
-						</div>
-
-						<div class="field" v-if="field.type === 'price'">
-							<div class="p-float-label">
-								<p>
-									{{ field.label }} 
-									<span 
-										v-if="field.required"
-										class="required"
-									>
-										*
-									</span>
-								</p>
-								<InputNumber
-									:id="field.name"
-									v-model="formData[field.modelName]"
-									currency="USD"
-									inputId="locale-german" 
-									locale="de-DE" 
-									:minFractionDigits="2"
-									@update:modelValue="(value) => handleInputChange(value, field.modelName)"
-								/>
-							</div>
-						</div>
-
-						<div class="field" v-if="field.type === 'number'">
-							<div class="p-float-label">
-								<p>
-									{{ field.label }} 
-									<span 
-										v-if="field.required"
-										class="required"
-									>
-										*
-									</span>
-								</p>
-								<InputNumber
-									:id="field.name"
-									v-model="formData[field.modelName]"
-									:useGrouping="false"
-									@update:modelValue="(value) => handleInputChange(value, field.modelName)"
-								/>
-							</div>
-						</div>
-
-						<div class="field" v-if="field.type === 'select'">
-							<div class="p-float-label">
-								<p>
-									{{ field.label }} 
-									<span 
-										v-if="field.required"
-										class="required"
-									>
-										*
-									</span>
-								</p>
-								<Dropdown 
-									v-model="formData[field.modelName]" 
-									:options="field.options" 
-									optionLabel="name" 
-									:placeholder="field.placeholder" 
-								/>
-
-							</div>
-						</div>
-
-						<div class="field" v-if="field.type === 'switch'">
-							<div class="p-float-label">
-								<p>
-									{{ field.label }} 
-									<span 
-										v-if="field.required"
-										class="required"
-									>
-										*
-									</span>
-								</p>
-								<ToggleButton 
-									:id="field.name"
-									v-model="formData[field.modelName]" 
-									onLabel="SI" 
-									offLabel="NO"
-									onIcon="pi pi-check" 
-									offIcon="pi pi-times" 
-									class="w-9rem" 
-									@update:modelValue="(value) => handleInputChange(value === true ? 1 : 0, field.modelName)"
-								/>
-							</div>
-						</div>
-
-						<div class="field" v-if="field.type === 'image'">
-							<div class="p-float-label">
-								<p>
-									{{ field.label }} 
-									<span 
-										v-if="field.required"
-										class="required"
-									>
-										*
-									</span>
-								</p>
-								<Image 
-									:src="formData[field.modelName]" 
-									alt="Image" 
-									width="150"
-									v-if="isObject(field.modelName)"
-								/>
-								<FileUpload
-									name="form.demo"
-									url="./upload.php"
-									@upload="onUpload"
-									@select="selectedImage"
-									:multiple="false"
-									accept="image/*"
-									:maxFileSize="1000000"
-									invalidFileSizeMessage="{0}: Tamaño de archivo inválido, debe ser menor a {1}."
-								>
-									<template #empty>
-										<p>
-											{{ $t("productsSection.uploadImage") }}
-										</p>
-									</template>
-								</FileUpload>
-							</div>
-						</div>
-
-						<div class="field" v-if="field.type === 'date'">
-							<div class="p-float-label">
-								<p>
-									{{ field.label }} 
-									<span 
-										v-if="field.required"
-										class="required"
-									>
-										*
-									</span>
-									<input 
-										type="date" 
-										id="fecha" 
-										v-model="formData[field.modelName]"
-										@update:modelValue="(value) => handleInputChange(value, field.modelName)"
-										class="input-date"
-									/>
-								</p>
-							</div>
-						</div>
-					</div>
-
-					<div v-if="errors" class="show-errors">
-						{{ errors }}
-					</div>
-
-					<Button
-						label="Guardar"
-						class="mt-2"
-						:loading="loadingServerRequest"
-						@click="save()"
-					/>
-				</form>
-			</div>
-		</Dialog>
-
-		<Toast />
-	</div>
-</template>
-
 <script>
 import { mapGetters } from 'vuex';
-import TitleModal from '../common/TitleModal.vue';
+
 import Store from '../../managers/store/store';
+import TitleModal from '../common/TitleModal.vue';
 
 export default {
 	components: { TitleModal },
@@ -218,18 +10,16 @@ export default {
 		data: {
 			type: Array,
 			required: true,
-			loadingBtnSave: false,
-		},
+			loadingBtnSave: false
+		}
 	},
 	data() {
 		return {
 			formData: {},
-			errors: null,
+			errors: null
 		};
 	},
-	computed: {
-		...mapGetters('UsersStore', ['loadingServerRequest']),
-	},
+	computed: { ...mapGetters('UsersStore', ['loadingServerRequest']) },
 	methods: {
 		handleDialogShow() {
 			for (const field of this.data.formConfiguration) {
@@ -252,7 +42,7 @@ export default {
 				severity: 'info',
 				summary: 'Success',
 				detail: 'File Uploaded',
-				life: 3000,
+				life: 3000
 			});
 		},
 		selectedImage(event) {
@@ -284,15 +74,224 @@ export default {
 			for (const item of this.data.formConfiguration) {
 				if (item.required && (this.formData[item.modelName] === null || this.formData[item.modelName] === '')) {
 					Store.commit('UsersStore/setLoadingServerRequest', false);
+
 					return `El campo ${item.label} es requerido`;
 				}
 			}
 
 			return null;
 		}
-	}	
+	}
 };
 </script>
+
+<template>
+	<div>
+		<Dialog
+			v-model:visible="data.modalVisible"
+			icon="pi pi-refresh"
+			class="flex justify-content-center dialog"
+			:draggable="false"
+			style="width: 30vw"
+			@hide="handleModalClose()"
+			@show="handleDialogShow()"
+		>
+			<template #header>
+				<TitleModal :header="data.header" />
+			</template>
+
+			<div class="form-container">
+				<form
+					@submit.prevent="handleSubmit(!v$.$invalid)"
+					class="p-fluid form"
+				>
+					<div
+						v-for="field in data.formConfiguration"
+						:key="field.name"
+						class="form-item"
+					>
+						<div class="field" v-if="field.type === 'text'">
+							<div class="p-float-label">
+								<p>
+									{{ field.label }}
+									<span
+										v-if="field.required"
+										class="required"
+									>
+										*
+									</span>
+								</p>
+								<InputText
+									:id="field.name"
+									v-model="formData[field.modelName]"
+									@update:modelValue="(value) => handleInputChange(value, field.modelName)"
+								/>
+							</div>
+						</div>
+
+						<div class="field" v-if="field.type === 'price'">
+							<div class="p-float-label">
+								<p>
+									{{ field.label }}
+									<span
+										v-if="field.required"
+										class="required"
+									>
+										*
+									</span>
+								</p>
+								<InputNumber
+									:id="field.name"
+									v-model="formData[field.modelName]"
+									currency="USD"
+									inputId="locale-german"
+									locale="de-DE"
+									:minFractionDigits="2"
+									@update:modelValue="(value) => handleInputChange(value, field.modelName)"
+								/>
+							</div>
+						</div>
+
+						<div class="field" v-if="field.type === 'number'">
+							<div class="p-float-label">
+								<p>
+									{{ field.label }}
+									<span
+										v-if="field.required"
+										class="required"
+									>
+										*
+									</span>
+								</p>
+								<InputNumber
+									:id="field.name"
+									v-model="formData[field.modelName]"
+									:useGrouping="false"
+									@update:modelValue="(value) => handleInputChange(value, field.modelName)"
+								/>
+							</div>
+						</div>
+
+						<div class="field" v-if="field.type === 'select'">
+							<div class="p-float-label">
+								<p>
+									{{ field.label }}
+									<span
+										v-if="field.required"
+										class="required"
+									>
+										*
+									</span>
+								</p>
+								<Dropdown
+									v-model="formData[field.modelName]"
+									:options="field.options"
+									optionLabel="name"
+									:placeholder="field.placeholder"
+								/>
+
+							</div>
+						</div>
+
+						<div class="field" v-if="field.type === 'switch'">
+							<div class="p-float-label">
+								<p>
+									{{ field.label }}
+									<span
+										v-if="field.required"
+										class="required"
+									>
+										*
+									</span>
+								</p>
+								<ToggleButton
+									:id="field.name"
+									v-model="formData[field.modelName]"
+									onLabel="SI"
+									offLabel="NO"
+									onIcon="pi pi-check"
+									offIcon="pi pi-times"
+									class="w-9rem"
+									@update:modelValue="(value) => handleInputChange(value === true ? 1 : 0, field.modelName)"
+								/>
+							</div>
+						</div>
+
+						<div class="field" v-if="field.type === 'image'">
+							<div class="p-float-label">
+								<p>
+									{{ field.label }}
+									<span
+										v-if="field.required"
+										class="required"
+									>
+										*
+									</span>
+								</p>
+								<Image
+									:src="formData[field.modelName]"
+									alt="Image"
+									width="150"
+									v-if="isObject(field.modelName)"
+								/>
+								<FileUpload
+									name="form.demo"
+									url="./upload.php"
+									@upload="onUpload"
+									@select="selectedImage"
+									:multiple="false"
+									accept="image/*"
+									:maxFileSize="1000000"
+									invalidFileSizeMessage="{0}: Tamaño de archivo inválido, debe ser menor a {1}."
+								>
+									<template #empty>
+										<p>
+											{{ $t("productsSection.uploadImage") }}
+										</p>
+									</template>
+								</FileUpload>
+							</div>
+						</div>
+
+						<div class="field" v-if="field.type === 'date'">
+							<div class="p-float-label">
+								<p>
+									{{ field.label }}
+									<span
+										v-if="field.required"
+										class="required"
+									>
+										*
+									</span>
+									<input
+										type="date"
+										id="fecha"
+										v-model="formData[field.modelName]"
+										@update:modelValue="(value) => handleInputChange(value, field.modelName)"
+										class="input-date"
+									/>
+								</p>
+							</div>
+						</div>
+					</div>
+
+					<div v-if="errors" class="show-errors">
+						{{ errors }}
+					</div>
+
+					<Button
+						label="Guardar"
+						class="mt-2"
+						:loading="loadingServerRequest"
+						@click="save()"
+					/>
+				</form>
+			</div>
+		</Dialog>
+
+		<Toast />
+	</div>
+</template>
 
 <style lang="scss" scoped>
 .form-container {
