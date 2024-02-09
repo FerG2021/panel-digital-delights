@@ -1,33 +1,33 @@
 <template>
-    <main v-if="Configuration !== null">
-        <div class="main-container" :style="getHeightWindow()">
+	<main v-if="Configuration !== null">
+		<div class="main-container" :style="getHeightWindow()">
 			<div class="title-container">
-                <h1 class="title">{{ $t('myaccount.title') }}</h1>
+				<h1 class="title">{{ $t('myaccount.title') }}</h1>
 			</div>
 
-            <div class="body-container">
+			<div class="body-container">
 				<div class="alert-cotainer">
-					<InlineMessage 
+					<InlineMessage
 						severity="warn"
 						class="alert"
 					>
 						{{ $t('myaccount.alert') }}
 					</InlineMessage>
 				</div>
-                <form
-                    @submit.prevent="handleSubmit(!v$.$invalid)"
-                    class="p-fluid form"
-                >
-					<div 
-						v-for="field in Configuration.formConfiguration" 
+				<form
+					@submit.prevent="handleSubmit(!v$.$invalid)"
+					class="p-fluid form"
+				>
+					<div
+						v-for="field in Configuration.formConfiguration"
 						:key="field.name"
 						class="form-item"
 					>
 						<div class="field" v-if="field.type === 'text'">
 							<div class="p-float-label">
 								<p>
-									{{ field.label }} 
-									<span 
+									{{ field.label }}
+									<span
 										v-if="field.required"
 										class="required"
 									>
@@ -45,8 +45,8 @@
 						<div class="field" v-if="field.type === 'password'">
 							<div class="p-float-label">
 								<p>
-									{{ field.label }} 
-									<span 
+									{{ field.label }}
+									<span
 										v-if="field.required"
 										class="required"
 									>
@@ -68,24 +68,24 @@
 						{{ errors }}
 					</div>
 
-                    <Button
+					<Button
 						label="Guardar"
 						class="mt-2"
 						:loading="loadingBtnSave"
 						@click="clickOnSaveButton()"
 					/>
-                </form>
-            </div>
-        </div>
-    </main>
+				</form>
+			</div>
+		</div>
+	</main>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
-import { setConfigurationFileByAccount } from '../../utils/utils';
+
 import { updateUser } from '../../managers/api/digitalDelightsApi';
 import Store from '../../managers/store/store';
-
+import { setConfigurationFileByAccount } from '../../utils/utils';
 
 export default {
 	data() {
@@ -93,12 +93,16 @@ export default {
 			id: null,
 			Configuration: null,
 			formData: {},
-			errors: null,
+			errors: null
 		};
 	},
 
 	computed: {
-		...mapGetters('UsersStore', ['user', 'auth', 'modules']),
+		...mapGetters('UsersStore', [
+			'user',
+			'auth',
+			'modules'
+		])
 	},
 
 	mounted() {
@@ -153,7 +157,7 @@ export default {
 						severity: 'success',
 						summary: this.$t('toast.success'),
 						detail: response.data.message,
-						life: 3000,
+						life: 3000
 					});
 					this.logout();
 				})
@@ -162,13 +166,14 @@ export default {
 						severity: 'error',
 						summary: this.$t('toast.error'),
 						detail: error.response.data.message,
-						life: 3000,
+						life: 3000
 					});
 				});
 		},
 		async logout() {
 			this.clearStores();
 			await this.$store.dispatch('UsersStore/logout');
+
 			return this.$router.replace('/login');
 		},
 		clearStores() {
@@ -187,9 +192,10 @@ export default {
 		},
 		getHeightWindow() {
 			var heightWindow = window.innerHeight - 60;
+
 			return `height: ${heightWindow}px`;
-		},
-	},
+		}
+	}
 };
 </script>
 

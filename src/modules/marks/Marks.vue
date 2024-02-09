@@ -33,7 +33,7 @@
 <script>
 import { FilterMatchMode } from 'primevue/api';
 import { mapGetters } from 'vuex';
-import { setConfigurationFileByAccount } from '../../utils/utils';
+import { setConfigurationFileByAccount, setFormConfiguration } from '../../utils/utils';
 
 import DynamicTable from '../../components/datatable/DynamicTable.vue';
 import ABMCreate from '../../components/ABM/ABMCreate.vue';
@@ -116,11 +116,7 @@ export default {
 		},
 
 		edit(data) {
-			this.Configuration.update.id = data.id;
-			for (const configuration of this.Configuration.update.formConfiguration) {
-				configuration.defaultValue = data[configuration.modelName];
-			}
-			this.Configuration.update.modalVisible = true;
+			this.Configuration = setFormConfiguration(this.Configuration, data);
 		},
 
 		formDataUpdate(value) {

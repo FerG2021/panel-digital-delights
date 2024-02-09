@@ -1,9 +1,7 @@
 export default {
 	namespaced: true,
 
-	state: {
-		marks: null,
-	},
+	state: { marks: null },
 
 	mutations: {
 		setMarks(state, marks) {
@@ -17,8 +15,8 @@ export default {
 	getters: {
 		marks(state) {
 			return state.marks;
-		},
+		}
 	},
 
-	actions: { },
+	actions: { }
 };

@@ -6,7 +6,7 @@
 			</template>
 			<template #content>
 				<div>
-					<DynamicTable 
+					<DynamicTable
 						:elements="promotions"
 						:columns="Configuration.tableColumns"
 						:labels="Configuration.labels"
@@ -19,13 +19,13 @@
 			</template>
 		</MainCard>
 
-		<ABMCreate 
-			:data="Configuration.create" 
+		<ABMCreate
+			:data="Configuration.create"
 			@formDataCreate='formDataCreate'
 		/>
 
 		<ABMUpdate
-			:data="Configuration.update" 
+			:data="Configuration.update"
 			@formDataUpdate='formDataUpdate'
 		/>
 
@@ -36,18 +36,18 @@
 <script>
 import { FilterMatchMode } from 'primevue/api';
 import { mapGetters } from 'vuex';
-import { setConfigurationFileByAccount } from '../../utils/utils';
 
-import DynamicTable from '../../components/datatable/DynamicTable.vue';
 import ABMCreate from '../../components/ABM/ABMCreate.vue';
 import ABMUpdate from '../../components/ABM/ABMUpdate.vue';
 import MainCard from '../../components/common/MainCard.vue';
+import DynamicTable from '../../components/datatable/DynamicTable.vue';
 import Store from '../../managers/store/store';
+import { setConfigurationFileByAccount } from '../../utils/utils';
 
 export default {
 	name: 'PromontionsComponent',
 	components: {
-		DynamicTable, 
+		DynamicTable,
 		ABMCreate,
 		ABMUpdate,
 		MainCard
@@ -58,15 +58,23 @@ export default {
 			loading: false,
 			Configuration: null,
 			filters: {
-				global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-			},
+				global: {
+					value: null,
+					matchMode: FilterMatchMode.CONTAINS
+				}
+			}
 		};
 	},
 	computed: {
-		...mapGetters('UsersStore', ['user', 'auth', 'modules', 'account']),
+		...mapGetters('UsersStore', [
+			'user',
+			'auth',
+			'modules',
+			'account'
+		]),
 		...mapGetters('CategoriesStore', ['categories']),
 		...mapGetters('ProductsStore', ['products']),
-		...mapGetters('PromotionsStore', ['promotions']),
+		...mapGetters('PromotionsStore', ['promotions'])
 	},
 	mounted() {
 		this.setCongigurationFile();
@@ -76,7 +84,7 @@ export default {
 		async setCongigurationFile() {
 			this.Configuration = await setConfigurationFileByAccount('promotions', this.account);
 		},
-		
+
 		add() {
 			this.Configuration.create.modalVisible = true;
 		},
@@ -95,7 +103,7 @@ export default {
 						severity: 'success',
 						summary: this.$t('toast.success'),
 						detail: response.data.message,
-						life: 3000,
+						life: 3000
 					});
 					Store.commit('UsersStore/setLoadingServerRequest', false);
 					this.getAllPromotions();
@@ -106,7 +114,7 @@ export default {
 						severity: 'error',
 						summary: this.$t('toast.error'),
 						detail: error.response.data.message,
-						life: 3000,
+						life: 3000
 					});
 					Store.commit('UsersStore/setLoadingServerRequest', false);
 				});
@@ -114,6 +122,7 @@ export default {
 
 		edit(data) {
 			this.Configuration.update.id = data.id;
+
 			for (const configuration of this.Configuration.update.formConfiguration) {
 				if (configuration.type === 'price') {
 					configuration.defaultValue = parseFloat(data[configuration.modelName]);
@@ -139,7 +148,7 @@ export default {
 						severity: 'success',
 						summary: this.$t('toast.success'),
 						detail: response.data.message,
-						life: 3000,
+						life: 3000
 					});
 					Store.commit('UsersStore/setLoadingServerRequest', false);
 					this.getAllPromotions();
@@ -149,7 +158,7 @@ export default {
 						severity: 'error',
 						summary: this.$t('toast.error'),
 						detail: error.response.data.message,
-						life: 3000,
+						life: 3000
 					});
 					Store.commit('UsersStore/setLoadingServerRequest', false);
 				});
@@ -163,7 +172,7 @@ export default {
 						severity: 'success',
 						summary: this.$t('toast.success'),
 						detail: response.data.message,
-						life: 3000,
+						life: 3000
 					});
 					this.getAllPromotions();
 					Store.commit('UsersStore/setLoadingServerRequest', false);
@@ -173,14 +182,15 @@ export default {
 					Store.commit('UsersStore/setLoadingServerRequest', false);
 				});
 		},
-		
+
 		getHeightWindow() {
 			var heightWindow = window.innerHeight - 285;
+
 			return heightWindow + 'px';
 		},
 		async getAllPromotions() {
 			await this.Configuration.endpoints.getAllPromotions(this.user.account_id);
-		},
+		}
 	}
 };
 </script>

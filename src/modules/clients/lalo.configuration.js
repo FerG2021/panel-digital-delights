@@ -17,86 +17,86 @@ const configuration = {
 		delete: api.deleteClient
 	},
 	tableColumns: [
-		{ 
-			field: 'lastname', 
-			header: 'Apellido', 
-			type: 'normal', 
-			variation: '' 
+		{
+			field: 'lastname',
+			header: 'Apellido',
+			type: 'normal',
+			variation: ''
 		},
-		{ 
-			field: 'name', 
-			header: 'Nombre', 
-			type: 'normal', 
-			variation: '' 
+		{
+			field: 'name',
+			header: 'Nombre',
+			type: 'normal',
+			variation: ''
 		},
-		{ 
-			field: 'birthday', 
-			header: 'Fecha de nacimiento', 
-			type: 'date', 
-			variation: '' 
+		{
+			field: 'birthday',
+			header: 'Fecha de nacimiento',
+			type: 'date',
+			variation: ''
 		},
-		{ 
-			field: 'address', 
-			header: 'Dirección', 
-			type: 'normal', 
-			variation: '' 
+		{
+			field: 'address',
+			header: 'Dirección',
+			type: 'normal',
+			variation: ''
 		},
-		{ 
-			field: 'name', 
-			header: 'Editar', 
-			type: 'button', 
-			variation: 'update' 
+		{
+			field: 'name',
+			header: 'Editar',
+			type: 'button',
+			variation: 'update'
 		},
-		{ 
-			field: 'name', 
-			header: 'Eliminar', 
-			type: 'button', 
-			variation: 'delete' 
-		},
+		{
+			field: 'name',
+			header: 'Eliminar',
+			type: 'button',
+			variation: 'delete'
+		}
 	],
 	create: {
 		modalVisible: false,
 		header: {
 			class: 'material-icons',
 			icon: 'edit',
-			headerName: 'Nuevo cliente',
+			headerName: 'Nuevo cliente'
 		},
 		formConfiguration: [
 			{
 				modelName: 'name',
 				label: 'Nombre',
-				type: 'text', 
+				type: 'text',
 				required: true,
-				defaultValue: null,
+				defaultValue: null
 			},
 			{
 				modelName: 'lastname',
 				label: 'Apellido',
-				type: 'text', 
+				type: 'text',
 				required: true,
-				defaultValue: null,
+				defaultValue: null
 			},
 			{
 				modelName: 'birthday',
 				label: 'Fecha de nacimiento',
-				type: 'date', 
+				type: 'date',
 				required: true,
-				defaultValue: null,
+				defaultValue: null
 			},
 			{
 				modelName: 'phone_number',
 				label: 'Teléfono',
-				type: 'number', 
+				type: 'number',
 				required: true,
-				defaultValue: null,
+				defaultValue: null
 			},
 			{
 				modelName: 'address',
 				label: 'Dirección',
-				type: 'text', 
+				type: 'text',
 				required: true,
-				defaultValue: null,
-			}			
+				defaultValue: null
+			}
 		]
 	},
 	update: {
@@ -104,45 +104,45 @@ const configuration = {
 		header: {
 			class: 'material-icons',
 			icon: 'edit',
-			headerName: 'Modificar cliente',
+			headerName: 'Modificar cliente'
 		},
 		id: null,
 		formConfiguration: [
 			{
 				modelName: 'name',
 				label: 'Nombre',
-				type: 'text', 
+				type: 'text',
 				required: true,
-				defaultValue: null,
+				defaultValue: null
 			},
 			{
 				modelName: 'lastname',
 				label: 'Apellido',
-				type: 'text', 
+				type: 'text',
 				required: true,
-				defaultValue: null,
+				defaultValue: null
 			},
 			{
 				modelName: 'birthday',
 				label: 'Fecha de nacimiento',
-				type: 'date', 
+				type: 'date',
 				required: true,
-				defaultValue: null,
+				defaultValue: null
 			},
 			{
 				modelName: 'phone_number',
 				label: 'Teléfono',
-				type: 'number', 
+				type: 'number',
 				required: true,
-				defaultValue: null,
+				defaultValue: null
 			},
 			{
 				modelName: 'address',
 				label: 'Dirección',
-				type: 'text', 
+				type: 'text',
 				required: true,
-				defaultValue: null,
-			}			
+				defaultValue: null
+			}
 		]
 	}
 };

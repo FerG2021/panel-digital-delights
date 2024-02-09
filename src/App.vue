@@ -1,39 +1,45 @@
 <template>
-    <div v-if="!auth">
-        <div class="login">
-            <Login />
-        </div>
-        <div class="footer">
-            <FooterComponent screen="login"></FooterComponent>
-        </div>
-    </div>
-    <div v-else>
-        <div v-if="isAuthenticated">
-            <div class="app">
-                <Sidebar />   
-                <router-view></router-view>
-            </div>
-            <div class="footer">
-                <FooterComponent screen="main"></FooterComponent>
-            </div>
-        </div>
-    </div>
+	<div v-if="!auth">
+		<div class="login">
+			<Login />
+		</div>
+		<div class="footer">
+			<FooterComponent screen="login"></FooterComponent>
+		</div>
+	</div>
+	<div v-else>
+		<div v-if="isAuthenticated">
+			<div class="app">
+				<Sidebar />
+				<router-view></router-view>
+			</div>
+			<div class="footer">
+				<FooterComponent screen="main"></FooterComponent>
+			</div>
+		</div>
+	</div>
 </template>
 
 <script>
-import Sidebar from './components/sidebar/Sidebar.vue';
-import Login from './components/login/Login.vue';
+import { mapActions, mapGetters } from 'vuex';
+
 import FooterComponent from './components/Footer.vue';
-import { mapGetters, mapActions } from 'vuex';
+import Login from './components/login/Login.vue';
+import Sidebar from './components/sidebar/Sidebar.vue';
 
 export default {
-	components:{
+	components: {
 		Sidebar,
 		Login,
 		FooterComponent
 	},
 	computed: {
-		...mapGetters('UsersStore', ['user', 'auth', 'account', 'loading']),
+		...mapGetters('UsersStore', [
+			'user',
+			'auth',
+			'account',
+			'loading'
+		]),
 		...mapActions('UsersStore', ['getUser']),
 		isAuthenticated() {
 			return this.auth && this.account !== null && !this.loading;

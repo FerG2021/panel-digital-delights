@@ -1,82 +1,82 @@
 <template>
-  <main class="about-page">
-    <Card>
-      <template #header>
-        <h1 style="margin-top: 15px; margin-left: 15px">Reseñas</h1>
-      </template>
+	<main class="about-page">
+		<Card>
+			<template #header>
+				<h1 style="margin-top: 15px; margin-left: 15px">Reseñas</h1>
+			</template>
 
-      <template #content>
-        <div style="margin-top: 10px">
-          <DataTable
-            :value="resenias"
-            responsiveLayout="scroll"
-            :loading="loading"
-            :globalFilterFields="['name']"
-            v-model:filters="filters"
-            filterDisplay="menu"
-            style="text-align: center"
-            headerStyle="text-align: center"
-          >
-            <template #header>
-              <div class="display: flex">
-                <!-- <h5 class="m-0">Customers</h5> -->
-                <div class="margin-left: auto">
-                  <span class="p-input-icon-left">
-                    <i class="pi pi-search" />
-                    <InputText
-                      v-model="filters['global'].value"
-                      placeholder="Escriba para buscar"
-                    />
-                  </span>
-                </div>
-              </div>
-            </template>
+			<template #content>
+				<div style="margin-top: 10px">
+					<DataTable
+						:value="resenias"
+						responsiveLayout="scroll"
+						:loading="loading"
+						:globalFilterFields="['name']"
+						v-model:filters="filters"
+						filterDisplay="menu"
+						style="text-align: center"
+						headerStyle="text-align: center"
+					>
+						<template #header>
+							<div class="display: flex">
+								<!-- <h5 class="m-0">Customers</h5> -->
+								<div class="margin-left: auto">
+									<span class="p-input-icon-left">
+										<i class="pi pi-search" />
+										<InputText
+											v-model="filters['global'].value"
+											placeholder="Escriba para buscar"
+										/>
+									</span>
+								</div>
+							</div>
+						</template>
 
-            <Column field="name" header="Nombre">
-              <template #body="slotProps">
-                <span>
-                  {{ slotProps.data.name }}
-                </span>
-              </template>
-            </Column>
+						<Column field="name" header="Nombre">
+							<template #body="slotProps">
+								<span>
+									{{ slotProps.data.name }}
+								</span>
+							</template>
+						</Column>
 
-            <Column field="description" header="Descripción">
-              <template #body="slotProps">
-                <span>
-                  {{ slotProps.data.description }}
-                </span>
-              </template>
-            </Column>
+						<Column field="description" header="Descripción">
+							<template #body="slotProps">
+								<span>
+									{{ slotProps.data.description }}
+								</span>
+							</template>
+						</Column>
 
-            <Column field="rating" header="Valoración">
-              <template #body="slotProps">
-                <!-- {{ slotProps.data.rating }} -->
-                <Rating
-                  :modelValue="slotProps.data.rating"
-                  :readonly="true"
-                  :cancel="false"
-                />
-              </template>
-            </Column>
+						<Column field="rating" header="Valoración">
+							<template #body="slotProps">
+								<!-- {{ slotProps.data.rating }} -->
+								<Rating
+									:modelValue="slotProps.data.rating"
+									:readonly="true"
+									:cancel="false"
+								/>
+							</template>
+						</Column>
 
-            <!-- Detalles -->
-            <Column field="detalles" header="Detalles" style="width: 20px">
-              <template #body="slotProps">
-                <div style="display: flex">
-                  <div style="margin: auto">
-                    <Button
-                      icon="pi pi-eye"
-                      class="p-button-rounded p-button-primary mr-2"
-                      @click="$refs.modalDetalles.abrir(slotProps.data.id)"
-                      style="margin-right: 5px"
-                    />
-                  </div>
-                </div>
-              </template>
-            </Column>
+						<!-- Detalles -->
+						<Column field="detalles" header="Detalles" style="width: 20px">
+							<template #body="slotProps">
+								<div style="display: flex">
+									<div style="margin: auto">
+										<Button
+											icon="pi pi-eye"
+											class="p-button-rounded p-button-primary mr-2"
+											@click="$refs.modalDetalles.abrir(slotProps.data.id)"
+											style="margin-right: 5px"
+										/>
+									</div>
+								</div>
+							</template>
+						</Column>
 
-            <!-- Eliminar -->
-            <!-- <Column field="eliminar" header="Eliminar" style="width: 20px">
+						<!-- Eliminar -->
+						<!-- <Column field="eliminar" header="Eliminar" style="width: 20px">
               <template #body="slotProps">
                 <div style="display: flex">
                   <div style="margin: auto">
@@ -89,15 +89,15 @@
                 </div>
               </template>
             </Column> -->
-          </DataTable>
-        </div>
-      </template>
-    </Card>
-  </main>
+					</DataTable>
+				</div>
+			</template>
+		</Card>
+	</main>
 
-  <modal-detalles ref="modalDetalles"></modal-detalles>
+	<modal-detalles ref="modalDetalles"></modal-detalles>
 
-  <ConfirmDialog></ConfirmDialog>
+	<ConfirmDialog></ConfirmDialog>
 </template>
 
 <script>
@@ -105,9 +105,8 @@
 import ModalDetalles from './modales/detalles.vue';
 
 export default {
-	components: {
-		ModalDetalles,
-	},
+	name: 'ReviewsComponent',
+	components: { ModalDetalles },
 
 	data() {
 		return {
@@ -115,8 +114,11 @@ export default {
 			loadingBtnQR: false,
 			loading: false,
 			filters: {
-				global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-			},
+				global: {
+					value: null,
+					matchMode: FilterMatchMode.CONTAINS
+				}
+			}
 		};
 	},
 
@@ -153,7 +155,7 @@ export default {
 				},
 				onHide: () => {
 					// this.$toast.add({severity:'error', summary:'Hide', detail:'You have hidden', life: 3000});
-				},
+				}
 			});
 		},
 
@@ -164,7 +166,7 @@ export default {
 						severity: 'success',
 						summary: 'Mensaje de confirmación',
 						detail: 'Mesa eliminada con éxito',
-						life: 3000,
+						life: 3000
 					});
 					this.obtenerTodos();
 				}
@@ -173,8 +175,8 @@ export default {
 
 		moneda(x) {
 			return x.toLocaleString('es-AR');
-		},
-	},
+		}
+	}
 };
 </script>
 

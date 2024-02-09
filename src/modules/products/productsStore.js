@@ -1,9 +1,7 @@
 export default {
 	namespaced: true,
 
-	state: {
-		products: [],
-	},
+	state: { products: [] },
 
 	mutations: {
 		setProducts(state, products) {
@@ -14,8 +12,8 @@ export default {
 	getters: {
 		products(state) {
 			return state.products;
-		},
+		}
 	},
 
-	actions: { },
+	actions: { }
 };

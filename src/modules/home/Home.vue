@@ -1,32 +1,33 @@
 <template>
-    <main>
-        <MainCard>
+	<main>
+		<MainCard>
 			<template #header>
 				<h1> {{ $t('homeSection.title') }} </h1>
 			</template>
 
 			<template #content>
 				<div class="home-container">
-					<div 
+					<div
 						class="item-container"
 						v-for="(section, index) in sections"
 						:key="index"
 					>
-						<Card 
-							@click="$router.push(section.path)"  
+						<Card
+							@click="$router.push(section.path)"
 							:section="section"
 							class="item"
 						></Card>
 					</div>
 				</div>
 			</template>
-        </MainCard>
-    </main>
+		</MainCard>
+	</main>
 </template>
 
 <script>
-import Card from '../../components/common/Card.vue';
 import { mapGetters } from 'vuex';
+
+import Card from '../../components/common/Card.vue';
 import MainCard from '../../components/common/MainCard.vue';
 
 export default {
@@ -36,9 +37,7 @@ export default {
 		MainCard
 	},
 	data() {
-		return {
-			sectionTitle: 'Home',
-		};
+		return { sectionTitle: 'Home' };
 	},
 	computed: {
 		...mapGetters('UsersStore', ['modules']),
@@ -59,7 +58,7 @@ export default {
 
 			return sections;
 		}
-	},
+	}
 };
 </script>
 

@@ -1,11 +1,21 @@
-import { createApp } from 'vue';
-// Elment plus
 import ElementPlus from 'element-plus';
 import ElMessage from 'element-plus';
-import 'element-plus/dist/index.css';
 import locale from 'element-plus/lib/locale/lang/es';
+import Column from 'primevue/column';
+import PrimeVue from 'primevue/config';
+import ConfirmationService from 'primevue/confirmationservice';
+import ConfirmDialog from 'primevue/confirmdialog';
+import DialogService from 'primevue/dialogservice';
+import DynamicDialog from 'primevue/dynamicdialog';
+import Toast from 'primevue/toast';
+import { createApp } from 'vue';
+// Elment plus
+import 'element-plus/dist/index.css';
 
 // i18n
+import VueAxios from 'vue-axios';
+
+import App from './App.vue';
 import { i18n } from './plugins/i18n';
 
 //
@@ -13,22 +23,15 @@ import { i18n } from './plugins/i18n';
 //
 
 // PrimeVue
-import PrimeVue from 'primevue/config';
 
 // PrimeVue Components
 import 'primevue/resources/themes/saga-blue/theme.css'; //theme
 import 'primevue/resources/primevue.min.css'; //core css
 import 'primeicons/primeicons.css'; //icons
 
-import Toast from 'primevue/toast';
 import ToastService from 'primevue/toastservice';
-import ConfirmDialog from 'primevue/confirmdialog';
-import ConfirmationService from 'primevue/confirmationservice';
-import DynamicDialog from 'primevue/dynamicdialog';
-import DialogService from 'primevue/dialogservice';
 import Dialog from 'primevue/dialog';
 import DataTable from 'primevue/datatable';
-import Column from 'primevue/column';
 import ColumnGroup from 'primevue/columngroup'; //optional for column grouping
 import Row from 'primevue/row'; //optional for row
 import Dropdown from 'primevue/dropdown';
@@ -58,8 +61,6 @@ import InlineMessage from 'primevue/inlinemessage';
 // FIN PRIME VUE
 //
 
-import App from './App.vue';
-
 // importamos las rutas
 import router from './managers/router/Router.js';
 
@@ -68,7 +69,6 @@ import router from './managers/router/Router.js';
 import store from './managers/store/store';
 
 import axios from 'axios';
-import VueAxios from 'vue-axios';
 
 // usado para login
 axios.defaults.withCredentials = true;
@@ -149,10 +149,26 @@ createApp(App)
 				'Wednesday',
 				'Thursday',
 				'Friday',
-				'Saturday',
+				'Saturday'
 			],
-			dayNamesShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-			dayNamesMin: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
+			dayNamesShort: [
+				'Sun',
+				'Mon',
+				'Tue',
+				'Wed',
+				'Thu',
+				'Fri',
+				'Sat'
+			],
+			dayNamesMin: [
+				'Su',
+				'Mo',
+				'Tu',
+				'We',
+				'Th',
+				'Fr',
+				'Sa'
+			],
 			monthNames: [
 				'January',
 				'February',
@@ -165,7 +181,7 @@ createApp(App)
 				'September',
 				'October',
 				'November',
-				'December',
+				'December'
 			],
 			monthNamesShort: [
 				'Jan',
@@ -179,7 +195,7 @@ createApp(App)
 				'Sep',
 				'Oct',
 				'Nov',
-				'Dec',
+				'Dec'
 			],
 			chooseYear: 'Choose Year',
 			chooseMonth: 'Choose Month',
@@ -260,9 +276,9 @@ createApp(App)
 				zoomIn: 'Zoom In',
 				zoomOut: 'Zoom Out',
 				rotateRight: 'Rotate Right',
-				rotateLeft: 'Rotate Left',
-			},
-		},
+				rotateLeft: 'Rotate Left'
+			}
+		}
 	})
 	.use(ToastService)
 	.use(ConfirmationService)

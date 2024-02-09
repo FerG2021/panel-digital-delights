@@ -1,14 +1,12 @@
 export default {
 	namespaced: true,
 
-	state: {
-		promotions: [],
-	},
+	state: { promotions: [] },
 
 	getters: {
 		promotions(state) {
 			return state.promotions;
-		},
+		}
 	},
 
 	mutations: {
@@ -17,5 +15,5 @@ export default {
 		}
 	},
 
-	actions: { },
+	actions: { }
 };

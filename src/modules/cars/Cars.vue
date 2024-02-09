@@ -1,68 +1,69 @@
 <template>
-    <main class="about-page" v-if="Configuration">
-        <MainCard>
-            <template #header>
-                <h1> 
-					{{ Configuration.labels.sectionTitle }} 
+	<main class="about-page" v-if="Configuration">
+		<MainCard>
+			<template #header>
+				<h1>
+					{{ Configuration.labels.sectionTitle }}
 				</h1>
-            </template>
+			</template>
 
-            <template #content>
-                <div>
-                    <DynamicTable
-                        :elements="cars"
-                        :columns="Configuration.tableColumns"
-                        :labels="Configuration.labels"
-                        :loading="loading"
-                        @add="add"
-                        @edit="edit"
-                        @detail="detail"
-                        @delete="deleteCar"
+			<template #content>
+				<div>
+					<DynamicTable
+						:elements="cars"
+						:columns="Configuration.tableColumns"
+						:labels="Configuration.labels"
+						:loading="loading"
+						@add="add"
+						@edit="edit"
+						@detail="detail"
+						@delete="deleteCar"
 						@sell="sell"
 						@sell-detail="sellDetail"
-                    />
-                </div>
-            </template>
-        </MainCard>
+					/>
+				</div>
+			</template>
+		</MainCard>
 
-        <ConfirmDialog></ConfirmDialog>
+		<ConfirmDialog></ConfirmDialog>
 
-        <ABMCreate 
-			:data="Configuration.create" 
-			@formDataCreate="formDataCreate" 
+		<ABMCreate
+			:data="Configuration.create"
+			@formDataCreate="formDataCreate"
 		/>
-        <ABMUpdate 
-			:data="Configuration.update" 
-			@formDataUpdate="formDataUpdate" 
+		<ABMUpdate
+			:data="Configuration.update"
+			@formDataUpdate="formDataUpdate"
 		/>
-		<ABMDetail 
-			:data="Configuration.detail" 
-			@formDataUpdate="formDataUpdate" 
+		<ABMDetail
+			:data="Configuration.detail"
+			@formDataUpdate="formDataUpdate"
 		/>
-		<SellCar 
-			:data="Configuration.sell" 
+		<SellCar
+			:data="Configuration.sell"
 			@formDataSellCar="formDataSellCar"
 		/>
-		<SelledDetails 
-			:data="Configuration.selleddetails" 
+		<SelledDetails
+			:data="Configuration.selleddetails"
 		/>
-    </main>
+	</main>
 </template>
 
 <script>
+import moment from 'moment';
 import { FilterMatchMode } from 'primevue/api';
 import { mapGetters } from 'vuex';
-import { setConfigurationFileByAccount } from '../../utils/utils';
 
-import DynamicTable from '../../components/datatable/DynamicTable.vue';
 import ABMCreate from '../../components/ABM/ABMCreate.vue';
-import ABMUpdate from '../../components/ABM/ABMUpdate.vue';
 import ABMDetail from '../../components/ABM/ABMDetail.vue';
+import ABMUpdate from '../../components/ABM/ABMUpdate.vue';
 import MainCard from '../../components/common/MainCard.vue';
+import DynamicTable from '../../components/datatable/DynamicTable.vue';
 import Store from '../../managers/store/store';
+import { setConfigurationFileByAccount, setFormConfiguration } from '../../utils/utils';
+
 import SellCar from './modals/SellCar.vue';
 import SelledDetails from './modals/SelledDetails.vue';
-import moment from 'moment';
 
 export default {
 	name: 'CarsComponent',
@@ -81,17 +82,31 @@ export default {
 			currentCar: null,
 			Configuration: null,
 			filters: {
-				global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-			},
+				global: {
+					value: null,
+					matchMode: FilterMatchMode.CONTAINS
+				}
+			}
 		};
 	},
 
 	computed: {
-		...mapGetters('UsersStore', ['user', 'auth', 'modules', 'account']),
-		...mapGetters('CarsStore', ['cars', 'fuelOptions', 'conditionsOptions', 'fuels', 'conditions']),
+		...mapGetters('UsersStore', [
+			'user',
+			'auth',
+			'modules',
+			'account'
+		]),
+		...mapGetters('CarsStore', [
+			'cars',
+			'fuelOptions',
+			'conditionsOptions',
+			'fuels',
+			'conditions'
+		]),
 		...mapGetters('CategoriesStore', ['categories']),
 		...mapGetters('MarksStore', ['marks']),
-		...mapGetters('ClientsStore', ['clients']),
+		...mapGetters('ClientsStore', ['clients'])
 	},
 
 	mounted() {
@@ -111,7 +126,7 @@ export default {
 		setSelectOptions() {
 			this.loading = true;
 			this.setCategoriesOptions();
-			this.setMarksOptions();	
+			this.setMarksOptions();
 			this.setClients();
 
 			this.loading = false;
@@ -173,8 +188,6 @@ export default {
 			}
 		},
 
-		
-
 		add() {
 			this.Configuration.create.modalVisible = true;
 		},
@@ -200,7 +213,7 @@ export default {
 						severity: 'success',
 						summary: this.$t('toast.success'),
 						detail: response.data.message,
-						life: 3000,
+						life: 3000
 					});
 					Store.commit('UsersStore/setLoadingServerRequest', false);
 					this.getAllCars();
@@ -210,20 +223,14 @@ export default {
 						severity: 'error',
 						summary: this.$t('toast.error'),
 						detail: error.response.data.message,
-						life: 3000,
+						life: 3000
 					});
 					Store.commit('UsersStore/setLoadingServerRequest', false);
 				});
 		},
 
 		edit(data) {
-			this.Configuration.update.id = data.id;
-
-			for (const configuration of this.Configuration.update.formConfiguration) {
-				configuration.defaultValue = data[configuration.modelName];
-			}
-
-			this.Configuration.update.modalVisible = true;
+			this.Configuration = setFormConfiguration(this.Configuration, data);
 		},
 
 		formDataUpdate(value) {
@@ -248,7 +255,7 @@ export default {
 						severity: 'success',
 						summary: this.$t('toast.success'),
 						detail: response.data.message,
-						life: 3000,
+						life: 3000
 					});
 					Store.commit('UsersStore/setLoadingServerRequest', false);
 					this.getAllCars();
@@ -258,12 +265,12 @@ export default {
 						severity: 'error',
 						summary: this.$t('toast.error'),
 						detail: error.response.data.message,
-						life: 3000,
+						life: 3000
 					});
 					Store.commit('UsersStore/setLoadingServerRequest', false);
 				});
 		},
-		
+
 		detail(data) {
 			this.Configuration.detail.id = data.id;
 
@@ -282,7 +289,7 @@ export default {
 						severity: 'success',
 						summary: this.$t('toast.success'),
 						detail: response.data.message,
-						life: 3000,
+						life: 3000
 					});
 					Store.commit('UsersStore/setLoadingServerRequest', false);
 					this.getAllCars();
@@ -305,6 +312,7 @@ export default {
 			for (const configuration of this.Configuration.sell.formConfiguration) {
 				configuration.defaultValue = data[configuration.modelName];
 			}
+
 			if (data.buyer === null) {
 				this.setClients();
 			}
@@ -324,6 +332,7 @@ export default {
 
 		setCars(data) {
 			this.currentCar = data;
+
 			for (const configuration of this.Configuration.sell.formConfiguration) {
 				if (configuration.modelName === 'car_id') {
 					configuration.defaultValue = data.name;
@@ -351,7 +360,7 @@ export default {
 						severity: 'success',
 						summary: this.$t('toast.success'),
 						detail: response.data.message,
-						life: 3000,
+						life: 3000
 					});
 					Store.commit('UsersStore/setLoadingServerRequest', false);
 					this.Configuration.sell.modalVisible = false;
@@ -363,7 +372,7 @@ export default {
 						severity: 'error',
 						summary: this.$t('toast.error'),
 						detail: error.response.data.message,
-						life: 3000,
+						life: 3000
 					});
 					Store.commit('UsersStore/setLoadingServerRequest', false);
 				});
@@ -377,9 +386,10 @@ export default {
 
 		getHeightWindow() {
 			var alturaPestana = window.innerHeight - 285;
+
 			return alturaPestana + 'px';
-		},
-	},
+		}
+	}
 };
 </script>
 

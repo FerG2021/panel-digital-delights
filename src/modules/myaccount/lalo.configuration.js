@@ -4,33 +4,33 @@ const configuration = {
 		{
 			modelName: 'name',
 			label: 'Nombre',
-			type: 'text', 
+			type: 'text',
 			required: true,
 			defaultValue: null,
-			setDefaultValue: true,
+			setDefaultValue: true
 		},
 		{
 			modelName: 'lastname',
 			label: 'Apellido',
-			type: 'text', 
+			type: 'text',
 			required: true,
 			defaultValue: null,
-			setDefaultValue: true,
+			setDefaultValue: true
 		},
 		{
 			modelName: 'password',
 			label: 'Contraseña',
-			type: 'password', 
+			type: 'password',
 			defaultValue: null,
-			setDefaultValue: false,
+			setDefaultValue: false
 		},
 		{
 			modelName: 'cpassword',
 			label: 'Confirmar contraseña',
-			type: 'password', 
+			type: 'password',
 			defaultValue: null,
-			setDefaultValue: false,
-		},
+			setDefaultValue: false
+		}
 	]
 };
 

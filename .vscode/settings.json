@@ -1,0 +1,43 @@
+{
+    "workbench.iconTheme": "material-icon-theme",
+    "search.mode": "newEditor",
+    "javascript.updateImportsOnFileMove.enabled": "always",
+    "workbench.colorCustomizations": {},
+    "[vue]": {
+        "editor.defaultFormatter": "octref.vetur",
+        "editor.tabSize": 4
+    },
+    "workbench.editor.splitInGroupLayout": "vertical",
+    "editor.detectIndentation": false,
+    "[javascript]": {
+        "editor.defaultFormatter": "vscode.typescript-language-features"
+    },
+    "[html]": {
+        "editor.defaultFormatter": "vscode.html-language-features"
+    },
+    "[python]": {
+        "editor.formatOnType": true
+    },
+    "vetur.completion.scaffoldSnippetSources": {
+
+        "workspace": "💼",
+        "user": "🗒️",
+        "vetur": "✌"
+    },
+    "vetur.format.options.tabSize": 4,
+    "vetur.format.options.useTabs": true,
+    "redhat.telemetry.enabled": false,
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": "explicit"
+    },
+    "editor.insertSpaces": false,
+    "editor.tabSize": 4,
+    "eslint.validate": [
+        "json",
+        "javascript",
+        "javascriptreact",
+        "typescript",
+        "typescriptreact",
+        "vue"
+    ]
+}

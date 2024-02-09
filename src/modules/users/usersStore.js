@@ -1,7 +1,8 @@
 import axios from 'axios';
-import loadModulesByAccount from '../../utils/modulesLoader';
-import store from '../../managers/store/store';
+
 import router from '../../managers/router/Router';
+import store from '../../managers/store/store';
+import loadModulesByAccount from '../../utils/modulesLoader';
 
 export default {
 	namespaced: true,
@@ -37,17 +38,17 @@ export default {
 		},
 		loaded(state) {
 			return state.loaded;
-		},
+		}
 	},
 
 	mutations: {
 		SET_USER(state, user) {
 			state.user = user;
 			state.auth = Boolean(user);
+
 			if (user) {
 				state.account = user.email.split('.')[1];
 				loadModulesByAccount(store, router, state.account);
-
 			} else {
 				state.account = null;
 			}
@@ -71,11 +72,13 @@ export default {
 		async login({ dispatch }, credentials) {
 			await axios.get('/sanctum/csrf-cookie');
 			await axios.post('/login', credentials);
+
 			return dispatch('getUser');
 		},
 
 		async logout({ dispatch }) {
 			await axios.post('/logout');
+
 			return dispatch('getUser');
 		},
 
@@ -88,6 +91,6 @@ export default {
 				.catch(() => {
 					commit('SET_USER', null);
 				});
-		},
-	},
+		}
+	}
 };

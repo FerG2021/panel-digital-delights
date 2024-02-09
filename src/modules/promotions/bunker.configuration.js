@@ -17,48 +17,48 @@ const configuration = {
 		delete: api.deletePromotion
 	},
 	tableColumns: [
-		{ 
-			field: 'image', 
-			header: 'Imagen', 
-			type: 'image', 
-			variation: '' 
+		{
+			field: 'image',
+			header: 'Imagen',
+			type: 'image',
+			variation: ''
 		},
-		{ 
-			field: 'title', 
-			header: 'Títilo', 
-			type: 'normal', 
-			variation: '' 
+		{
+			field: 'title',
+			header: 'Títilo',
+			type: 'normal',
+			variation: ''
 		},
-		{ 
-			field: 'description', 
-			header: 'Descripción', 
-			type: 'normal', 
-			variation: '' 
+		{
+			field: 'description',
+			header: 'Descripción',
+			type: 'normal',
+			variation: ''
 		},
-		{ 
-			field: 'price', 
-			header: 'Precio', 
-			type: 'price', 
-			variation: '' 
+		{
+			field: 'price',
+			header: 'Precio',
+			type: 'price',
+			variation: ''
 		},
-		{ 
-			field: 'available', 
-			header: 'Disponible', 
-			type: 'boolean', 
-			variation: '' 
+		{
+			field: 'available',
+			header: 'Disponible',
+			type: 'boolean',
+			variation: ''
 		},
-		{ 
-			field: 'name', 
-			header: 'Editar', 
-			type: 'button', 
-			variation: 'update' 
+		{
+			field: 'name',
+			header: 'Editar',
+			type: 'button',
+			variation: 'update'
 		},
-		{ 
-			field: 'name', 
-			header: 'Eliminar', 
-			type: 'button', 
-			variation: 'delete' 
-		},
+		{
+			field: 'name',
+			header: 'Eliminar',
+			type: 'button',
+			variation: 'delete'
+		}
 	],
 
 	create: {
@@ -66,44 +66,44 @@ const configuration = {
 		header: {
 			class: 'material-icons',
 			icon: 'edit',
-			headerName: 'Nueva promoción',
+			headerName: 'Nueva promoción'
 		},
 		formConfiguration: [
 			{
 				modelName: 'title',
 				label: 'Título',
-				type: 'text', 
+				type: 'text',
 				required: true,
-				defaultValue: null,
+				defaultValue: null
 			},
 			{
 				modelName: 'description',
 				label: 'Descripción',
-				type: 'text', 
+				type: 'text',
 				required: true,
-				defaultValue: null,
+				defaultValue: null
 			},
 			{
 				modelName: 'price',
 				label: 'Precio',
-				type: 'price', 
+				type: 'price',
 				required: true,
-				defaultValue: null,
+				defaultValue: null
 			},
 			{
 				modelName: 'available',
 				label: 'Disponible',
-				type: 'switch', 
+				type: 'switch',
 				required: true,
-				defaultValue: null,
+				defaultValue: null
 			},
 			{
 				modelName: 'image',
 				label: 'Imagen',
-				type: 'image', 
+				type: 'image',
 				required: true,
-				defaultValue: null,
-			},
+				defaultValue: null
+			}
 		]
 	},
 
@@ -112,47 +112,47 @@ const configuration = {
 		header: {
 			class: 'material-icons',
 			icon: 'edit',
-			headerName: 'Modificar promoción',
+			headerName: 'Modificar promoción'
 		},
 		id: null,
 		formConfiguration: [
 			{
 				modelName: 'title',
 				label: 'Título',
-				type: 'text', 
+				type: 'text',
 				required: true,
-				defaultValue: null,
+				defaultValue: null
 			},
 			{
 				modelName: 'description',
 				label: 'Descripción',
-				type: 'text', 
+				type: 'text',
 				required: true,
-				defaultValue: null,
+				defaultValue: null
 			},
 			{
 				modelName: 'price',
 				label: 'Precio',
-				type: 'price', 
+				type: 'price',
 				required: true,
-				defaultValue: null,
+				defaultValue: null
 			},
 			{
 				modelName: 'available',
 				label: 'Disponible',
-				type: 'switch', 
+				type: 'switch',
 				required: true,
-				defaultValue: null,
+				defaultValue: null
 			},
 			{
 				modelName: 'image',
 				label: 'Imagen',
-				type: 'image', 
+				type: 'image',
 				required: true,
-				defaultValue: null,
-			},
+				defaultValue: null
+			}
 		]
 	}
 };
-  
+
 export default configuration;

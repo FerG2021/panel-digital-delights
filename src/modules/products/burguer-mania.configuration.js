@@ -7,56 +7,56 @@ const configuration = {
 			message: '¿Está seguro que desea eliminar el producto?'
 		}
 	},
-	
+
 	tableColumns: [
-		{ 
-			field: 'image', 
-			header: 'Imagen', 
-			type: 'image', 
-			variation: '' 
+		{
+			field: 'image',
+			header: 'Imagen',
+			type: 'image',
+			variation: ''
 		},
-		{ 
-			field: 'name', 
-			header: 'Nombre', 
-			type: 'normal', 
-			variation: '' 
+		{
+			field: 'name',
+			header: 'Nombre',
+			type: 'normal',
+			variation: ''
 		},
-		{ 
-			field: 'description', 
-			header: 'Descripción', 
-			type: 'normal', 
-			variation: '' 
+		{
+			field: 'description',
+			header: 'Descripción',
+			type: 'normal',
+			variation: ''
 		},
-		{ 
-			field: 'category.name', 
-			header: 'Categoría', 
-			type: 'normal', 
-			variation: '' 
+		{
+			field: 'category.name',
+			header: 'Categoría',
+			type: 'normal',
+			variation: ''
 		},
-		{ 
-			field: 'price', 
-			header: 'Precio', 
-			type: 'price', 
-			variation: '' 
+		{
+			field: 'price',
+			header: 'Precio',
+			type: 'price',
+			variation: ''
 		},
-		{ 
-			field: 'stock', 
-			header: 'Stock', 
-			type: 'boolean', 
-			variation: '' 
+		{
+			field: 'stock',
+			header: 'Stock',
+			type: 'boolean',
+			variation: ''
 		},
-		{ 
-			field: 'name', 
-			header: 'Editar', 
-			type: 'button', 
-			variation: 'update' 
+		{
+			field: 'name',
+			header: 'Editar',
+			type: 'button',
+			variation: 'update'
 		},
-		{ 
-			field: 'name', 
-			header: 'Eliminar', 
-			type: 'button', 
-			variation: 'delete' 
-		},
+		{
+			field: 'name',
+			header: 'Eliminar',
+			type: 'button',
+			variation: 'delete'
+		}
 	],
 
 	create: {
@@ -64,52 +64,52 @@ const configuration = {
 		header: {
 			class: 'material-icons',
 			icon: 'edit',
-			headerName: 'Nuevo producto',
+			headerName: 'Nuevo producto'
 		},
 		formConfiguration: [
 			{
 				modelName: 'name',
 				label: 'Nombre',
-				type: 'text', 
+				type: 'text',
 				required: true,
-				defaultValue: null,
+				defaultValue: null
 			},
 			{
 				modelName: 'category',
 				label: 'Categoría',
-				type: 'select', 
+				type: 'select',
 				placeholder: 'Seleccione una categoría',
 				required: true,
-				defaultValue: null,
+				defaultValue: null
 			},
 			{
 				modelName: 'description',
 				label: 'Descripción',
-				type: 'text', 
+				type: 'text',
 				required: true,
-				defaultValue: null,
+				defaultValue: null
 			},
 			{
 				modelName: 'price',
 				label: 'Precio',
-				type: 'price', 
+				type: 'price',
 				required: true,
-				defaultValue: null,
+				defaultValue: null
 			},
 			{
 				modelName: 'stock',
 				label: 'Stock',
-				type: 'switch', 
+				type: 'switch',
 				required: true,
-				defaultValue: null,
+				defaultValue: null
 			},
 			{
 				modelName: 'image',
 				label: 'Imagen',
-				type: 'image', 
+				type: 'image',
 				required: true,
-				defaultValue: null,
-			},
+				defaultValue: null
+			}
 		]
 	},
 
@@ -118,21 +118,21 @@ const configuration = {
 		header: {
 			class: 'material-icons',
 			icon: 'edit',
-			headerName: 'Modificar producto',
+			headerName: 'Modificar producto'
 		},
 		id: null,
 		formConfiguration: [
 			{
 				modelName: 'name',
 				label: 'Nombre',
-				type: 'text', 
+				type: 'text',
 				required: true,
-				defaultValue: null,
+				defaultValue: null
 			},
 			{
 				modelName: 'category',
 				label: 'Categoría',
-				type: 'select', 
+				type: 'select',
 				placeholder: 'Seleccione una categoría',
 				required: true,
 				defaultValue: null,
@@ -141,33 +141,33 @@ const configuration = {
 			{
 				modelName: 'description',
 				label: 'Descripción',
-				type: 'text', 
+				type: 'text',
 				required: true,
-				defaultValue: null,
+				defaultValue: null
 			},
 			{
 				modelName: 'price',
 				label: 'Precio',
-				type: 'price', 
+				type: 'price',
 				required: true,
-				defaultValue: null,
+				defaultValue: null
 			},
 			{
 				modelName: 'stock',
 				label: 'Stock',
-				type: 'switch', 
+				type: 'switch',
 				required: true,
-				defaultValue: null,
+				defaultValue: null
 			},
 			{
 				modelName: 'image',
 				label: 'Imagen',
-				type: 'image', 
+				type: 'image',
 				required: true,
-				defaultValue: null,
-			},
+				defaultValue: null
+			}
 		]
 	}
 };
-  
+
 export default configuration;

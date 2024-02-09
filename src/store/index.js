@@ -1,14 +1,12 @@
+import axios from 'axios';
 import { createStore } from 'vuex';
 // axios
-import axios from 'axios';
 
 // usado para login
 axios.defaults.withCredentials = true;
 
 export default createStore({
-	state: {
-		user: null,
-	},
+	state: { user: null },
 
 	mutations: {
 		SET_USER(state, user) {
@@ -34,8 +32,10 @@ export default createStore({
 					} else {
 						console.log('Error', error.message);
 					}
+
 					console.log(error.config);
 				});
+
 			return dispatch('getUser');
 		},
 
@@ -54,9 +54,10 @@ export default createStore({
 					} else {
 						console.log('Error', error.message);
 					}
+
 					console.log(error.config);
 				});
-		},
-	},
+		}
+	}
 });
 

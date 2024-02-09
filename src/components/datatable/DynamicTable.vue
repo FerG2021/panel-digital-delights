@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<DataTable 
+		<DataTable
 			:value="elements"
 			responsiveLayout="scroll"
 			:loading="loading"
@@ -10,7 +10,6 @@
 			headerStyle="text-align: center"
 			:scrollHeight="getHeightWindow()"
 			class="data-table"
-			
 		>
 			<template #header>
 				<div class="header-container">
@@ -69,14 +68,14 @@
 					v-if="column.type === 'boolean'"
 				>
 					<template #body="slotProps">
-						<InlineMessage 
-							severity="success" 
+						<InlineMessage
+							severity="success"
 							v-if="slotProps.data[column.field] === 1 || slotProps.data[column.field] === true || slotProps.data[column.field] !== null"
 						>
 							SI
 						</InlineMessage>
 
-						<InlineMessage 
+						<InlineMessage
 							severity="error"
 							v-if="slotProps.data[column.field] === 0 || slotProps.data[column.field] === false | slotProps.data[column.field] === null"
 						>
@@ -84,7 +83,7 @@
 						</InlineMessage>
 					</template>
 				</Column>
-				
+
 				<Column
 					:key="column.field"
 					:field="column.field"
@@ -160,38 +159,43 @@
 
 <script>
 import { FilterMatchMode } from 'primevue/api';
-import { formatNumberToDecimal, formatDate } from '../../utils/utils';
+
+import { formatDate, formatNumberToDecimal } from '../../utils/utils';
 
 export default {
 	name: 'TableComponent',
 	props: {
 		elements: {
 			type: Array,
-			required: true,
+			required: true
 		},
 		labels: {
 			type: Object,
-			required: true,
+			required: true
 		},
 		columns: {
 			type: Array,
-			required: true,
+			required: true
 		},
 		loading: {
 			type: Boolean,
-			required: true,
+			required: true
 		}
 	},
 	data() {
 		return {
 			filters: {
-				global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-			},
+				global: {
+					value: null,
+					matchMode: FilterMatchMode.CONTAINS
+				}
+			}
 		};
 	},
 	methods: {
 		getHeightWindow() {
 			var heightWindow = window.innerHeight - 260;
+
 			return heightWindow + 'px';
 		},
 
@@ -207,7 +211,7 @@ export default {
 					this.$emit('delete', element);
 				},
 				reject: () => {	},
-				onHide: () => {	},
+				onHide: () => {	}
 			});
 		},
 
@@ -218,7 +222,7 @@ export default {
 		formatDate(date) {
 			return formatDate(date, 'DD/MM/YYYY');
 		}
-	},
+	}
 };
 </script>
 
@@ -285,8 +289,6 @@ export default {
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
   padding: 3px;
 }
-
-
 
 .header-container {
 	display: flex;
