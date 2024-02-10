@@ -55,13 +55,20 @@ export default {
 				onHide: () => {	}
 			});
 		},
-
 		formatNumber(number) {
 			return formatNumberToDecimal(number);
 		},
-
 		formatDate(date) {
 			return formatDate(date, 'DD/MM/YYYY');
+		},
+		isColumn(column, type) {
+			return column === type;
+		},
+		existBuyer(data) {
+			return data === null;
+		},
+		showSuccessMessage(slotProps, column) {
+			return slotProps.data[column.field] === 1 || slotProps.data[column.field] === true || slotProps.data[column.field] !== null;
 		}
 	}
 };
@@ -105,14 +112,14 @@ export default {
 					:key="column.field"
 					:field="column.field"
 					:header="column.header"
-					v-if="column.type === 'normal'"
+					v-if="isColumn(column.type, 'normal')"
 				/>
 
 				<Column
 					:key="column.field"
 					:field="column.field"
 					:header="column.header"
-					v-if="column.type === 'price'"
+					v-if="isColumn(column.type, 'price')"
 				>
 					<template #body="slotProps">
 						{{  `$${formatNumber(slotProps.data[column.field]) }` }}
@@ -123,7 +130,7 @@ export default {
 					:key="column.field"
 					:field="column.field"
 					:header="column.header"
-					v-if="column.type === 'date'"
+					v-if="isColumn(column.type, 'date')"
 				>
 					<template #body="slotProps">
 						{{  `${formatDate(slotProps.data[column.field]) }` }}
@@ -134,21 +141,21 @@ export default {
 					:key="column.field"
 					:field="column.field"
 					:header="column.header"
-					v-if="column.type === 'boolean'"
+					v-if="isColumn(column.type, 'boolean')"
 				>
 					<template #body="slotProps">
 						<InlineMessage
 							severity="success"
-							v-if="slotProps.data[column.field] === 1 || slotProps.data[column.field] === true || slotProps.data[column.field] !== null"
+							v-if="showSuccessMessage(slotProps, column)"
 						>
-							SI
+							{{ $t('yes') }}
 						</InlineMessage>
 
 						<InlineMessage
 							severity="error"
 							v-if="slotProps.data[column.field] === 0 || slotProps.data[column.field] === false | slotProps.data[column.field] === null"
 						>
-							NO
+							{{ $t('no') }}
 						</InlineMessage>
 					</template>
 				</Column>
@@ -157,38 +164,38 @@ export default {
 					:key="column.field"
 					:field="column.field"
 					:header="column.header"
-					v-else-if="column.type === 'button'"
+					v-else-if="isColumn(column.type, 'button')"
 					style="width: 20px"
 				>
 					<template #body="slotProps">
 						<div style="display: flex">
 							<div style="margin: auto">
 								<Button
-									v-if="column.variation === 'update'"
+									v-if="isColumn(column.variation, 'update')"
 									icon="pi pi-pencil"
 									class="p-button-rounded p-button-warning mr-2"
 									@click="$emit('edit', slotProps.data)"
 								/>
 								<Button
-									v-if="column.variation === 'detail'"
+									v-else-if="isColumn(column.variation, 'detail')"
 									icon="pi pi-eye"
 									class="p-button-rounded p-button-primary mr-2"
 									@click="$emit('detail', slotProps.data)"
 								/>
 								<Button
-									v-if="column.variation === 'delete'"
+									v-else-if="isColumn(column.variation, 'delete')"
 									icon="pi pi-trash"
 									class="p-button-rounded p-button-danger"
 									@click="deleteRow(slotProps.data)"
 								/>
 								<Button
-									v-if="column.variation === 'sell' && slotProps.data.buyer_id === null"
+									v-else-if="isColumn(column.variation, 'sell') && existBuyer(slotProps.data.buyer_id)"
 									icon="pi pi-ticket"
 									class="p-button-rounded p-button-primary mr-2"
 									@click="$emit('sell', slotProps.data)"
 								/>
 								<Button
-									v-if="column.variation === 'sell' && slotProps.data.buyer_id !== null"
+									v-else-if="isColumn(column.variation, 'sell') && !existBuyer(slotProps.data.buyer_id)"
 									icon="pi pi-eye"
 									class="p-button-rounded p-button-primary mr-2"
 									@click="$emit('sell-detail', slotProps.data)"
@@ -202,7 +209,7 @@ export default {
 					:key="column.field"
 					:field="column.field"
 					:header="column.header"
-					v-else-if="column.type === 'image'"
+					v-else-if="isColumn(column.type, 'image')"
 				>
 					<template #body="slotProps">
 						<Image
@@ -273,11 +280,9 @@ export default {
 .p-column-header-content {
   text-align: center !important;
   align-content: center !important;
-  /* border: 1px solid red !important; */
 }
 
 .p-column-title {
-  /* border: 1px solid green !important; */
   text-align: center !important;
   align-content: center !important;
 }
@@ -293,9 +298,5 @@ export default {
 .header-container {
 	display: flex;
 	justify-content: space-between;
-}
-
-.actions-btns-container {
-	border: 1px solid red !important;
 }
 </style>

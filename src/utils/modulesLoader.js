@@ -122,15 +122,6 @@ export default function loadModulesByAccount(store, router, account) {
 	const processModules = accountsModules[account] || [];
 
 	processModules.forEach(module => {
-		// if (module.store === true) {
-		// 	import(`../modules/${module.name}/${module.name}Store.js`).then(moduleStore => {
-		// 		console.log(moduleStore);
-		// 		store.registerModule(`${module.componentName}Store`, moduleStore.default);
-		// 	}).catch(error => {
-		// 		console.error(`Error al cargar el módulo: ${error}`);
-		// 	});
-		// }
-
 		router.addRoute({
 			path: `${module.path}`,
 			component: () => import(`../modules/${module.name}/${module.componentName}.vue`)

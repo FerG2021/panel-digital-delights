@@ -43,8 +43,7 @@ export default {
 		},
 		validateForm() {
 			for (const item of this.data.formConfiguration) {
-				if (item.required && !this.formData[item.modelName
-				]) {
+				if (item.required && !this.formData[item.modelName]) {
 					Store.commit('UsersStore/setLoadingServerRequest', false);
 
 					return `El campo ${item.label} es requerido`;

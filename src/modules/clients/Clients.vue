@@ -55,8 +55,6 @@ export default {
 		},
 
 		add() {
-			console.log('this.Configuration.create');
-			console.log(this.Configuration.create);
 			this.Configuration.create.modalVisible = true;
 		},
 
@@ -83,7 +81,6 @@ export default {
 					this.getAllClients();
 				})
 				.catch((error) => {
-					console.log(error);
 					this.$toast.add({
 						severity: 'error',
 						summary: this.$t('toast.error'),
@@ -159,9 +156,9 @@ export default {
 		},
 
 		getHeightWindow() {
-			var alturaPestana = window.innerHeight - 285;
+			var tabHeight = window.innerHeight - 285;
 
-			return alturaPestana + 'px';
+			return tabHeight + 'px';
 		}
 	}
 };

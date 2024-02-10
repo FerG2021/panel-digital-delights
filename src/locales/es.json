@@ -7,6 +7,8 @@
     "categories": "Categorías",
     "reviews": "Reseñas",
     "promotions": "Promociones",
+	"yes": "SI",
+	"no": "NO",
 
     "login" : {
         "login": "Ingresar",

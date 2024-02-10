@@ -62,25 +62,7 @@ export default {
 		}
 	},
 
-	mounted() {
-		// this.setStores();
-	},
-
 	methods: {
-		setStores() {
-			this.loadCategories();
-			this.loadProducts();
-			this.loadPromotions();
-		},
-		async loadCategories() {
-			await getAllCategories(this.user.account_id);
-		},
-		async loadProducts() {
-			await getAllProducts(this.user.account_id);
-		},
-		async loadPromotions() {
-			await getAllPromotions(this.user.account_id);
-		},
 		expandSidebar(data) {
 			this.is_expanded = data;
 			this.account.name = `${this.user.name}`;

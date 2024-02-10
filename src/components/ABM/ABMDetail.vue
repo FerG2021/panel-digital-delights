@@ -95,7 +95,7 @@ export default {
 			style="width: 30vw"
 			@hide="handleModalClose()"
 			@show="handleDialogShow()"
-		>s
+		>
 			<template #header>
 				<TitleModal :header="data.header" />
 			</template>
