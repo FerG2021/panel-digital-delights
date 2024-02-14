@@ -13,7 +13,8 @@ export default function loadModulesByAccount(store, router, account) {
 				path: '/',
 				icon: 'home',
 				store: false,
-				showInHome: false
+				showInHome: false,
+				menuItem: true
 			},
 			{
 				name: 'products',
@@ -23,6 +24,7 @@ export default function loadModulesByAccount(store, router, account) {
 				icon: 'inventory_2',
 				store: true,
 				showInHome: true,
+				menuItem: true,
 				loadedMethod: digitalDelightsApi.getAllProducts
 			},
 			{
@@ -33,6 +35,7 @@ export default function loadModulesByAccount(store, router, account) {
 				icon: 'category',
 				store: true,
 				showInHome: true,
+				menuItem: true,
 				loadedMethod: digitalDelightsApi.getAllCategories
 			},
 			{
@@ -43,6 +46,7 @@ export default function loadModulesByAccount(store, router, account) {
 				icon: 'campaign',
 				store: true,
 				showInHome: true,
+				menuItem: true,
 				loadedMethod: digitalDelightsApi.getAllPromotions
 			},
 			{
@@ -52,9 +56,9 @@ export default function loadModulesByAccount(store, router, account) {
 				path: '/my-account',
 				icon: 'manage_accounts',
 				store: false,
-				showInHome: true
+				showInHome: true,
+				menuItem: false
 			}
-
 		],
 		lalo: [
 			{
@@ -64,7 +68,8 @@ export default function loadModulesByAccount(store, router, account) {
 				path: '/',
 				icon: 'home',
 				store: false,
-				showInHome: false
+				showInHome: false,
+				menuItem: true
 			},
 			{
 				name: 'cars',
@@ -74,6 +79,7 @@ export default function loadModulesByAccount(store, router, account) {
 				icon: 'directions_car',
 				store: true,
 				showInHome: true,
+				menuItem: true,
 				loadedMethod: carsAgencyApi.getAllCars
 			},
 			{
@@ -84,6 +90,7 @@ export default function loadModulesByAccount(store, router, account) {
 				icon: 'stars',
 				store: true,
 				showInHome: true,
+				menuItem: true,
 				loadedMethod: carsAgencyApi.getAllMarks
 			},
 			{
@@ -94,6 +101,7 @@ export default function loadModulesByAccount(store, router, account) {
 				icon: 'category',
 				store: true,
 				showInHome: true,
+				menuItem: true,
 				loadedMethod: carsAgencyApi.getAllCategories
 			},
 			{
@@ -104,7 +112,19 @@ export default function loadModulesByAccount(store, router, account) {
 				icon: 'group',
 				store: true,
 				showInHome: true,
+				menuItem: true,
 				loadedMethod: carsAgencyApi.getAllClients
+			},
+			{
+				name: 'notifications',
+				componentName: 'Notifications',
+				title: 'Notificaciones',
+				path: '/notifications',
+				icon: 'group',
+				store: true,
+				showInHome: false,
+				menuItem: false,
+				loadedMethod: carsAgencyApi.getAllNotifications
 			},
 			{
 				name: 'myaccount',
@@ -113,13 +133,16 @@ export default function loadModulesByAccount(store, router, account) {
 				path: '/my-account',
 				icon: 'manage_accounts',
 				store: false,
+				menuItem: false,
 				showInHome: true
 			}
-
 		]
 	};
 
 	const processModules = accountsModules[account] || [];
+
+	console.log('processModules');
+	console.log(processModules);
 
 	processModules.forEach(module => {
 		router.addRoute({

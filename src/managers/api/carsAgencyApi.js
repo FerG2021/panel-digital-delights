@@ -112,3 +112,13 @@ export const deleteCar = (id, car) => {
 export const sellCar = (id, data) => {
 	return axios.post(`/api/car/sell/${id}`, data);
 };
+
+export const getAllNotifications = async (id) => {
+	await axios.get(`/api/categories/${id}`)
+		.then((response) => {
+			Store.commit('NotificationsStore/setNotifications', response.data.data);
+		})
+		.catch((error) => {
+			console.log(error);
+		});
+};

@@ -1,9 +1,9 @@
 <script>
 import { mapGetters } from 'vuex';
 
-import { getAllCategories, getAllProducts, getAllPromotions } from '../../managers/api/digitalDelightsApi';
 import LogOut from '../common/LogOut.vue';
 
+import NotificationButton from './NotificationButton.vue';
 import SidebarBtnExpand from './SidebarBtnExpand.vue';
 import SidebarItem from './SidebarItem.vue';
 import SidebarLogo from './SidebarLogo.vue';
@@ -12,10 +12,11 @@ export default {
 	name: 'SideBar',
 
 	components: {
+		NotificationButton,
+		SidebarBtnExpand,
 		SidebarItem,
 		LogOut,
-		SidebarLogo,
-		SidebarBtnExpand
+		SidebarLogo
 	},
 
 	data() {
@@ -32,7 +33,7 @@ export default {
 			let items = [];
 
 			for (const module of this.modules) {
-				if (module.name !== 'myaccount') {
+				if (module.menuItem) {
 					items.push({
 						route: module.path,
 						icon: module.icon,
@@ -59,6 +60,25 @@ export default {
 			}
 
 			return account;
+		},
+		notifications() {
+			let notification = {};
+
+			for (const module of this.modules) {
+				if (module.name === 'notifications') {
+					notification = {
+						route: module.path,
+						icon: module.icon,
+						name: module.title,
+						id: module.name
+					};
+				}
+			}
+
+			console.log('notification');
+			console.log(notification);
+
+			return notification;
 		}
 	},
 
@@ -85,6 +105,13 @@ export default {
 		<SidebarLogo/>
 
 		<SidebarBtnExpand @expandSidebar="expandSidebar"/>
+
+		<div class="menu">
+			<NotificationButton
+				:item="notifications"
+				:is_expanded="is_expanded"
+			/>
+		</div>
 
 		<h3> {{ $t('sidebar.title') }} </h3>
 		<div class="menu">

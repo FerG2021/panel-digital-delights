@@ -100,6 +100,7 @@ export default {
 					</div>
 					<div class="btn-container">
 						<Button
+							v-if="labels.new !== null"
 							:label="labels.new"
 							@click="$emit('add')"
 						/>

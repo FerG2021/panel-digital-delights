@@ -7,6 +7,9 @@
     "categories": "Categories",
     "reviews": "Reviews",
     "promotions": "Promociones",
+	"notifications": "Notifications",
+	"yes": "SI",
+	"no": "NO",
 
     "login" : {
         "login": "Login",

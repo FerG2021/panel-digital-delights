@@ -1,15 +1,13 @@
 import moment from 'moment';
 
-// bunker
 import lalocars from '../modules/cars/lalo.configuration';
 import bunkercategories from '../modules/categories/bunker.configuration';
-
-// lalo
 import lalocategories from '../modules/categories/lalo.configuration';
 import laloclients from '../modules/clients/lalo.configuration';
 import lalomarks from '../modules/marks/lalo.configuration';
 import bunkermyaccount from '../modules/myaccount/bunker.configuration';
 import lalomyaccount from '../modules/myaccount/lalo.configuration';
+import lalonotifications from '../modules/notifications/lalo.configuration';
 import bunkerproducts from '../modules/products/bunker.configuration';
 import bunkerpromotions from '../modules/promotions/bunker.configuration';
 
@@ -23,7 +21,8 @@ const configurations = {
 	lalomarks: lalomarks,
 	laloclients: laloclients,
 	lalocars: lalocars,
-	lalomyaccount: lalomyaccount
+	lalomyaccount: lalomyaccount,
+	lalonotifications: lalonotifications
 };
 
 export const formatNumberToDecimal = (number) => {
@@ -43,6 +42,9 @@ export const formatDate = (date, format) => {
 
 export const setConfigurationFileByAccount = async (module, account) => {
 	const configuration = configurations[`${account}${module}`];
+
+	console.log('configuration');
+	console.log(configuration);
 
 	if (configuration) {
 		return configuration;
