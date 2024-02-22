@@ -75,9 +75,6 @@ export default {
 				}
 			}
 
-			console.log('notification');
-			console.log(notification);
-
 			return notification;
 		}
 	},

@@ -1,7 +1,12 @@
 import ElementPlus from 'element-plus';
 import ElMessage from 'element-plus';
 import locale from 'element-plus/lib/locale/lang/es';
+import Button from 'primevue/button';
+import Calendar from 'primevue/calendar';
+import Card from 'primevue/card';
+import CascadeSelect from 'primevue/cascadeselect';
 import Column from 'primevue/column';
+import ColumnGroup from 'primevue/columngroup'; //optional for column grouping
 import PrimeVue from 'primevue/config';
 import ConfirmationService from 'primevue/confirmationservice';
 import ConfirmDialog from 'primevue/confirmdialog';
@@ -32,24 +37,21 @@ import 'primeicons/primeicons.css'; //icons
 import ToastService from 'primevue/toastservice';
 import Dialog from 'primevue/dialog';
 import DataTable from 'primevue/datatable';
-import ColumnGroup from 'primevue/columngroup'; //optional for column grouping
 import Row from 'primevue/row'; //optional for row
 import Dropdown from 'primevue/dropdown';
 import InputNumber from 'primevue/inputnumber';
 import InputSwitch from 'primevue/inputswitch';
 import Tag from 'primevue/tag';
-import Button from 'primevue/button';
 import InputText from 'primevue/inputtext';
 import Password from 'primevue/password';
-import Card from 'primevue/card';
 import ProgressSpinner from 'primevue/progressspinner';
 import FileUpload from 'primevue/fileupload';
-import CascadeSelect from 'primevue/cascadeselect';
 import TreeSelect from 'primevue/treeselect';
 import Rating from 'primevue/rating';
 import Textarea from 'primevue/textarea';
 import Image from 'primevue/image';
-import Calendar from 'primevue/calendar';
+import Badge from 'primevue/badge';
+import BadgeDirective from 'primevue/badgedirective';
 import 'primeflex/primeflex.css';
 
 // Scroll
@@ -106,6 +108,8 @@ createApp(App)
 	.component('ToggleButton', ToggleButton)
 	.component('InlineMessage', InlineMessage)
 	.component('Calendar', Calendar)
+	.component('Badge', Badge)
+	.directive('badge', BadgeDirective)
 	.use(router)
 	.use(ElementPlus, { locale })
 	.use(ElMessage)

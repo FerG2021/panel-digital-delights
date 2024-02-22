@@ -11,8 +11,6 @@ export default {
 
 	mutations: {
 		setNotifications(state, notifications) {
-			console.log('notifications');
-			console.log(notifications);
 			state.notifications = notifications;
 		}
 	},

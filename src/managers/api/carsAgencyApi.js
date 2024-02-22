@@ -114,11 +114,15 @@ export const sellCar = (id, data) => {
 };
 
 export const getAllNotifications = async (id) => {
-	await axios.get(`/api/categories/${id}`)
+	await axios.get(`/api/notifications/${id}`)
 		.then((response) => {
 			Store.commit('NotificationsStore/setNotifications', response.data.data);
 		})
 		.catch((error) => {
 			console.log(error);
 		});
+};
+
+export const readNotification = (id, arrayNotificacion) => {
+	return axios.post(`/api/notifications/read/${id}`, arrayNotificacion);
 };

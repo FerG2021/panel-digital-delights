@@ -151,7 +151,9 @@ export default {
 			let formData = new FormData();
 
 			for (let key in value) {
-				formData.append(key, value[key]);
+				if (value[key] !== null) {
+					formData.append(key, value[key]);
+				}
 			}
 
 			this.Configuration.endpoints.new(this.user.account_id, formData)

@@ -73,6 +73,11 @@
         "deleteConfirmation": "Categoría eliminada con éxito"
     },
 
+	"notificationsSection": {
+		"birthday": "Desde todo el equipo de Lalo Automotores queremos desear un feliz cumpleaños en este día tan especial",
+		"sell": "Nos comunicamos porque ya han pasados dos semanas desde que adquiriste tu vehículo CAR_MODEL, queríamos que nos cuentes tus sensaciones con esta nueva adquisición"
+	},
+
     "myaccount": {
         "title": "Mi cuenta",
         "alert": "Al modificar algunos de los datos de su cuenta la sesión se cerrará y deberá voler a ingresar"

@@ -34,6 +34,12 @@ export default {
 		};
 	},
 	methods: {
+		getProperties(prop) {
+			console.log('prop');
+			console.log(prop);
+
+			return prop;
+		},
 		getHeightWindow() {
 			var heightWindow = window.innerHeight - 260;
 
@@ -86,6 +92,7 @@ export default {
 			headerStyle="text-align: center"
 			:scrollHeight="getHeightWindow()"
 			class="data-table"
+			v-model:selection="selectedCustomers"
 		>
 			<template #header>
 				<div class="header-container">
@@ -163,6 +170,20 @@ export default {
 
 				<Column
 					:key="column.field"
+					:header="column.header"
+					v-if="isColumn(column.type, 'color-message')"
+				>
+					<template #body="slotProps">
+						<Tag
+							:icon="slotProps.data[column.properties].icon"
+							:value="slotProps.data[column.properties].label"
+							:severity="slotProps.data[column.properties].type"
+						/>
+					</template>
+				</Column>
+
+				<Column
+					:key="column.field"
 					:field="column.field"
 					:header="column.header"
 					v-else-if="isColumn(column.type, 'button')"
@@ -200,6 +221,22 @@ export default {
 									icon="pi pi-eye"
 									class="p-button-rounded p-button-primary mr-2"
 									@click="$emit('sell-detail', slotProps.data)"
+								/>
+								<Button
+									v-if="isColumn(column.variation, 'whatsapp')"
+									icon="pi pi-whatsapp"
+									class="p-button-rounded p-button-success mr-2"
+									@click="$emit('send-whatsapp', slotProps.data)"
+								/>
+								<Button
+									v-if="isColumn(column.variation, 'reader')"
+									icon="pi pi-folder-open"
+									severity="warning"
+									class="p-button-rounded p-button-contrast mr-2"
+									rounded
+									aria-label="Notification"
+									@click="$emit('read-notification', slotProps.data)"
+									:disabled="slotProps.data.read === 1"
 								/>
 							</div>
 						</div>

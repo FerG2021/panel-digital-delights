@@ -1,4 +1,6 @@
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
 	props: {
 		item: {
@@ -11,8 +13,12 @@ export default {
 		}
 	},
 	computed: {
+		...mapGetters('NotificationsStore', ['notifications']),
 		notificationsTitle() {
 			return this.$t('notifications');
+		},
+		notificationsLength() {
+			return this.notifications ? this.notifications.filter(notification => notification.read === 0).length : null;
 		}
 	},
 	methods: {
@@ -29,9 +35,11 @@ export default {
 		v-if="is_expanded"
 		@click="clickNotificationButton()"
 	>
-		<span @click="logout()">
-			<i class="pi pi-bell material-icons"></i>
-		</span>
+		<i
+			v-badge="notificationsLength"
+			class="pi pi-bell"
+			style="font-size: 1.5rem"
+		/>
 		<span class="text">{{ $t("notifications") }}</span>
 	</div>
 
@@ -47,10 +55,11 @@ export default {
 			v-if="!is_expanded"
 			@click="clickNotificationButton()"
 		>
-			<span>
-				<i class="pi pi-bell material-icons"></i>
-			</span>
-			<span class="text">{{ $t("notifications") }}</span>
+			<i
+				v-badge="notificationsLength"
+				class="pi pi-bell"
+				style="font-size: 1.5rem"
+			/>
 		</div>
 	</el-tooltip>
 </template>
@@ -69,6 +78,12 @@ aside {
   color: var(--light);
 
   transition: 0.2s ease-out;
+
+  .button {
+	&:hover {
+		color: var(--primary);
+	}
+  }
 
   .flex {
     flex: 1 1 0;
@@ -136,6 +151,7 @@ aside {
       .text {
         color: var(--light);
         transition: 0.2s ease-out;
+		margin-left: 20px;
       }
 
       &:hover,

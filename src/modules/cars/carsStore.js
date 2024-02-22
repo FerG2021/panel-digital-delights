@@ -15,7 +15,7 @@ export default {
 				name: 'Gasoil'
 			},
 			{
-				id: '3',
+				id: 3,
 				name: 'GNC'
 			}
 		],
