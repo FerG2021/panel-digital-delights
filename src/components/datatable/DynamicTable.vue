@@ -21,6 +21,10 @@ export default {
 		loading: {
 			type: Boolean,
 			required: true
+		},
+		filtersColumn: {
+			type: Array,
+			required: true
 		}
 	},
 	data() {
@@ -34,12 +38,6 @@ export default {
 		};
 	},
 	methods: {
-		getProperties(prop) {
-			console.log('prop');
-			console.log(prop);
-
-			return prop;
-		},
 		getHeightWindow() {
 			var heightWindow = window.innerHeight - 260;
 
@@ -75,6 +73,9 @@ export default {
 		},
 		showSuccessMessage(slotProps, column) {
 			return slotProps.data[column.field] === 1 || slotProps.data[column.field] === true || slotProps.data[column.field] !== null;
+		},
+		formatArrayToString(patentsArray) {
+			return patentsArray.length > 0 ? patentsArray.join(', ') : '-';
 		}
 	}
 };
@@ -86,7 +87,7 @@ export default {
 			:value="elements"
 			responsiveLayout="scroll"
 			:loading="loading"
-			:globalFilterFields="['name']"
+			:globalFilterFields="filtersColumn"
 			v-model:filters="filters"
 			filterDisplay="menu"
 			headerStyle="text-align: center"
@@ -122,6 +123,17 @@ export default {
 					:header="column.header"
 					v-if="isColumn(column.type, 'normal')"
 				/>
+
+				<Column
+					:key="column.field"
+					:field="column.field"
+					:header="column.header"
+					v-if="isColumn(column.type, 'array')"
+				>
+					<template #body="slotProps">
+						{{  formatArrayToString(slotProps.data[column.field]) }}
+					</template>
+				</Column>
 
 				<Column
 					:key="column.field"

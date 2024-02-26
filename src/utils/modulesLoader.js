@@ -141,9 +141,6 @@ export default function loadModulesByAccount(store, router, account) {
 
 	const processModules = accountsModules[account] || [];
 
-	console.log('processModules');
-	console.log(processModules);
-
 	processModules.forEach(module => {
 		router.addRoute({
 			path: `${module.path}`,

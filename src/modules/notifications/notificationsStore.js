@@ -1,7 +1,7 @@
 export default {
 	namespaced: true,
 
-	state: { notifications: null },
+	state: { notifications: [] },
 
 	getters: {
 		notifications(state) {

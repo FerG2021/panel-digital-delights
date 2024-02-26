@@ -43,9 +43,6 @@ export const formatDate = (date, format) => {
 export const setConfigurationFileByAccount = async (module, account) => {
 	const configuration = configurations[`${account}${module}`];
 
-	console.log('configuration');
-	console.log(configuration);
-
 	if (configuration) {
 		return configuration;
 	} else {

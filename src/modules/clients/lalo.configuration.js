@@ -16,6 +16,13 @@ const configuration = {
 		update: api.updateClient,
 		delete: api.deleteClient
 	},
+	filters: [
+		'name',
+		'lastname',
+		'birthday',
+		'address',
+		'recordsCars'
+	],
 	tableColumns: [
 		{
 			field: 'lastname',
@@ -39,6 +46,12 @@ const configuration = {
 			field: 'address',
 			header: 'Dirección',
 			type: 'normal',
+			variation: ''
+		},
+		{
+			field: 'recordsCars',
+			header: 'Vehículos',
+			type: 'array',
 			variation: ''
 		},
 		{

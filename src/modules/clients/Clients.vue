@@ -22,6 +22,7 @@ export default {
 		return {
 			loading: false,
 			Configuration: null,
+			recordsClients: [],
 			filters: {
 				global: {
 					value: null,
@@ -38,15 +39,38 @@ export default {
 			'modules',
 			'account'
 		]),
-		...mapGetters('ClientsStore', ['clients'])
+		...mapGetters('ClientsStore', ['clients']),
+		...mapGetters('CarsStore', ['cars'])
 	},
 
 	mounted() {
 		this.setCongigurationFile();
 		this.getHeightWindow();
+		this.setClients();
 	},
 
 	methods: {
+		setClients() {
+			if (this.clients) {
+				let index = 0;
+
+				for (const client of this.clients) {
+					client.recordsCars = [];
+
+					if (this.clients[index].cars !== null) {
+						for (const carID of JSON.parse(this.clients[index].cars)) {
+							const recordCar = this.cars.find(car => car.id === carID);
+							client.recordsCars.push(recordCar.patent);
+						}
+					}
+
+					index++;
+				}
+
+				this.recordsClients = this.clients;
+			}
+		},
+
 		async setCongigurationFile() {
 			this.Configuration = await setConfigurationFileByAccount(
 				'clients',
@@ -153,6 +177,7 @@ export default {
 
 		async getAllClients() {
 			await this.Configuration.endpoints.getAllClients(this.user.account_id);
+			this.setClients();
 		},
 
 		getHeightWindow() {
@@ -176,10 +201,11 @@ export default {
 			<template #content>
 				<div>
 					<DynamicTable
-						:elements="clients"
+						:elements="recordsClients"
 						:columns="Configuration.tableColumns"
 						:labels="Configuration.labels"
 						:loading="loading"
+						:filtersColumn="Configuration.filters"
 						@add="add"
 						@edit="edit"
 						@delete="deleteCategory"

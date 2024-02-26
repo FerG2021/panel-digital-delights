@@ -42,8 +42,6 @@ export default {
 		},
 		setDefaultMessage() {
 			for (const configurationItem of this.configuration.formConfiguration) {
-				console.log('configurationItem');
-				console.log(configurationItem);
 				this.formData[configurationItem.modelName] = `${configurationItem.defaultValue.replace('<CLIENT_NAME>', this.clientRecords.client.name)}. \n ${this.setMessageBody}`;
 			}
 		},
@@ -76,9 +74,6 @@ export default {
 			this.formData[moduleName] = value;
 		},
 		validateForm() {
-			console.log('this.configuration');
-			console.log(this.configuration);
-
 			for (const item of this.configuration.formConfiguration) {
 				if (item.required && !this.formData[item.modelName] && this.formData[item.modelName] === '') {
 					return `El campo ${item.label} es requerido`;

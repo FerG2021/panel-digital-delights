@@ -57,9 +57,6 @@ export const getAllClients = async (id) => {
 };
 
 export const newClient = (id, data) => {
-	console.log('data');
-	console.log(data);
-
 	return axios.post(`/api/client/${id}`, data);
 };
 

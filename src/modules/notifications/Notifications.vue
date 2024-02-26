@@ -30,24 +30,26 @@ export default {
 	},
 	methods: {
 		setNotifications() {
-			for (const notification of this.notifications) {
-				if (notification.notification.name === 'birthday') {
-					notification.notification.label = 'Cumpleaños';
-					notification.notification.type = 'info';
-					notification.notification.icon = 'pi pi-calendar-plus';
-				} else {
-					notification.notification.label = 'Venta';
-					notification.notification.type = 'success';
-					notification.notification.icon = 'pi pi-money-bill';
+			if (this.notifications.length > 0) {
+				for (const notification of this.notifications) {
+					if (notification.notification.name === 'birthday') {
+						notification.notification.label = 'Cumpleaños';
+						notification.notification.type = 'info';
+						notification.notification.icon = 'pi pi-calendar-plus';
+					} else {
+						notification.notification.label = 'Venta';
+						notification.notification.type = 'success';
+						notification.notification.icon = 'pi pi-money-bill';
+					}
+
+					notification.statusRead = {
+						label: notification.read === 0 ? 'No leída' : 'Leída',
+						type: notification.read === 0 ? 'danger' : 'sucess',
+						icon: notification.read === 0 ? 'pi pi-circle-fill' : 'pi pi-check'
+					};
+
+					notification.name = `${notification.client.name} ${notification.client.lastname}`;
 				}
-
-				notification.statusRead = {
-					label: notification.read === 0 ? 'No leída' : 'Leída',
-					type: notification.read === 0 ? 'danger' : 'sucess',
-					icon: notification.read === 0 ? 'pi pi-circle-fill' : 'pi pi-check'
-				};
-
-				notification.name = `${notification.client.name} ${notification.client.lastname}`;
 			}
 
 			return this.notifications;
@@ -55,6 +57,7 @@ export default {
 		sendWhatsapp(data) {
 			this.clientRecords = data;
 			this.Configuration.sendWhatsApp.modalVisible = true;
+			this.readNotification(data);
 		},
 		readNotification(data) {
 			this.loading = true;
