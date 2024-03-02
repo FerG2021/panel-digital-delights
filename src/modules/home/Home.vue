@@ -3,12 +3,14 @@ import { mapGetters } from 'vuex';
 
 import Card from '../../components/common/Card.vue';
 import MainCard from '../../components/common/MainCard.vue';
+import MonthlyFeesHomeNotification from '../monthlyfees/MonthlyFeesHomeNotification.vue';
 
 export default {
 	name: 'HomeComponent',
 	components: {
 		Card,
-		MainCard
+		MainCard,
+		MonthlyFeesHomeNotification
 	},
 	data() {
 		return { sectionTitle: 'Home' };
@@ -57,6 +59,10 @@ export default {
 						></Card>
 					</div>
 				</div>
+
+				<div class="monthly-fees">
+					<MonthlyFeesHomeNotification />
+				</div>
 			</template>
 		</MainCard>
 	</main>
@@ -73,6 +79,10 @@ export default {
 			width: 300px;
 		}
 	}
+}
+
+.monthly-fees {
+	margin-top: 20px;
 }
 
 .home {

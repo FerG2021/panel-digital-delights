@@ -23,6 +23,9 @@ export default {
 		},
 		buyDate() {
 			return formatDate(this.data.data.buy_date, 'DD/MM/YYYY');
+		},
+		expirationDay() {
+			return this.data.data.expiration_day;
 		}
 	},
 	methods: {}
@@ -52,6 +55,12 @@ export default {
 				<DetailsInfo
 					:title="'Fecha de la compra'"
 					:detail="buyDate"
+					class="details-info"
+				/>
+
+				<DetailsInfo
+					:title="'Día de vencimiento de cuota'"
+					:detail="expirationDay"
 					class="details-info"
 				/>
 			</div>

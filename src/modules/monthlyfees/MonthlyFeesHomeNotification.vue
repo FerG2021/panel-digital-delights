@@ -1,0 +1,66 @@
+<script>
+import { mapGetters } from 'vuex';
+
+export default {
+	computed: { ...mapGetters('MonthlyFeesStore', ['monthlyFees']) },
+	methods: {
+		clickDetailsButton() {
+			this.$router.push('/monthly-fees');
+		}
+	}
+};
+</script>
+
+<template>
+	<div class="container" v-if="monthlyFees">
+		<div class="title">
+			{{ $t('monthlyFeesSection.monthly_fee_home_title') }}
+		</div>
+		<div class="content">
+			<div
+				v-if="monthlyFees.length > 0"
+				class="monthly-fess-expired"
+			>
+				{{ $t('monthlyFeesSection.monthly_fees_expired_legend') }}
+
+				<Button
+					label="Ver detalles"
+					class="details-button p-button-danger"
+					severity="danger"
+					:loading="loadingServerRequest"
+					@click="clickDetailsButton()"
+				/>
+			</div>
+			<div
+				v-else
+				class="not-monthly-fees-expired"
+			>
+				{{ $t('monthlyFeesSection.not_monthly_fees_expired_legend') }}
+			</div>
+		</div>
+
+	</div>
+</template>
+
+<style lang="scss" scoped>
+.container {
+	padding: 20px;
+	font-size: 18px ;
+	.title {
+		font-weight: 600;
+	}
+	.content {
+		.monthly-fess-expired {
+			color: var(--error);
+			display: flex;
+			align-items: center;
+			.details-button {
+				margin-left: 10px;
+			}
+		}
+		.not-monthly-fees-expired {
+			color: var(--success);
+		}
+	}
+}
+</style>

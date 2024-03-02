@@ -127,6 +127,17 @@ export default function loadModulesByAccount(store, router, account) {
 				loadedMethod: carsAgencyApi.getAllNotifications
 			},
 			{
+				name: 'monthlyfees',
+				componentName: 'MonthlyFees',
+				title: 'Cuotas mensuales',
+				path: '/monthly-fees',
+				icon: 'wallet',
+				store: true,
+				showInHome: true,
+				menuItem: true,
+				loadedMethod: carsAgencyApi.getAllMonthlyFees
+			},
+			{
 				name: 'myaccount',
 				componentName: 'MyAccount',
 				title: 'Mi cuenta',

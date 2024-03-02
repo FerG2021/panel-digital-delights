@@ -72,10 +72,25 @@ export default {
 			return data === null;
 		},
 		showSuccessMessage(slotProps, column) {
-			return slotProps.data[column.field] === 1 || slotProps.data[column.field] === true || slotProps.data[column.field] !== null;
+			return slotProps.data[column.field] === 1 || slotProps.data[column.field] === true || slotProps.data[column.field] !== null && slotProps.data[column.field] !== 0;
 		},
 		formatArrayToString(patentsArray) {
 			return patentsArray.length > 0 ? patentsArray.join(', ') : '-';
+		},
+		async collectFee(element) {
+			this.$confirm.require({
+				header: this.labels.collectFee.header,
+				message: this.labels.collectFee.message,
+				icon: 'pi pi-info-circle',
+				acceptClass: 'p-button-success',
+				acceptIcon: 'pi pi-check',
+				rejectIcon: 'pi pi-times',
+				accept: () => {
+					this.$emit('collect-fee', element);
+				},
+				reject: () => {	},
+				onHide: () => {	}
+			});
 		}
 	}
 };
@@ -173,7 +188,7 @@ export default {
 
 						<InlineMessage
 							severity="error"
-							v-if="slotProps.data[column.field] === 0 || slotProps.data[column.field] === false | slotProps.data[column.field] === null"
+							v-if="slotProps.data[column.field] === 0 || slotProps.data[column.field] === false || slotProps.data[column.field] === null"
 						>
 							{{ $t('no') }}
 						</InlineMessage>
@@ -249,6 +264,12 @@ export default {
 									aria-label="Notification"
 									@click="$emit('read-notification', slotProps.data)"
 									:disabled="slotProps.data.read === 1"
+								/>
+								<Button
+									v-else-if="isColumn(column.variation, 'collect-fee')"
+									icon="pi pi-money-bill"
+									class="p-button-rounded p-button-primary"
+									@click="collectFee(slotProps.data)"
 								/>
 							</div>
 						</div>

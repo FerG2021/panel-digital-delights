@@ -23,10 +23,14 @@ export default {
 		setMessageBody() {
 			let messageBody = null;
 
-			if (this.clientRecords.notification.name === 'sell') {
-				messageBody = this.$t('notificationsSection.sell').replace('CAR_MODEL', this.clientRecords.car?.name);
+			if (this.clientRecords.notification) {
+				if (this.clientRecords.notification.name === 'sell') {
+					messageBody = this.$t('notificationsSection.sell').replace('CAR_MODEL', this.clientRecords.car?.name);
+				} else {
+					messageBody = this.$t('notificationsSection.birthday');
+				}
 			} else {
-				messageBody = this.$t('notificationsSection.birthday');
+				messageBody = this.$t('monthlyFeesSection.expired_date');
 			}
 
 			return messageBody;

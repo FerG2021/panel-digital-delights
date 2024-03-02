@@ -78,6 +78,13 @@
 		"sell": "Nos comunicamos porque ya han pasados dos semanas desde que adquiriste tu vehículo CAR_MODEL, queríamos que nos cuentes tus sensaciones con esta nueva adquisición"
 	},
 
+	"monthlyFeesSection": {
+		"monthly_fee_home_title": "Estado de cuotas mensuales",
+		"monthly_fees_expired_legend": "Existen clientes con cuotas vencidas",
+		"not_monthly_fees_expired_legend": "Todos los clientes al día",
+		"expired_date": "Te enviamos este mensaje para recordarte que se encuentra vencida la cuota del mes."
+	},
+
     "myaccount": {
         "title": "Mi cuenta",
         "alert": "Al modificar algunos de los datos de su cuenta la sesión se cerrará y deberá voler a ingresar"

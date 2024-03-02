@@ -414,21 +414,32 @@ const configuration = {
 			headerName: 'Vender vehículo'
 		},
 		id: null,
-		formConfiguration: [{
-			modelName: 'buyer',
-			label: 'Comprador',
-			type: 'select',
-			placeholder: 'Seleccione el comprador',
-			required: true,
-			defaultValue: null
-		},
-		{
-			field: 'buy_date',
-			modelName: 'buy_date',
-			label: 'Fecha de venta',
-			type: 'date',
-			variation: ''
-		}]
+		formConfiguration: [
+			{
+				modelName: 'buyer',
+				label: 'Comprador',
+				type: 'select',
+				placeholder: 'Seleccione el comprador',
+				required: true,
+				defaultValue: null
+			},
+			{
+				field: 'buy_date',
+				modelName: 'buy_date',
+				label: 'Fecha de venta',
+				type: 'date',
+				required: true,
+				variation: ''
+			},
+			{
+				field: 'expiration_day',
+				modelName: 'expiration_day',
+				label: 'Día de vencimiento de cuota',
+				type: 'number',
+				required: true,
+				variation: ''
+			}
+		]
 	},
 	selleddetails: {
 		modalVisible: false,

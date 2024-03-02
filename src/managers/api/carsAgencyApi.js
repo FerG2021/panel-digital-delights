@@ -123,3 +123,17 @@ export const getAllNotifications = async (id) => {
 export const readNotification = (id, arrayNotificacion) => {
 	return axios.post(`/api/notifications/read/${id}`, arrayNotificacion);
 };
+
+export const getAllMonthlyFees = async (id) => {
+	await axios.get(`/api/car/monthlyFees/${id}`)
+		.then((response) => {
+			Store.commit('MonthlyFeesStore/setMonthlyFees', response.data.data);
+		})
+		.catch((error) => {
+			console.log(error);
+		});
+};
+
+export const collectFee = (id, data) => {
+	return axios.post(`/api/car/monthlyFees/collectfee/${id}`, data);
+};

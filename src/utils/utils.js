@@ -5,6 +5,7 @@ import bunkercategories from '../modules/categories/bunker.configuration';
 import lalocategories from '../modules/categories/lalo.configuration';
 import laloclients from '../modules/clients/lalo.configuration';
 import lalomarks from '../modules/marks/lalo.configuration';
+import lalomonthlyfees from '../modules/monthlyfees/lalo.configuration';
 import bunkermyaccount from '../modules/myaccount/bunker.configuration';
 import lalomyaccount from '../modules/myaccount/lalo.configuration';
 import lalonotifications from '../modules/notifications/lalo.configuration';
@@ -22,7 +23,8 @@ const configurations = {
 	laloclients: laloclients,
 	lalocars: lalocars,
 	lalomyaccount: lalomyaccount,
-	lalonotifications: lalonotifications
+	lalonotifications: lalonotifications,
+	lalomonthlyfees: lalomonthlyfees
 };
 
 export const formatNumberToDecimal = (number) => {

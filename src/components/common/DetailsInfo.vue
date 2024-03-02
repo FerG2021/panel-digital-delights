@@ -28,10 +28,14 @@ export default {
 .container {
 	border-radius: 4px;
 	display: flex;
-	justify-content: space-around;
 	background-color: #e5e5e5;
 	.info-container {
 		font-weight: 600;
+		width: 50%;
+	}
+	.detail-container {
+		width: 50%;
+		text-align: center;
 	}
 }
 </style>

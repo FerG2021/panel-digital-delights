@@ -4,6 +4,7 @@ import carsStore from '../../modules/cars/carsStore';
 import categoriesStore from '../../modules/categories/categoriesStore';
 import clientsStore from '../../modules/clients/clientsStore';
 import marksStore from '../../modules/marks/marksStore';
+import monthlyFeesStore from '../../modules/monthlyfees/monthlyFeesStore';
 import notificationsStore from '../../modules/notifications/notificationsStore';
 import productsStore from '../../modules/products/productsStore';
 import promotionsStore from '../../modules/promotions/promotionsStore';
@@ -18,6 +19,7 @@ export default createStore({
 		MarksStore: marksStore,
 		ClientsStore: clientsStore,
 		CarsStore: carsStore,
-		NotificationsStore: notificationsStore
+		NotificationsStore: notificationsStore,
+		MonthlyFeesStore: monthlyFeesStore
 	}
 });

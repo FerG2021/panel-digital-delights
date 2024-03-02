@@ -30,5 +30,10 @@
     
 	/* States */
 	--error-background: #FFEEED;
-	--error-color: #FF5757
+	--error-color: #FF5757;
+
+
+	/* Status colors */
+	--error: #EF4444;
+	--success: #15BA82
 }

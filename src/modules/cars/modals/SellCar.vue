@@ -99,50 +99,10 @@ export default {
 						:key="field.name"
 						class="form-item"
 					>
-						<div class="field" v-if="field.type === 'text' || data.selled">
-							<div class="p-float-label">
-								<p>
-									{{ field.label }}
-									<span
-										v-if="field.required"
-										class="required"
-									>
-										*
-									</span>
-								</p>
-								<InputText
-									:id="field.name"
-									v-model="formData[field.modelName]"
-									@update:modelValue="(value) => handleInputChange(field.defaultValue, field.modelName)"
-									:disabled="field.disabled"
-								/>
-							</div>
-						</div>
-
-						<div class="field" v-if="field.type === 'price'">
-							<div class="p-float-label">
-								<p>
-									{{ field.label }}
-									<span
-										v-if="field.required"
-										class="required"
-									>
-										*
-									</span>
-								</p>
-								<InputNumber
-									:id="field.name"
-									v-model="formData[field.modelName]"
-									currency="USD"
-									inputId="locale-german"
-									locale="de-DE"
-									:minFractionDigits="2"
-									@update:modelValue="(value) => handleInputChange(value, field.modelName)"
-								/>
-							</div>
-						</div>
-
-						<div class="field" v-if="field.type === 'number'">
+						<div
+							v-if="field.type === 'number'"
+							class="field"
+						>
 							<div class="p-float-label">
 								<p>
 									{{ field.label }}
@@ -162,7 +122,10 @@ export default {
 							</div>
 						</div>
 
-						<div class="field" v-if="field.type === 'select' && !data.selled">
+						<div
+							v-if="field.type === 'select' && !data.selled"
+							class="field"
+						>
 							<div class="p-float-label">
 								<p>
 									{{ field.label }}
@@ -197,61 +160,10 @@ export default {
 							</div>
 						</div>
 
-						<div class="field" v-if="field.type === 'switch'">
-							<div class="p-float-label">
-								<p>
-									{{ field.label }}
-									<span
-										v-if="field.required"
-										class="required"
-									>
-										*
-									</span>
-								</p>
-								<ToggleButton
-									:id="field.name"
-									v-model="formData[field.modelName]"
-									onLabel="SI"
-									offLabel="NO"
-									onIcon="pi pi-check"
-									offIcon="pi pi-times"
-									class="w-9rem"
-									@update:modelValue="(value) => handleInputChange(value === true ? 1 : 0, field.modelName)"
-								/>
-							</div>
-						</div>
-
-						<div class="field" v-if="field.type === 'image'">
-							<div class="p-float-label">
-								<p>
-									{{ field.label }}
-									<span
-										v-if="field.required"
-										class="required"
-									>
-										*
-									</span>
-								</p>
-								<FileUpload
-									name="form.demo"
-									url="./upload.php"
-									@upload="onUpload"
-									@select="selectedImage"
-									:multiple="false"
-									accept="image/*"
-									:maxFileSize="1000000"
-									invalidFileSizeMessage="{0}: Tamaño de archivo inválido, debe ser menor a {1}."
-								>
-									<template #empty>
-										<p>
-											{{ $t("productsSection.uploadImage") }}
-										</p>
-									</template>
-								</FileUpload>
-							</div>
-						</div>
-
-						<div class="field" v-if="field.type === 'date' && !data.selled">
+						<div
+							v-if="field.type === 'date' && !data.selled"
+							class="field"
+						>
 							<div class="p-float-label">
 								<p>
 									{{ field.label }}
