@@ -3,7 +3,7 @@ import * as api from '../../managers/api/carsAgencyApi';
 const configuration = {
 	account: 'lalo',
 	labels: {
-		sectionTitle: 'Cuotas mensuales',
+		sectionTitle: 'Cuotas mensuales vencidas',
 		new: null,
 		collectFee: {
 			header: 'Confirmación',
@@ -65,11 +65,11 @@ const configuration = {
 		}
 	],
 	sendWhatsApp: {
-		modalVisible: false,
+		openSendWhatsAppModal: false,
 		header: {
 			class: 'material-icons',
-			icon: 'edit',
-			headerName: 'Enviar mensaje'
+			icon: 'send',
+			label: 'Enviar mensaje'
 		},
 		formConfiguration: [{
 			modelName: 'message',

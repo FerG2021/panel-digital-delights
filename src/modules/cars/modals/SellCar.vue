@@ -7,20 +7,31 @@ import Store from '../../../managers/store/store';
 export default {
 	components: { TitleModal },
 	props: {
-		data: {
+		configuration: {
 			type: Array,
+			required: true
+		},
+		endpoints: {
+			type: Object,
+			required: true
+		},
+		data: {
+			type: Object,
 			required: true
 		}
 	},
 	data() {
 		return {
 			formData: {},
-			errors: null
+			errors: null,
+			loading: false,
+			lifeTimeToast: 3000
 		};
 	},
-	computed: { ...mapGetters('UsersStore', ['loadingServerRequest']) },
+	computed: { ...mapGetters('UsersStore', ['user', 'loadingServerRequest']) },
 	methods: {
 		handleModalClose() {
+			this.loading = false;
 			this.errors = null;
 			this.formData = {};
 		},
@@ -38,11 +49,48 @@ export default {
 			}
 
 			if (this.errors === null) {
-				this.$emit('formDataSellCar', this.formData);
+				this.sendSell();
 			}
 		},
+		sendSell() {
+			this.loading = true;
+			this.formData.buyer_id = this.formData.buyer.id;
+			this.formData.car_id = this.data.id;
+
+			let formData = new FormData();
+
+			for (let key in this.formData) {
+				if (this.formData[key] !== null) {
+					formData.append(key, this.formData[key]);
+				}
+			}
+
+			this.endpoints.sell(this.user.account_id, formData)
+				.then((response) => {
+					this.configuration.openSellModal = false;
+					this.$toast.add({
+						severity: 'success',
+						summary: this.$t('toast.success'),
+						detail: response.data.message,
+						life: this.lifeTimeToast
+					});
+					Store.commit('UsersStore/setLoadingServerRequest', false);
+					this.endpoints.getAll(this.user.account_id);
+				})
+				.catch((error) => {
+					this.$toast.add({
+						severity: 'error',
+						summary: this.$t('toast.error'),
+						detail: error.response.data.message,
+						life: this.lifeTimeToast
+					});
+					Store.commit('UsersStore/setLoadingServerRequest', false);
+				});
+
+			this.loading = false;
+		},
 		validateForm() {
-			for (const item of this.data.formConfiguration) {
+			for (const item of this.configuration.formConfiguration) {
 				if (item.required && !this.formData[item.modelName
 				]) {
 					Store.commit('UsersStore/setLoadingServerRequest', false);
@@ -52,21 +100,6 @@ export default {
 			}
 
 			return null;
-		},
-		onUpload() {
-			this.$toast.add({
-				severity: 'info',
-				summary: 'Success',
-				detail: 'File Uploaded',
-				life: 3000
-			});
-		},
-		selectedImage(event) {
-			for (const configuration of this.data.formConfiguration) {
-				if (configuration.type === 'image') {
-					this.formData[configuration.modelName] = event.files[0];
-				}
-			}
 		},
 		getOptionLabel(option) {
 			return `${option.lastname}, ${option.name}`;
@@ -78,7 +111,7 @@ export default {
 <template>
 	<div>
 		<Dialog
-			v-model:visible="data.modalVisible"
+			v-model:visible="configuration.openSellModal"
 			icon="pi pi-refresh"
 			class="flex justify-content-center dialog"
 			:draggable="false"
@@ -86,7 +119,7 @@ export default {
 			@hide="handleModalClose()"
 		>
 			<template #header>
-				<TitleModal :header="data.header" />
+				<TitleModal :title="configuration.header" />
 			</template>
 
 			<div class="form-container">
@@ -95,7 +128,7 @@ export default {
 					class="p-fluid form"
 				>
 					<div
-						v-for="field in data.formConfiguration"
+						v-for="field in configuration.formConfiguration"
 						:key="field.name"
 						class="form-item"
 					>
@@ -123,7 +156,7 @@ export default {
 						</div>
 
 						<div
-							v-if="field.type === 'select' && !data.selled"
+							v-if="field.type === 'select' && !configuration.selled"
 							class="field"
 						>
 							<div class="p-float-label">
@@ -138,7 +171,7 @@ export default {
 								</p>
 								<Dropdown
 									v-model="formData[field.modelName]"
-									:options="field.defaultValue"
+									:options="field.options"
 									optionLabel="name"
 									:placeholder="field.placeholder"
 								>
@@ -161,7 +194,7 @@ export default {
 						</div>
 
 						<div
-							v-if="field.type === 'date' && !data.selled"
+							v-if="field.type === 'date' && !configuration.selled"
 							class="field"
 						>
 							<div class="p-float-label">
@@ -192,7 +225,7 @@ export default {
 					<Button
 						label="Guardar"
 						class="mt-2"
-						:loading="loadingServerRequest"
+						:loading="loading"
 						@click="save()"
 					/>
 				</form>

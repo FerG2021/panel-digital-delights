@@ -34,10 +34,8 @@ export default {
 			<router-link
 				class="button"
 				:to="item.route"
-				v-if="!is_expanded || is_expanded"
 			>
 				<span class="material-icons">{{ item.icon }}</span>
-				<span class="text">{{ item.name }}</span>
 			</router-link>
 		</el-tooltip>
 	</div>

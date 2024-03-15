@@ -29,7 +29,6 @@ export default {
 			}
 		};
 	},
-
 	computed: {
 		...mapGetters('UsersStore', [
 			'user',
@@ -37,14 +36,18 @@ export default {
 			'modules',
 			'account'
 		]),
-		...mapGetters('CategoriesStore', ['categories'])
+		...mapGetters('CategoriesStore', ['categories']),
+		title() {
+			return this.Configuration.labels.sectionTitle;
+		},
+		endpoints() {
+			return this.Configuration.endpoints;
+		}
 	},
-
 	mounted() {
 		this.setCongigurationFile();
 		this.getHeightWindow();
 	},
-
 	methods: {
 		async setCongigurationFile() {
 			this.Configuration = await setConfigurationFileByAccount(
@@ -52,103 +55,16 @@ export default {
 				this.account
 			);
 		},
-
-		add() {
-			this.Configuration.create.modalVisible = true;
+		openABMCreate() {
+			this.Configuration.actions.openCreateModal = true;
 		},
-
-		async formDataCreate(value) {
-			this.formData = value;
-
-			let formData = new FormData();
-
-			for (let key in value) {
-				formData.append(key, value[key]);
-			}
-
-			this.Configuration.endpoints.new(this.user.account_id, formData)
-				.then(() => {
-					this.Configuration.create.modalVisible = false;
-					this.loading = false;
-					this.$toast.add({
-						severity: 'success',
-						summary: this.$t('toast.success'),
-						detail: this.$t('categoriesSection.createConfirmation'),
-						life: 3000
-					});
-					Store.commit('UsersStore/setLoadingServerRequest', false);
-					this.getAllCategories();
-				})
-				.catch((error) => {
-					console.log(error);
-					this.$toast.add({
-						severity: 'error',
-						summary: this.$t('toast.error'),
-						detail: error.response.data.message,
-						life: 3000
-					});
-					Store.commit('UsersStore/setLoadingServerRequest', false);
-				});
+		formatItem(item) {
+			return item;
 		},
-
-		edit(data) {
+		openABMUpdate(data) {
 			this.Configuration = setFormConfiguration(this.Configuration, data);
+			this.Configuration.actions.openUpdateModal = true;
 		},
-
-		formDataUpdate(value) {
-			let formData = new FormData();
-
-			for (let key in value) {
-				formData.append(key, value[key]);
-			}
-
-			this.Configuration.endpoints.update(this.user.account_id, formData)
-				.then(() => {
-					this.Configuration.update.modalVisible = false;
-					this.loading = false;
-					this.$toast.add({
-						severity: 'success',
-						summary: this.$t('toast.success'),
-						detail: this.$t('categoriesSection.updateConfirmation'),
-						life: 3000
-					});
-					Store.commit('UsersStore/setLoadingServerRequest', false);
-					this.getAllCategories();
-				})
-				.catch((error) => {
-					this.$toast.add({
-						severity: 'error',
-						summary: this.$t('toast.error'),
-						detail: error.response.data.message,
-						life: 3000
-					});
-					Store.commit('UsersStore/setLoadingServerRequest', false);
-				});
-		},
-
-		async deleteCategory(element) {
-			this.Configuration.endpoints.delete(this.user.account_id, element)
-				.then((response) => {
-					this.loading = false;
-					this.$toast.add({
-						severity: 'success',
-						summary: this.$t('toast.success'),
-						detail: response.data.message,
-						life: 3000
-					});
-					Store.commit('UsersStore/setLoadingServerRequest', false);
-					this.getAllCategories();
-				})
-				.catch((error) => {
-					console.log(error);
-					Store.commit('UsersStore/setLoadingServerRequest', false);
-				});
-		},
-
-		async getAllCategories() {
-			await this.Configuration.endpoints.getAllCategories(this.user.account_id);
-		},
-
 		getHeightWindow() {
 			var alturaPestana = window.innerHeight - 285;
 
@@ -162,31 +78,33 @@ export default {
 	<main class="about-page" v-if="Configuration">
 		<MainCard>
 			<template #header>
-				<h1>
-					{{ Configuration.labels.sectionTitle }}
-				</h1>
+				{{ title }}
 			</template>
 
 			<template #content>
-				<div>
-					<DynamicTable
-						:elements="categories"
-						:columns="Configuration.tableColumns"
-						:labels="Configuration.labels"
-						:loading="loading"
-						@add="add"
-						@edit="edit"
-						@delete="deleteCategory"
-					/>
-				</div>
+				<DynamicTable
+					:elements="categories"
+					:columns="Configuration.tableColumns"
+					:labels="Configuration.labels"
+					:endpoints="endpoints"
+					:loading="loading"
+					@add="openABMCreate"
+					@edit="openABMUpdate"
+				/>
 			</template>
 		</MainCard>
 
-		<ConfirmDialog></ConfirmDialog>
+		<ABMCreate
+			:configuration="Configuration.actions"
+			:endpoints="Configuration.endpoints"
+			:format-item="item => formatItem(item)"
+		/>
 
-		<ABMCreate :data="Configuration.create" @formDataCreate="formDataCreate" />
-
-		<ABMUpdate :data="Configuration.update" @formDataUpdate="formDataUpdate" />
+		<ABMUpdate
+			:configuration="Configuration.actions"
+			:endpoints="Configuration.endpoints"
+			:format-item="item => formatItem(item)"
+		/>
 	</main>
 </template>
 
@@ -205,11 +123,9 @@ export default {
 .p-column-header-content {
     text-align: center !important;
     align-content: center !important;
-    /* border: 1px solid red !important; */
 }
 
 .p-column-title {
-    /* border: 1px solid green !important; */
     text-align: center !important;
     align-content: center !important;
 }

@@ -15,7 +15,27 @@ export default {
 	},
 	computed: {
 		...mapGetters('NotificationsStore', ['notifications']),
-		...mapGetters('UsersStore', ['user', 'account'])
+		...mapGetters('UsersStore', ['user', 'account']),
+		setMessage() {
+			return this.clientRecords ? this.setMessageType : null;
+		},
+		setMessageType() {
+			let message = this.Configuration.sendWhatsApp.formConfiguration[0].defaultValue.replace('<CLIENT_NAME>', this.clientRecords.client.name);
+
+			if (this.clientRecords.notification_type === 1) {
+				message = `${message} \n ${this.$t('NOTIFICATIONS_SECTION.BIRTHDAY')}`;
+			} else {
+				message = `${message} \n ${this.$t('NOTIFICATIONS_SECTION.SELL').replace('CAR_MODEL', this.clientRecords.car.name)}`;
+			}
+
+			return message;
+		},
+		phoneNumber() {
+			return this.clientRecords ? this.clientRecords.client.phone_number : null;
+		},
+		title() {
+			return this.Configuration.labels.sectionTitle;
+		}
 	},
 	data() {
 		return {
@@ -26,7 +46,6 @@ export default {
 	},
 	mounted() {
 		this.setCongigurationFile();
-		this.getHeightWindow();
 	},
 	methods: {
 		setNotifications() {
@@ -56,8 +75,11 @@ export default {
 		},
 		sendWhatsapp(data) {
 			this.clientRecords = data;
-			this.Configuration.sendWhatsApp.modalVisible = true;
-			this.readNotification(data);
+			this.Configuration.sendWhatsApp.openSendWhatsAppModal = true;
+
+			if (data.read === 0) {
+				this.readNotification(data);
+			}
 		},
 		readNotification(data) {
 			this.loading = true;
@@ -87,11 +109,6 @@ export default {
 				'notifications',
 				this.account
 			);
-		},
-		getHeightWindow() {
-			var alturaPestana = window.innerHeight - 285;
-
-			return alturaPestana + 'px';
 		}
 	}
 };
@@ -101,9 +118,7 @@ export default {
 	<main class="about-page" v-if="Configuration">
 		<MainCard>
 			<template #header>
-				<h1>
-					{{ Configuration.labels.sectionTitle }}
-				</h1>
+				{{ title }}
 			</template>
 
 			<template #content>
@@ -122,7 +137,8 @@ export default {
 
 		<SendWhatsApp
 			:configuration="Configuration.sendWhatsApp"
-			:client-records="clientRecords"
+			:message="setMessage"
+			:phone-number="phoneNumber"
 		/>
 	</main>
 </template>

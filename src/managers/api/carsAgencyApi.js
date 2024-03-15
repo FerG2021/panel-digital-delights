@@ -76,22 +76,6 @@ export const getAllCars = async (id) => {
 		.catch((error) => {
 			console.log(error);
 		});
-
-	await axios.get(`/api/fuels/${id}`)
-		.then((response) => {
-			Store.commit('CarsStore/setFuels', response.data.data);
-		})
-		.catch((error) => {
-			console.log(error);
-		});
-
-	await axios.get(`/api/conditions/${id}`)
-		.then((response) => {
-			Store.commit('CarsStore/setConditions', response.data.data);
-		})
-		.catch((error) => {
-			console.log(error);
-		});
 };
 
 export const newCar = (id, data) => {

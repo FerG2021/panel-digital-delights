@@ -14,7 +14,8 @@ export default {
 		modules: null,
 		loadingServerRequest: false,
 		loading: false,
-		loaded: false
+		loaded: false,
+		notificationToast: null
 	},
 
 	getters: {
@@ -38,6 +39,10 @@ export default {
 		},
 		loaded(state) {
 			return state.loaded;
+		}
+		,
+		notificationToast(state) {
+			return state.notificationToast;
 		}
 	},
 
@@ -65,6 +70,9 @@ export default {
 		loaded(state) {
 			state.loaded = true;
 			state.loading = false;
+		},
+		notificationToast(state, notification) {
+			state.notificationToast = notification;
 		}
 	},
 

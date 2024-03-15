@@ -7,18 +7,33 @@ import TitleModal from '../common/TitleModal.vue';
 export default {
 	components: { TitleModal },
 	props: {
-		data: {
+		configuration: {
 			type: Array,
 			required: true
+		},
+		endpoints: {
+			type: Object,
+			required: true
+		},
+		formatItem: {
+			required: false,
+			type: Function,
+			default: (item) => item
 		}
 	},
 	data() {
 		return {
 			formData: {},
-			errors: null
+			errors: null,
+			lifeTimeToast: 3000
 		};
 	},
-	computed: { ...mapGetters('UsersStore', ['loadingServerRequest']) },
+	computed: {
+		...mapGetters('UsersStore', ['user', 'loadingServerRequest']),
+		title() {
+			return this.configuration.header.new;
+		}
+	},
 	methods: {
 		handleModalClose() {
 			this.errors = null;
@@ -28,8 +43,6 @@ export default {
 			this.formData[moduleName] = value;
 		},
 		save() {
-			Store.commit('UsersStore/setLoadingServerRequest', true);
-
 			this.errors = this.validateForm();
 			let formData = new FormData();
 
@@ -38,30 +51,53 @@ export default {
 			}
 
 			if (this.errors === null) {
-				this.$emit('formDataCreate', this.formData);
+				this.sendCreate();
 			}
 		},
-		validateForm() {
-			for (const item of this.data.formConfiguration) {
-				if (item.required && !this.formData[item.modelName]) {
-					Store.commit('UsersStore/setLoadingServerRequest', false);
+		sendCreate() {
+			this.formData = this.formatItem(this.formData);
 
+			let formData = new FormData();
+
+			for (let key in this.formData) {
+				if (this.formData[key] !== null) {
+					formData.append(key, this.formData[key]);
+				}
+			}
+
+			this.endpoints.new(this.user.account_id, formData)
+				.then((response) => {
+					this.configuration.openCreateModal = false;
+					this.$toast.add({
+						severity: 'success',
+						summary: this.$t('toast.success'),
+						detail: response.data.message,
+						life: this.lifeTimeToast
+					});
+					Store.commit('UsersStore/setLoadingServerRequest', false);
+					this.endpoints.getAll(this.user.account_id);
+				})
+				.catch((error) => {
+					this.$toast.add({
+						severity: 'error',
+						summary: this.$t('toast.error'),
+						detail: error.response.data.message,
+						life: this.lifeTimeToast
+					});
+					Store.commit('UsersStore/setLoadingServerRequest', false);
+				});
+		},
+		validateForm() {
+			for (const item of this.configuration.formConfiguration) {
+				if (item.required && !this.formData[item.modelName]) {
 					return `El campo ${item.label} es requerido`;
 				}
 			}
 
 			return null;
 		},
-		onUpload() {
-			this.$toast.add({
-				severity: 'info',
-				summary: 'Success',
-				detail: 'File Uploaded',
-				life: 3000
-			});
-		},
 		selectedImage(event) {
-			for (const configuration of this.data.formConfiguration) {
+			for (const configuration of this.configuration.formConfiguration) {
 				if (configuration.type === 'image') {
 					this.formData[configuration.modelName] = event.files[0];
 				}
@@ -74,15 +110,17 @@ export default {
 <template>
 	<div>
 		<Dialog
-			v-model:visible="data.modalVisible"
+			v-model:visible="configuration.openCreateModal"
 			icon="pi pi-refresh"
 			class="flex justify-content-center dialog"
 			:draggable="false"
-			style="width: 30vw "
 			@hide="handleModalClose()"
+			style="width: 30vw"
 		>
 			<template #header>
-				<TitleModal :header="data.header" />
+				<TitleModal
+					:title="title"
+				/>
 			</template>
 
 			<div class="form-container">
@@ -91,7 +129,7 @@ export default {
 					class="p-fluid form"
 				>
 					<div
-						v-for="field in data.formConfiguration"
+						v-for="field in configuration.formConfiguration"
 						:key="field.name"
 						class="form-item"
 					>
@@ -110,6 +148,7 @@ export default {
 									:id="field.name"
 									v-model="formData[field.modelName]"
 									@update:modelValue="(value) => handleInputChange(value, field.modelName)"
+									:placeholder="field.placeholder"
 								/>
 							</div>
 						</div>
@@ -153,6 +192,7 @@ export default {
 									v-model="formData[field.modelName]"
 									:useGrouping="false"
 									@update:modelValue="(value) => handleInputChange(value, field.modelName)"
+									:placeholder="field.placeholder"
 								/>
 							</div>
 						</div>
@@ -170,7 +210,7 @@ export default {
 								</p>
 								<Dropdown
 									v-model="formData[field.modelName]"
-									:options="field.defaultValue"
+									:options="field.options"
 									optionLabel="name"
 									:placeholder="field.placeholder"
 								/>
@@ -216,7 +256,6 @@ export default {
 								<FileUpload
 									name="form.demo"
 									url="./upload.php"
-									@upload="onUpload"
 									@select="selectedImage"
 									:multiple="false"
 									accept="image/*"
@@ -225,7 +264,7 @@ export default {
 								>
 									<template #empty>
 										<p>
-											{{ $t("productsSection.uploadImage") }}
+											{{ $t("PRODUCTS_SECTION.uploadImage") }}
 										</p>
 									</template>
 								</FileUpload>
@@ -302,5 +341,4 @@ export default {
 		}
 	}
 }
-
 </style>

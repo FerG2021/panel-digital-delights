@@ -14,14 +14,14 @@ export default {
 <template>
 	<div class="container" v-if="monthlyFees">
 		<div class="title">
-			{{ $t('monthlyFeesSection.monthly_fee_home_title') }}
+			{{ $t('MONTHLY_FEES_SECTION.MONTHLY_FEE_HOME_TITLE') }}
 		</div>
 		<div class="content">
 			<div
 				v-if="monthlyFees.length > 0"
 				class="monthly-fess-expired"
 			>
-				{{ $t('monthlyFeesSection.monthly_fees_expired_legend') }}
+				{{ $t('MONTHLY_FEES_SECTION.MONTHLY_FEES_EXPIRED_LEGEND') }}
 
 				<Button
 					label="Ver detalles"
@@ -35,7 +35,7 @@ export default {
 				v-else
 				class="not-monthly-fees-expired"
 			>
-				{{ $t('monthlyFeesSection.not_monthly_fees_expired_legend') }}
+				{{ $t('MONTHLY_FEES_SECTION.NOT_MONTHLY_FEES_EXPIRED_LEGEND') }}
 			</div>
 		</div>
 

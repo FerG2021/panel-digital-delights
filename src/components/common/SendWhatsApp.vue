@@ -8,8 +8,12 @@ export default {
 			type: Array,
 			required: true
 		},
-		clientRecords: {
-			type: Object,
+		message: {
+			type: String,
+			required: true
+		},
+		phoneNumber: {
+			type: Number,
 			required: true
 		}
 	},
@@ -18,23 +22,6 @@ export default {
 			formData: {},
 			errors: null
 		};
-	},
-	computed: {
-		setMessageBody() {
-			let messageBody = null;
-
-			if (this.clientRecords.notification) {
-				if (this.clientRecords.notification.name === 'sell') {
-					messageBody = this.$t('notificationsSection.sell').replace('CAR_MODEL', this.clientRecords.car?.name);
-				} else {
-					messageBody = this.$t('notificationsSection.birthday');
-				}
-			} else {
-				messageBody = this.$t('monthlyFeesSection.expired_date');
-			}
-
-			return messageBody;
-		}
 	},
 	methods: {
 		handleModalClose() {
@@ -46,7 +33,7 @@ export default {
 		},
 		setDefaultMessage() {
 			for (const configurationItem of this.configuration.formConfiguration) {
-				this.formData[configurationItem.modelName] = `${configurationItem.defaultValue.replace('<CLIENT_NAME>', this.clientRecords.client.name)}. \n ${this.setMessageBody}`;
+				this.formData[configurationItem.modelName] = this.message;
 			}
 		},
 		sendMessage() {
@@ -60,19 +47,12 @@ export default {
 			}
 
 			if (this.errors === null) {
-				// this.$emit('formDataCreate', this.formData);
 				const url = encodeURI(
-					'https://wa.me/' + parseInt(this.clientRecords.client.phone_number) + '?text=' + this.formData.message
+					'https://wa.me/' + parseInt(this.phoneNumber) + '?text=' + this.message
 				);
 
 				window.open(url, '_blank');
 			}
-
-			// const url = encodeURI(
-			// 	'https://wa.me/' + parseInt(this.clientRecords.client.phone_number) + '?text=' + this.formData.message
-			// );
-
-			// window.open(url, '_blank');
 		},
 		handleInputChange(value, moduleName) {
 			this.formData[moduleName] = value;
@@ -92,7 +72,7 @@ export default {
 
 <template>
 	<Dialog
-		v-model:visible="configuration.modalVisible"
+		v-model:visible="configuration.openSendWhatsAppModal"
 		icon="pi pi-refresh"
 		class="flex justify-content-center dialog"
 		:draggable="false"
@@ -101,7 +81,7 @@ export default {
 		@show="showModal()"
 	>
 		<template #header>
-			<TitleModal :header="configuration.header" />
+			<TitleModal :title="configuration.header" />
 		</template>
 
 		<div class="form-container">
@@ -145,7 +125,6 @@ export default {
 					label="Enviar mensaje"
 					icon="pi pi-whatsapp"
 					class="mt-2"
-					:loading="loadingServerRequest"
 					@click="sendMessage()"
 				/>
 			</form>

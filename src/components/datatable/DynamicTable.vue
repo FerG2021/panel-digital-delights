@@ -1,6 +1,8 @@
 <script>
 import { FilterMatchMode } from 'primevue/api';
+import { mapGetters } from 'vuex';
 
+import Store from '../../managers/store/store';
 import { formatDate, formatNumberToDecimal } from '../../utils/utils';
 
 export default {
@@ -25,6 +27,10 @@ export default {
 		filtersColumn: {
 			type: Array,
 			required: true
+		},
+		endpoints: {
+			type: Object,
+			required: true
 		}
 	},
 	data() {
@@ -37,6 +43,7 @@ export default {
 			}
 		};
 	},
+	computed: { ...mapGetters('UsersStore', ['account', 'user']) },
 	methods: {
 		getHeightWindow() {
 			var heightWindow = window.innerHeight - 260;
@@ -53,11 +60,34 @@ export default {
 				acceptIcon: 'pi pi-check',
 				rejectIcon: 'pi pi-times',
 				accept: () => {
-					this.$emit('delete', element);
+					this.delete(element);
 				},
 				reject: () => {	},
 				onHide: () => {	}
 			});
+		},
+		async delete(element) {
+			this.endpoints.delete(this.user.account_id, element)
+				.then((response) => {
+					this.$toast.add({
+						severity: 'success',
+						summary: this.$t('toast.success'),
+						detail: response.data.message,
+						life: 3000
+					});
+					Store.commit('UsersStore/setLoadingServerRequest', false);
+					this.endpoints.getAll(this.user.account_id);
+				})
+				.catch((error) => {
+					console.log(error);
+					this.$toast.add({
+						severity: 'error',
+						summary: this.$t('toast.error'),
+						detail: error,
+						life: 3000
+					});
+					Store.commit('UsersStore/setLoadingServerRequest', false);
+				});
 		},
 		formatNumber(number) {
 			return formatNumberToDecimal(number);
@@ -86,11 +116,40 @@ export default {
 				acceptIcon: 'pi pi-check',
 				rejectIcon: 'pi pi-times',
 				accept: () => {
-					this.$emit('collect-fee', element);
+					this.sendCollectFee(element);
 				},
 				reject: () => {	},
 				onHide: () => {	}
 			});
+		},
+		async sendCollectFee(data) {
+			let formData = new FormData();
+
+			for (let key in data) {
+				formData.append(key, data[key]);
+			}
+
+			this.endpoints.collectFee(this.user.account_id, formData)
+				.then((response) => {
+					this.$toast.add({
+						severity: 'success',
+						summary: this.$t('toast.success'),
+						detail: response.data.message,
+						life: 3000
+					});
+					Store.commit('UsersStore/setLoadingServerRequest', false);
+					this.endpoints.getAll(this.user.account_id);
+				})
+				.catch((error) => {
+					console.log(error);
+					this.$toast.add({
+						severity: 'error',
+						summary: this.$t('toast.error'),
+						detail: error,
+						life: 3000
+					});
+					Store.commit('UsersStore/setLoadingServerRequest', false);
+				});
 		}
 	}
 };
@@ -117,7 +176,7 @@ export default {
 							<i class="pi pi-search" />
 							<InputText
 								v-model="filters['global'].value"
-								:placeholder="$t('productsSection.placeholderSearch')"
+								:placeholder="$t('PRODUCTS_SECTION.placeholderSearch')"
 							/>
 						</span>
 					</div>
@@ -301,6 +360,8 @@ export default {
 				</Column>
 			</template>
 		</DataTable>
+
+		<ConfirmDialog/>
 	</div>
 </template>
 

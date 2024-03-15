@@ -1,11 +1,13 @@
 <script>
 import { mapGetters } from 'vuex';
 
+import MainCard from '../../components/common/MainCard.vue';
 import { updateUser } from '../../managers/api/digitalDelightsApi';
 import Store from '../../managers/store/store';
 import { setConfigurationFileByAccount } from '../../utils/utils';
 
 export default {
+	components: { MainCard },
 	data() {
 		return {
 			id: null,
@@ -118,136 +120,127 @@ export default {
 </script>
 
 <template>
-	<main v-if="Configuration !== null">
-		<div class="main-container" :style="getHeightWindow()">
-			<div class="title-container">
-				<h1 class="title">{{ $t('myaccount.title') }}</h1>
-			</div>
+	<main v-if="Configuration">
+		<MainCard>
+			<template #header>
+				{{ $t('myaccount.title') }}
+			</template>
 
-			<div class="body-container">
-				<div class="alert-cotainer">
-					<InlineMessage
-						severity="warn"
-						class="alert"
+			<template #content>
+				<div class="body-container">
+					<div class="alert-cotainer">
+						<InlineMessage
+							severity="warn"
+							class="alert"
+						>
+							{{ $t('myaccount.alert') }}
+						</InlineMessage>
+					</div>
+					<form
+						@submit.prevent="handleSubmit(!v$.$invalid)"
+						class="p-fluid form"
 					>
-						{{ $t('myaccount.alert') }}
-					</InlineMessage>
+						<div
+							v-for="field in Configuration.formConfiguration"
+							:key="field.name"
+							class="form-item"
+						>
+							<div class="field" v-if="field.type === 'text'">
+								<div class="p-float-label">
+									<p>
+										{{ field.label }}
+										<span
+											v-if="field.required"
+											class="required"
+										>
+											*
+										</span>
+									</p>
+									<InputText
+										:id="field.name"
+										v-model="formData[field.modelName]"
+										@update:modelValue="(value) => handleInputChange(value, field.modelName)"
+									/>
+								</div>
+							</div>
+
+							<div class="field" v-if="field.type === 'password'">
+								<div class="p-float-label">
+									<p>
+										{{ field.label }}
+										<span
+											v-if="field.required"
+											class="required"
+										>
+											*
+										</span>
+									</p>
+									<Password
+										:id="field.name"
+										v-model="formData[field.modelName]"
+										@update:modelValue="(value) => handleInputChange(value, field.modelName)"
+										toggleMask
+										:feedback="false"
+									/>
+								</div>
+							</div>
+						</div>
+
+						<div v-if="errors" class="show-errors">
+							{{ errors }}
+						</div>
+
+						<Button
+							label="Guardar"
+							class="mt-2"
+							:loading="loadingBtnSave"
+							@click="clickOnSaveButton()"
+						/>
+					</form>
 				</div>
-				<form
-					@submit.prevent="handleSubmit(!v$.$invalid)"
-					class="p-fluid form"
-				>
-					<div
-						v-for="field in Configuration.formConfiguration"
-						:key="field.name"
-						class="form-item"
-					>
-						<div class="field" v-if="field.type === 'text'">
-							<div class="p-float-label">
-								<p>
-									{{ field.label }}
-									<span
-										v-if="field.required"
-										class="required"
-									>
-										*
-									</span>
-								</p>
-								<InputText
-									:id="field.name"
-									v-model="formData[field.modelName]"
-									@update:modelValue="(value) => handleInputChange(value, field.modelName)"
-								/>
-							</div>
-						</div>
-
-						<div class="field" v-if="field.type === 'password'">
-							<div class="p-float-label">
-								<p>
-									{{ field.label }}
-									<span
-										v-if="field.required"
-										class="required"
-									>
-										*
-									</span>
-								</p>
-								<Password
-									:id="field.name"
-									v-model="formData[field.modelName]"
-									@update:modelValue="(value) => handleInputChange(value, field.modelName)"
-									toggleMask
-									:feedback="false"
-								/>
-							</div>
-						</div>
-					</div>
-
-					<div v-if="errors" class="show-errors">
-						{{ errors }}
-					</div>
-
-					<Button
-						label="Guardar"
-						class="mt-2"
-						:loading="loadingBtnSave"
-						@click="clickOnSaveButton()"
-					/>
-				</form>
-			</div>
-		</div>
+			</template>
+		</MainCard>
 	</main>
 </template>
 
 <style lang="scss" scoped>
-.main-container {
-	background-color: #fff;
-	display: flex;
-	flex-direction: column;
-	.title-container {
+.body-container {
+	margin: auto;
+	height: calc(100% - 8vh);
+	width: 70%;
+	.alert-cotainer {
 		display: flex;
+		flex-direction: column;
 		align-items: center;
-		padding-left: 10px;
-		height: 8vh;
-	}
-	.body-container {
-		margin: auto;
-		height: calc(100% - 8vh);
-		width: 70%;
-		.alert-cotainer {
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-			align-content: center;
-			.alert {
-				padding: 10px;
-			}
+		align-content: center;
+		.alert {
+			padding: 10px;
 		}
-		.form {
-			height: calc(100% - 9vh);
-			display: flex;
-			flex-direction: column;
-			margin-top: 20px;
-			.form-item {
-				margin-top: 4vh;
-				padding: 5px 0px 0px 0px;
-				.field {
-					.p-float-label {
-						p {
-							.required {
-								color: var(--error-color);
-							}
+	}
+	.form {
+		height: calc(100% - 9vh);
+		display: flex;
+		flex-direction: column;
+		margin-top: 20px;
+		.form-item {
+			margin-top: 4vh;
+			padding: 5px 0px 0px 0px;
+			.field {
+				.p-float-label {
+					p {
+						.required {
+							color: var(--error-color);
 						}
 					}
 				}
 			}
-			.show-errors {
-				border: 1px solid var(--error-background);
-				padding: 10px;
-				text-align: center;
-				background-color: var(--error-background);
-				color: var(--error-color);
-			}
+		}
+		.show-errors {
+			border: 1px solid var(--error-background);
+			padding: 10px;
+			text-align: center;
+			background-color: var(--error-background);
+			color: var(--error-color);
 		}
 	}
 }

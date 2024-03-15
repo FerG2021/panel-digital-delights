@@ -40,7 +40,7 @@ export default {
 		placement="right-start"
 		v-if="!is_expanded"
 	>
-		<div class="button logout" v-if="!is_expanded" @click="logout()">
+		<div class="button logout" @click="logout()">
 			<span>
 				<i class="pi pi-sign-out material-icons"></i>
 			</span>

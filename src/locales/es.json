@@ -43,7 +43,7 @@
         "title": "Home"
     },
 
-    "productsSection": {
+    "PRODUCTS_SECTION": {
         "sectionTitle": "Productos",
         "headerTable": {
             "image": "Imagen",
@@ -67,22 +67,22 @@
         }
     },
 
-    "categoriesSection": {
-        "createConfirmation": "Categoría creada con éxito",
-        "updateConfirmation": "Categoría actualizada con éxito",
-        "deleteConfirmation": "Categoría eliminada con éxito"
+    "CATEGORIES_SECTION": {
+        "CREATE_CONFIRMATION": "Categoría creada con éxito",
+        "UPDATE_CONFIRMATION": "Categoría actualizada con éxito",
+        "DELETE_CONFIRMATION": "Categoría eliminada con éxito"
     },
 
-	"notificationsSection": {
-		"birthday": "Desde todo el equipo de Lalo Automotores queremos desear un feliz cumpleaños en este día tan especial",
-		"sell": "Nos comunicamos porque ya han pasados dos semanas desde que adquiriste tu vehículo CAR_MODEL, queríamos que nos cuentes tus sensaciones con esta nueva adquisición"
+	"NOTIFICATIONS_SECTION": {
+		"BIRTHDAY": "Desde todo el equipo de Lalo Automotores queremos desear un feliz cumpleaños en este día tan especial",
+		"SELL": "Nos comunicamos porque ya han pasados dos semanas desde que adquiriste tu vehículo CAR_MODEL, queríamos que nos cuentes tus sensaciones con esta nueva adquisición"
 	},
 
-	"monthlyFeesSection": {
-		"monthly_fee_home_title": "Estado de cuotas mensuales",
-		"monthly_fees_expired_legend": "Existen clientes con cuotas vencidas",
-		"not_monthly_fees_expired_legend": "Todos los clientes al día",
-		"expired_date": "Te enviamos este mensaje para recordarte que se encuentra vencida la cuota del mes."
+	"MONTHLY_FEES_SECTION": {
+		"MONTHLY_FEE_HOME_TITLE": "Estado de cuotas mensuales",
+		"MONTHLY_FEES_EXPIRED_LEGEND": "Existen clientes con cuotas vencidas",
+		"NOT_MONTHLY_FEES_EXPIRED_LEGEND": "Todos los clientes al día",
+		"EXPIRED_DATE_MESSAGE": "Te enviamos este mensaje para recordarte que se encuentra vencida la cuota del mes."
 	},
 
     "myaccount": {

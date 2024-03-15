@@ -11,7 +11,7 @@ const configuration = {
 		}
 	},
 	endpoints: {
-		getAllMarks: api.getAllMarks,
+		getAll: api.getAllMarks,
 		new: api.newMark,
 		update: api.updateMark,
 		delete: api.deleteMark
@@ -36,27 +36,20 @@ const configuration = {
 			variation: 'delete'
 		}
 	],
-	create: {
-		modalVisible: false,
+	actions: {
+		openCreateModal: false,
+		openUpdateModal: false,
 		header: {
-			class: 'material-icons',
-			icon: 'edit',
-			headerName: 'Nueva marca'
-		},
-		formConfiguration: [{
-			modelName: 'name',
-			label: 'Nombre',
-			type: 'text',
-			required: true,
-			defaultValue: null
-		}]
-	},
-	update: {
-		modalVisible: false,
-		header: {
-			class: 'material-icons',
-			icon: 'edit',
-			headerName: 'Modificar marca'
+			new: {
+				class: 'material-icons',
+				icon: 'sell',
+				label: 'Nueva marca'
+			},
+			update: {
+				class: 'material-icons',
+				icon: 'edit',
+				label: 'Actualizar marca'
+			}
 		},
 		id: null,
 		formConfiguration: [{
@@ -64,7 +57,8 @@ const configuration = {
 			label: 'Nombre',
 			type: 'text',
 			required: true,
-			defaultValue: null
+			default: null,
+			placeholder: 'Ingrese la marca'
 		}]
 	}
 };

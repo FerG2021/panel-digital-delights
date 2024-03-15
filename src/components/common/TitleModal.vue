@@ -1,9 +1,20 @@
 <script>
 export default {
 	props: {
-		header: {
+		title: {
 			type: Object,
 			required: true
+		}
+	},
+	computed: {
+		iconClass() {
+			return this.title.class;
+		},
+		icon() {
+			return this.title.icon;
+		},
+		label() {
+			return this.title.label;
 		}
 	}
 };
@@ -12,16 +23,23 @@ export default {
 <template>
 	<h3 class="title-modal">
 		<span
-			:class="header.class"
+			:class="iconClass"
+			class="icon"
 		>
-			{{ header.icon }}
+			{{ icon }}
 		</span>
-		{{ header.headerName }}
+		<span class="title">
+			{{ label }}
+		</span>
 	</h3>
 </template>
 
-<style>
+<style lang="scss" scoped>
 .title-modal {
     margin: 0px;
+	display: flex;
+	.title {
+		margin-left: 10px;
+	}
 }
 </style>

@@ -1,4 +1,5 @@
 import moment from 'moment';
+// import { Toast } from 'primevue/toast';
 
 import lalocars from '../modules/cars/lalo.configuration';
 import bunkercategories from '../modules/categories/bunker.configuration';
@@ -27,12 +28,12 @@ const configurations = {
 	lalomonthlyfees: lalomonthlyfees
 };
 
-export const formatNumberToDecimal = (number) => {
+export const formatNumberToDecimal = (number, min = 2, max = 2) => {
 	const options = {
 		style: 'decimal',
 		useGrouping: true,
-		minimumFractionDigits: 2,
-		maximumFractionDigits: 2
+		minimumFractionDigits: min,
+		maximumFractionDigits: max
 	};
 
 	return parseFloat(number).toLocaleString('es-AR', options);
@@ -54,13 +55,65 @@ export const setConfigurationFileByAccount = async (module, account) => {
 };
 
 export const setFormConfiguration = (Configuration, data) => {
-	Configuration.update.id = data.id;
+	Configuration = setOptionsForAnyFormConfiguration(Configuration);
+	Configuration = setOptionsForActionsFormConfiguration(Configuration);
 
-	for (const configuration of Configuration.update.formConfiguration) {
-		configuration.defaultValue = data[configuration.modelName];
+	if (data) {
+		Configuration.actions.id = data.id;
+
+		for (const configuration of Configuration.actions.formConfiguration) {
+			configuration.default = data[configuration.modelName];
+		}
 	}
 
-	Configuration.update.modalVisible = true;
+	return Configuration;
+};
+
+function setOptionsForAnyFormConfiguration(Configuration) {
+	for (const key in Configuration) {
+		if (typeof Configuration[key] === 'object') {
+			if (Configuration[key].formConfiguration) {
+				for (const configuration of Configuration[key].formConfiguration) {
+					if (configuration.type === 'select') {
+						configuration.options = configuration.getOptions();
+					}
+				}
+			}
+		}
+	}
 
 	return Configuration;
+}
+
+function setOptionsForActionsFormConfiguration(Configuration) {
+	for (const configuration of Configuration.actions.formConfiguration) {
+		if (configuration.type === 'select') {
+			configuration.options = configuration.getOptions();
+		}
+	}
+
+	return Configuration;
+}
+
+export const getArrayDetailData = (formConfiguration) => {
+	let detailsData = [];
+
+	for (const item of formConfiguration) {
+		let object = {};
+		object.label = item.label;
+		object.type = item.type;
+		object.variant = item.modelName;
+
+		if (item.type === 'select') {
+			object.value = item.default?.name;
+		}
+
+		if (item.type === 'text' || item.type === 'number' || item.type === 'image') {
+			object.value = item.default;
+		}
+
+		detailsData.push(object);
+	}
+
+	return detailsData;
 };

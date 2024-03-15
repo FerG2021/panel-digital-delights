@@ -11,7 +11,7 @@ const configuration = {
 		}
 	},
 	endpoints: {
-		getAllClients: api.getAllClients,
+		getAll: api.getAllClients,
 		new: api.newClient,
 		update: api.updateClient,
 		delete: api.deleteClient
@@ -24,6 +24,12 @@ const configuration = {
 		'recordsCars'
 	],
 	tableColumns: [
+		{
+			field: 'dni',
+			header: 'DNI',
+			type: 'normal',
+			variation: ''
+		},
 		{
 			field: 'lastname',
 			header: 'Apellido',
@@ -49,7 +55,7 @@ const configuration = {
 			variation: ''
 		},
 		{
-			field: 'recordsCars',
+			field: 'carsPatent',
 			header: 'Vehículos',
 			type: 'array',
 			variation: ''
@@ -67,94 +73,70 @@ const configuration = {
 			variation: 'delete'
 		}
 	],
-	create: {
-		modalVisible: false,
+	actions: {
+		openCreateModal: false,
+		openUpdateModal: false,
 		header: {
-			class: 'material-icons',
-			icon: 'edit',
-			headerName: 'Nuevo cliente'
-		},
-		formConfiguration: [
-			{
-				modelName: 'name',
-				label: 'Nombre',
-				type: 'text',
-				required: true,
-				defaultValue: null
+			new: {
+				class: 'material-icons',
+				icon: 'person',
+				label: 'Nuevo cliente'
 			},
-			{
-				modelName: 'lastname',
-				label: 'Apellido',
-				type: 'text',
-				required: true,
-				defaultValue: null
-			},
-			{
-				modelName: 'birthday',
-				label: 'Fecha de nacimiento',
-				type: 'date',
-				required: true,
-				defaultValue: null
-			},
-			{
-				modelName: 'phone_number',
-				label: 'Teléfono',
-				type: 'number',
-				required: true,
-				defaultValue: null
-			},
-			{
-				modelName: 'address',
-				label: 'Dirección',
-				type: 'text',
-				required: true,
-				defaultValue: null
+			update: {
+				class: 'material-icons',
+				icon: 'edit',
+				label: 'Actualizar cliente'
 			}
-		]
-	},
-	update: {
-		modalVisible: false,
-		header: {
-			class: 'material-icons',
-			icon: 'edit',
-			headerName: 'Modificar cliente'
 		},
 		id: null,
 		formConfiguration: [
 			{
+				modelName: 'dni',
+				label: 'DNI',
+				type: 'number',
+				required: true,
+				default: null,
+				placeholder: 'Ingrese el DNI'
+			},
+			{
 				modelName: 'name',
 				label: 'Nombre',
 				type: 'text',
 				required: true,
-				defaultValue: null
+				default: null,
+				placeholder: 'Ingrese el nombre'
 			},
 			{
 				modelName: 'lastname',
 				label: 'Apellido',
 				type: 'text',
 				required: true,
-				defaultValue: null
+				default: null,
+				placeholder: 'Ingrese el apellido'
 			},
 			{
 				modelName: 'birthday',
 				label: 'Fecha de nacimiento',
 				type: 'date',
 				required: true,
-				defaultValue: null
+				default: null,
+				placeholder: 'Ingrese la fecha de nacimiento'
 			},
 			{
 				modelName: 'phone_number',
 				label: 'Teléfono',
 				type: 'number',
 				required: true,
-				defaultValue: null
+				default: null,
+				placeholder: 'Ingrese el número de teléfono'
 			},
 			{
 				modelName: 'address',
 				label: 'Dirección',
 				type: 'text',
 				required: true,
-				defaultValue: null
+				default: null,
+				placeholder: 'Ingrese la direccion'
 			}
 		]
 	}

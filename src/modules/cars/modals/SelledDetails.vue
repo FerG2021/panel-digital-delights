@@ -14,9 +14,6 @@ export default {
 			required: true
 		}
 	},
-	data() {
-		return {};
-	},
 	computed: {
 		buyName() {
 			return `${this.data.data.buyer.lastname}, ${this.data.data.buyer.name}`;
@@ -27,22 +24,22 @@ export default {
 		expirationDay() {
 			return this.data.data.expiration_day;
 		}
-	},
-	methods: {}
+
+	}
 };
 </script>
 
 <template>
 	<div>
 		<Dialog
-			v-model:visible="data.modalVisible"
+			v-model:visible="data.openSelledDetailsData"
 			icon="pi pi-eye"
 			class="flex justify-content-center dialog"
 			:draggable="false"
 			style="width: 30vw "
 		>
 			<template #header>
-				<TitleModal :header="data.header" />
+				<TitleModal :title="data.header" />
 			</template>
 
 			<div class="form-container">

@@ -30,37 +30,38 @@ export default {
 </script>
 
 <template>
-	<div
-		class="button logout"
+	<router-link
+		class="button"
+		:to="item.route"
 		v-if="is_expanded"
-		@click="clickNotificationButton()"
 	>
 		<i
 			v-badge="notificationsLength"
-			class="pi pi-bell"
+			class="pi pi-bell material-icons"
 			style="font-size: 1.5rem"
+			severity="success"
 		/>
-		<span class="text">{{ $t("notifications") }}</span>
-	</div>
+		<span class="text">{{ item.name }}</span>
+	</router-link>
 
 	<el-tooltip
 		class="box-item"
 		effect="dark"
-		:content="notificationsTitle"
+		:content="item.name"
 		placement="right-start"
 		v-if="!is_expanded"
 	>
-		<div
-			class="button logout"
-			v-if="!is_expanded"
-			@click="clickNotificationButton()"
+		<router-link
+			class="button"
+			:to="item.route"
+			v-if="!is_expanded || is_expanded"
 		>
 			<i
 				v-badge="notificationsLength"
-				class="pi pi-bell"
+				class="pi pi-bell material-icons"
 				style="font-size: 1.5rem"
 			/>
-		</div>
+		</router-link>
 	</el-tooltip>
 </template>
 
@@ -78,6 +79,10 @@ aside {
   color: var(--light);
 
   transition: 0.2s ease-out;
+
+  .button {
+	height: 5.5vh;
+  }
 
   .button {
 	&:hover {

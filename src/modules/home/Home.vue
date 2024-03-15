@@ -42,7 +42,7 @@ export default {
 	<main>
 		<MainCard>
 			<template #header>
-				<h1> {{ $t('homeSection.title') }} </h1>
+				{{ $t('homeSection.title') }}
 			</template>
 
 			<template #content>

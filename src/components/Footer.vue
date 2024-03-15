@@ -17,7 +17,7 @@ export default {
 			target="_blank"
 			:class="screen"
 		>
-			{{ $t('footer.message') }}
+			<span>{{ $t('footer.message') }}</span>
 		</a>
 	</div>
 </template>
@@ -32,7 +32,7 @@ export default {
         text-decoration: none;
     }
     .login:hover {
-        color: var(--background-card-hover);
+        color: var(--primary-alt);
     }
     .main {
         text-align: center;
@@ -40,7 +40,7 @@ export default {
         text-decoration: none;
     }
     .main:hover {
-        color: var(--dark-alt);
+        color: var(--primary-alt);
     }
 }
 </style>
