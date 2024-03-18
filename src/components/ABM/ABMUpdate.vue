@@ -119,6 +119,8 @@ export default {
 			}
 		},
 		sendUpdate() {
+			Store.commit('UsersStore/setLoadingServerRequest', true);
+
 			this.formData = this.formatItem(this.formData);
 
 			let formData = new FormData();
