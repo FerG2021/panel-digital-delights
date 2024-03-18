@@ -92,7 +92,7 @@ export default {
 		},
 		validateForm() {
 			for (const item of this.configuration.formConfiguration) {
-				if (item.required && !this.formData[item.modelName]) {
+				if (item.required && (this.formData[item.modelName] === undefined || this.formData[item.modelName] === null || this.formData[item.modelName] === '')) {
 					return `El campo ${item.label} es requerido`;
 				}
 			}
