@@ -358,6 +358,30 @@ export default {
 						/>
 					</template>
 				</Column>
+
+				<Column
+					:key="column.field"
+					:field="column.field"
+					:header="column.header"
+					v-else-if="isColumn(column.type, 'image-multiple')"
+				>
+					<template #body="slotProps">
+						<Image
+							v-if="slotProps.data.image !== 'null'"
+							preview
+							:src="slotProps.data.image[0]"
+							alt="Image"
+							width="40"
+							imageStyle="border-radius: 8px; box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);padding: 3px; height: 6vh; width: 6vh"
+						/>
+						<img
+							v-else
+							src="../../assets/producto-sin-imagen.png"
+							alt="Vue"
+							class="without-image-product"
+						/>
+					</template>
+				</Column>
 			</template>
 		</DataTable>
 

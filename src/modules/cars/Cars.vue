@@ -48,8 +48,6 @@ export default {
 			return getArrayDetailData(this.Configuration.actions.formConfiguration);
 		},
 		sellConfiguration() {
-			console.log(this.Configuration.sell);
-
 			for (const itemFormConf of this.Configuration.sell.formConfiguration) {
 				if (itemFormConf.type === 'select') {
 					itemFormConf.options = itemFormConf.options();
@@ -76,6 +74,15 @@ export default {
 			item.fuel_id = item.fuel.id;
 			item.mark_id = item.mark.id;
 			item.description = item.description ? item.description : null;
+
+			if (item.image) {
+				let i = 1;
+
+				for (const itemImage of item.image) {
+					item[`image${i}`] = itemImage;
+					i++;
+				}
+			}
 
 			return item;
 		},

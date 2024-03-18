@@ -41,6 +41,7 @@
         "newProduct": "New product",
         "placeholderSearch": "Type to search",
         "uploadImage": "Drag images to upload",
+		"UPDATE_IMAGES": "Upload images ONLY in case you want to replace existing ones",
         "validations": {
             "name": "The name is required",
             "description": "The description is required",

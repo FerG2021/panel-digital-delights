@@ -22,7 +22,7 @@ const configuration = {
 		{
 			field: 'image',
 			header: 'Imagen',
-			type: 'image',
+			type: 'image-multiple',
 			variation: ''
 		},
 		{
@@ -102,6 +102,7 @@ const configuration = {
 			}
 		},
 		id: null,
+		imagesNumber: 5,
 		formConfiguration: [
 			{
 				modelName: 'mark',
@@ -210,7 +211,7 @@ const configuration = {
 			{
 				modelName: 'image',
 				label: 'Imagen',
-				type: 'image',
+				type: 'image-multiple',
 				required: true,
 				default: null
 			}

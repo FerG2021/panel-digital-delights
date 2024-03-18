@@ -1,5 +1,4 @@
 import moment from 'moment';
-// import { Toast } from 'primevue/toast';
 
 import lalocars from '../modules/cars/lalo.configuration';
 import bunkercategories from '../modules/categories/bunker.configuration';
@@ -108,7 +107,7 @@ export const getArrayDetailData = (formConfiguration) => {
 			object.value = item.default?.name;
 		}
 
-		if (item.type === 'text' || item.type === 'number' || item.type === 'image') {
+		if (item.type === 'text' || item.type === 'number' || item.type === 'image' || item.type === 'image-multiple') {
 			object.value = item.default;
 		}
 

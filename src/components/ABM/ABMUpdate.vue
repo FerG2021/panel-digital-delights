@@ -2,10 +2,14 @@
 import { mapGetters } from 'vuex';
 
 import Store from '../../managers/store/store';
+import ImagesMultiple from '../common/ImagesMultiple.vue';
 import TitleModal from '../common/TitleModal.vue';
 
 export default {
-	components: { TitleModal },
+	components: {
+		TitleModal,
+		ImagesMultiple
+	},
 	props: {
 		configuration: {
 			type: Array,
@@ -26,13 +30,44 @@ export default {
 		return {
 			formData: {},
 			errors: null,
-			lifeTimeToast: 3000
+			lifeTimeToast: 3000,
+			openGalleria: false,
+			imagesGalleria: null,
+			responsiveOptions: [
+				{
+					breakpoint: '1500px',
+					numVisible: 5
+				},
+				{
+					breakpoint: '1024px',
+					numVisible: 3
+				},
+				{
+					breakpoint: '768px',
+					numVisible: 2
+				},
+				{
+					breakpoint: '560px',
+					numVisible: 1
+				}
+			]
 		};
 	},
 	computed: {
 		...mapGetters('UsersStore', ['user', 'loadingServerRequest']),
 		title() {
 			return this.configuration.header.update;
+		},
+		arrayImages() {
+			let image;
+
+			for (const itemConfig of this.configuration.formConfiguration) {
+				if (itemConfig.type === 'image-multiple') {
+					image = itemConfig.default[0];
+				}
+			}
+
+			return image;
 		}
 	},
 	methods: {
@@ -56,6 +91,10 @@ export default {
 			for (const configuration of this.configuration.formConfiguration) {
 				if (configuration.type === 'image') {
 					this.formData[configuration.modelName] = event.files[0];
+				}
+
+				if (configuration.type === 'image-multiple') {
+					this.formData[configuration.modelName] = event.files;
 				}
 			}
 		},
@@ -122,6 +161,10 @@ export default {
 			}
 
 			return null;
+		},
+		clickOpenImages(item) {
+			this.openGalleria = true;
+			this.imagesGalleria = item;
 		}
 	}
 };
@@ -296,6 +339,43 @@ export default {
 							</div>
 						</div>
 
+						<div class="field" v-if="field.type === 'image-multiple'">
+							<div class="p-float-label">
+								<p>
+									{{ field.label }}
+									<span
+										v-if="field.required"
+										class="required"
+									>
+										*
+									</span>
+								</p>
+								<ImagesMultiple
+									v-if="formData[field.modelName]"
+									:images="formData[field.modelName]"
+								/>
+								<p
+									class="update-images-legend">
+									{{ $t('PRODUCTS_SECTION.UPDATE_IMAGES') }}
+								</p>
+								<FileUpload
+									name="form.demo"
+									url="./upload.php"
+									@select="selectedImage"
+									:multiple="true"
+									accept="image/*"
+									:maxFileSize="1000000"
+									invalidFileSizeMessage="{0}: Tamaño de archivo inválido, debe ser menor a {1}."
+								>
+									<template #empty>
+										<p>
+											{{ $t("PRODUCTS_SECTION.uploadImage") }}
+										</p>
+									</template>
+								</FileUpload>
+							</div>
+						</div>
+
 						<div class="field" v-if="field.type === 'date'">
 							<div class="p-float-label">
 								<p>
@@ -354,6 +434,12 @@ export default {
 						height: 40px;
 						border-radius: 3px;
 					}
+					.update-images-legend {
+						font-size: 13px;
+					}
+				}
+				.open-image-multiple {
+					cursor: pointer;
 				}
 			}
 		}

@@ -59,6 +59,7 @@
         "newProduct": "Nuevo producto",
         "placeholderSearch": "Escriba para buscar",
         "uploadImage": "Arrastre las imágenes para subirlas",
+		"UPDATE_IMAGES": "Suba imágenes SÓLO en el caso de que desee reemplazar las existentes",
         "validations": {
             "name": "El nombre es requerido",
             "description": "La descripición es requerida",

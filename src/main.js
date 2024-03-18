@@ -12,6 +12,7 @@ import ConfirmationService from 'primevue/confirmationservice';
 import ConfirmDialog from 'primevue/confirmdialog';
 import DialogService from 'primevue/dialogservice';
 import DynamicDialog from 'primevue/dynamicdialog';
+import Galleria from 'primevue/galleria';
 import Toast from 'primevue/toast';
 import { createApp } from 'vue';
 // Elment plus
@@ -109,6 +110,7 @@ createApp(App)
 	.component('InlineMessage', InlineMessage)
 	.component('Calendar', Calendar)
 	.component('Badge', Badge)
+	.component('Galleria', Galleria)
 	.directive('badge', BadgeDirective)
 	.use(router)
 	.use(ElementPlus, { locale })

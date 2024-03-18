@@ -25,7 +25,8 @@ export default {
 		return {
 			formData: {},
 			errors: null,
-			lifeTimeToast: 3000
+			lifeTimeToast: 3000,
+			uploadedFiles: null
 		};
 	},
 	computed: {
@@ -100,6 +101,11 @@ export default {
 			for (const configuration of this.configuration.formConfiguration) {
 				if (configuration.type === 'image') {
 					this.formData[configuration.modelName] = event.files[0];
+				}
+
+				if (configuration.type === 'image-multiple') {
+					this.formData[configuration.modelName] = event.files;
+					this.formData[configuration.modelName].reverse();
 				}
 			}
 		}
@@ -258,6 +264,36 @@ export default {
 									url="./upload.php"
 									@select="selectedImage"
 									:multiple="false"
+									accept="image/*"
+									:maxFileSize="1000000"
+									invalidFileSizeMessage="{0}: Tamaño de archivo inválido, debe ser menor a {1}."
+								>
+									<template #empty>
+										<p>
+											{{ $t("PRODUCTS_SECTION.uploadImage") }}
+										</p>
+									</template>
+								</FileUpload>
+							</div>
+						</div>
+
+						<div class="field" v-if="field.type === 'image-multiple'">
+							<div class="p-float-label">
+								<p>
+									{{ field.label }}
+									<span
+										v-if="field.required"
+										class="required"
+									>
+										*
+									</span>
+								</p>
+								<FileUpload
+									name="form.demo"
+									url="./upload.php"
+									@select="selectedImage"
+									@remove="remove"
+									:multiple="true"
 									accept="image/*"
 									:maxFileSize="1000000"
 									invalidFileSizeMessage="{0}: Tamaño de archivo inválido, debe ser menor a {1}."
