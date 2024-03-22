@@ -15,7 +15,11 @@ export default {
 		loadingServerRequest: false,
 		loading: false,
 		loaded: false,
-		notificationToast: null
+		notificationToast: null,
+		applicationNames: {
+			lalo: 'Lalo Automotores',
+			bunker: 'Bunker'
+		}
 	},
 
 	getters: {
@@ -43,6 +47,9 @@ export default {
 		,
 		notificationToast(state) {
 			return state.notificationToast;
+		},
+		applicationNames(state) {
+			state.applicationNames;
 		}
 	},
 
@@ -54,6 +61,7 @@ export default {
 			if (user) {
 				state.account = user.email.split('.')[1];
 				loadModulesByAccount(store, router, state.account);
+				document.title = state.applicationNames[state.account];
 			} else {
 				state.account = null;
 			}

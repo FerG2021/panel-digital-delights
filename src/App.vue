@@ -11,6 +11,9 @@ export default {
 		Login,
 		FooterComponent
 	},
+	data() {
+		return { pageTitle: "Mi Aplicación Vue" };
+	},
 	computed: {
 		...mapGetters('UsersStore', [
 			'user',
