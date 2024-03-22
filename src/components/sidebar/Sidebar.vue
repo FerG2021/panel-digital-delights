@@ -76,6 +76,9 @@ export default {
 			}
 
 			return notification;
+		},
+		showNotifications() {
+			return this.modules.some(route => route.name === "notifications");
 		}
 	},
 
@@ -105,6 +108,7 @@ export default {
 
 		<div class="menu">
 			<NotificationButton
+				v-if="showNotifications"
 				:item="notifications"
 				:is_expanded="is_expanded"
 			/>
