@@ -44,7 +44,14 @@ export default {
 				} else {
 					value = this.item.value !== null ? formatNumberToDecimal(this.item.value) : 's/d';
 				}
-			} else {
+			}
+			else if (this.item.type === 'price') {
+				value = `$ ${formatNumberToDecimal(parseFloat(this.item.value), 0, 0)}`;
+			}
+			else if (this.item.type === 'switch') {
+				value = this.item.value === 1 ? 'SI' : 'NO';
+			}
+			else {
 				value = this.item.value !== null ? this.item.value : 's/d';
 			}
 
@@ -67,7 +74,6 @@ export default {
 			{{ item.label }}
 		</div>
 		<div class="value">
-
 			<Image
 				v-if="item.type === 'image'"
 				preview
@@ -77,7 +83,7 @@ export default {
 				imageStyle="border-radius: 8px; box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);padding: 3px; width: 100%"
 			/>
 
-			<div v-if="item.type === 'image-multiple'">
+			<div v-else-if="item.type === 'image-multiple'">
 				<ImagesMultiple
 					v-if="item.value"
 					:images="item.value"

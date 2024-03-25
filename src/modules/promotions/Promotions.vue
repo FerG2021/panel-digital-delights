@@ -3,11 +3,11 @@ import { FilterMatchMode } from 'primevue/api';
 import { mapGetters } from 'vuex';
 
 import ABMCreate from '../../components/ABM/ABMCreate.vue';
+import ABMDetail from '../../components/ABM/ABMDetail.vue';
 import ABMUpdate from '../../components/ABM/ABMUpdate.vue';
 import MainCard from '../../components/common/MainCard.vue';
 import DynamicTable from '../../components/datatable/DynamicTable.vue';
-import Store from '../../managers/store/store';
-import { setConfigurationFileByAccount } from '../../utils/utils';
+import { getArrayDetailData, setConfigurationFileByAccount, setFormConfiguration } from '../../utils/utils';
 
 export default {
 	name: 'PromontionsComponent',
@@ -15,12 +15,11 @@ export default {
 		DynamicTable,
 		ABMCreate,
 		ABMUpdate,
+		ABMDetail,
 		MainCard
 	},
 	data() {
 		return {
-			sectionTitle: this.$t('promotions'),
-			loading: false,
 			Configuration: null,
 			filters: {
 				global: {
@@ -39,122 +38,40 @@ export default {
 		]),
 		...mapGetters('CategoriesStore', ['categories']),
 		...mapGetters('ProductsStore', ['products']),
-		...mapGetters('PromotionsStore', ['promotions'])
+		...mapGetters('PromotionsStore', ['promotions']),
+		tableColumns() {
+			return this.Configuration.tableColumns;
+		},
+		labels() {
+			return this.Configuration.labels;
+		},
+		title() {
+			return this.Configuration.labels.sectionTitle;
+		},
+		endpoints() {
+			return this.Configuration.endpoints;
+		},
+		detailData() {
+			return getArrayDetailData(this.Configuration.actions.formConfiguration);
+		}
 	},
 	mounted() {
 		this.setCongigurationFile();
-		this.getHeightWindow();
 	},
 	methods: {
 		async setCongigurationFile() {
 			this.Configuration = await setConfigurationFileByAccount('promotions', this.account);
 		},
-
-		add() {
-			this.Configuration.create.modalVisible = true;
+		openABMCreate() {
+			this.Configuration = setFormConfiguration(this.Configuration);
+			this.Configuration.actions.openCreateModal = true;
 		},
-		async formDataCreate(value) {
-			let formData = new FormData();
-
-			for (let key in value) {
-				formData.append(key, value[key]);
-			}
-
-			this.Configuration.endpoints.new(this.user.account_id, formData)
-				.then((response) => {
-					this.Configuration.create.modalVisible = false;
-					this.loading = false;
-					this.$toast.add({
-						severity: 'success',
-						summary: this.$t('toast.success'),
-						detail: response.data.message,
-						life: 3000
-					});
-					Store.commit('UsersStore/setLoadingServerRequest', false);
-					this.getAllPromotions();
-				})
-				.catch((error) => {
-					console.log(error);
-					this.$toast.add({
-						severity: 'error',
-						summary: this.$t('toast.error'),
-						detail: error.response.data.message,
-						life: 3000
-					});
-					Store.commit('UsersStore/setLoadingServerRequest', false);
-				});
+		openABMUpdate(data) {
+			this.Configuration = setFormConfiguration(this.Configuration, data);
+			this.Configuration.actions.openUpdateModal = true;
 		},
-
-		edit(data) {
-			this.Configuration.update.id = data.id;
-
-			for (const configuration of this.Configuration.update.formConfiguration) {
-				if (configuration.type === 'price') {
-					configuration.defaultValue = parseFloat(data[configuration.modelName]);
-				} else {
-					configuration.defaultValue = data[configuration.modelName];
-				}
-			}
-
-			this.Configuration.update.modalVisible = true;
-		},
-		formDataUpdate(value) {
-			let formData = new FormData();
-
-			for (let key in value) {
-				formData.append(key, value[key]);
-			}
-
-			this.Configuration.endpoints.update(this.user.account_id, formData)
-				.then((response) => {
-					this.Configuration.update.modalVisible = false;
-					this.loading = false;
-					this.$toast.add({
-						severity: 'success',
-						summary: this.$t('toast.success'),
-						detail: response.data.message,
-						life: 3000
-					});
-					Store.commit('UsersStore/setLoadingServerRequest', false);
-					this.getAllPromotions();
-				})
-				.catch((error) => {
-					this.$toast.add({
-						severity: 'error',
-						summary: this.$t('toast.error'),
-						detail: error.response.data.message,
-						life: 3000
-					});
-					Store.commit('UsersStore/setLoadingServerRequest', false);
-				});
-		},
-
-		async deletePromotion(element) {
-			this.Configuration.endpoints.delete(this.user.account_id, element)
-				.then((response) => {
-					this.loading = false;
-					this.$toast.add({
-						severity: 'success',
-						summary: this.$t('toast.success'),
-						detail: response.data.message,
-						life: 3000
-					});
-					this.getAllPromotions();
-					Store.commit('UsersStore/setLoadingServerRequest', false);
-				})
-				.catch((error) => {
-					console.log(error);
-					Store.commit('UsersStore/setLoadingServerRequest', false);
-				});
-		},
-
-		getHeightWindow() {
-			var heightWindow = window.innerHeight - 285;
-
-			return heightWindow + 'px';
-		},
-		async getAllPromotions() {
-			await this.Configuration.endpoints.getAllPromotions(this.user.account_id);
+		formatItem(item) {
+			return item;
 		}
 	}
 };
@@ -164,33 +81,39 @@ export default {
 	<main class="about-page" v-if="Configuration">
 		<MainCard>
 			<template #header>
-				<h1> {{ sectionTitle }} </h1>
+				{{ title }}
 			</template>
 			<template #content>
 				<div>
 					<DynamicTable
 						:elements="promotions"
-						:columns="Configuration.tableColumns"
-						:labels="Configuration.labels"
+						:columns="tableColumns"
+						:labels="labels"
 						:loading="loading"
-						@add='add'
-						@edit='edit'
-						@delete='deletePromotion'
+						:endpoints="endpoints"
+						@add='openABMCreate'
+						@edit='openABMUpdate'
 					/>
 				</div>
 			</template>
 		</MainCard>
 
 		<ABMCreate
-			:data="Configuration.create"
-			@formDataCreate='formDataCreate'
+			:configuration="Configuration.actions"
+			:endpoints="Configuration.endpoints"
+			:format-item="item => formatItem(item)"
 		/>
 
 		<ABMUpdate
-			:data="Configuration.update"
-			@formDataUpdate='formDataUpdate'
+			:configuration="Configuration.actions"
+			:endpoints="Configuration.endpoints"
+			:format-item="item => formatItem(item)"
 		/>
 
-		<ConfirmDialog></ConfirmDialog>
+		<ABMDetail
+			:configuration="Configuration.actions"
+			:data="detailData"
+			@formDataUpdate="formDataUpdate"
+		/>
 	</main>
 </template>

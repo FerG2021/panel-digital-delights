@@ -1,24 +1,22 @@
 import * as api from '../../managers/api/digitalDelightsApi';
+import Store from '../../managers/store/store';
 
 const configuration = {
 	account: 'bunker',
 	labels: {
-		sectionTile: 'Productos',
+		sectionTitle: 'Productos',
 		new: 'Nuevo producto',
 		delete: {
 			header: 'Confirmación',
 			message: '¿Está seguro que desea eliminar el producto?'
 		}
 	},
-
 	endpoints: {
-		getAllProducts: api.getAllProducts,
-		getAllCategories: api.getAllCategories,
+		getAll: api.getAllProducts,
 		new: api.newProduct,
 		update: api.updateProduct,
 		delete: api.deleteProduct
 	},
-
 	tableColumns: [
 		{
 			field: 'image',
@@ -58,6 +56,12 @@ const configuration = {
 		},
 		{
 			field: 'name',
+			header: 'Detalles',
+			type: 'button',
+			variation: 'detail'
+		},
+		{
+			field: 'name',
 			header: 'Editar',
 			type: 'button',
 			variation: 'update'
@@ -70,66 +74,26 @@ const configuration = {
 		}
 	],
 
-	create: {
-		modalVisible: false,
+	actions: {
+		openCreateModal: false,
+		openUpdateModal: false,
+		openDetailModal: false,
 		header: {
-			class: 'material-icons',
-			icon: 'edit',
-			headerName: 'Nuevo producto'
-		},
-		formConfiguration: [
-			{
-				modelName: 'name',
-				label: 'Nombre',
-				type: 'text',
-				required: true,
-				defaultValue: null
+			new: {
+				class: 'material-icons',
+				icon: 'inventory_2',
+				label: 'Nuevo producto'
 			},
-			{
-				modelName: 'category',
-				label: 'Categoría',
-				type: 'select',
-				placeholder: 'Seleccione una categoría',
-				required: true,
-				defaultValue: null
+			update: {
+				class: 'material-icons',
+				icon: 'edit',
+				label: 'Actualizar producto'
 			},
-			{
-				modelName: 'description',
-				label: 'Descripción',
-				type: 'text',
-				required: true,
-				defaultValue: null
-			},
-			{
-				modelName: 'price',
-				label: 'Precio',
-				type: 'price',
-				required: true,
-				defaultValue: null
-			},
-			{
-				modelName: 'stock',
-				label: 'Stock',
-				type: 'switch',
-				required: true,
-				defaultValue: null
-			},
-			{
-				modelName: 'image',
-				label: 'Imagen',
-				type: 'image',
-				required: true,
-				defaultValue: null
+			detail: {
+				class: 'material-icons',
+				icon: 'visibility',
+				label: 'Detalles del producto'
 			}
-		]
-	},
-
-	update: {
-		modalVisible: false,
-		header: {
-			class: 'material-icons',
-			icon: 'edit',
-			headerName: 'Modificar producto'
 		},
 		id: null,
 		formConfiguration: [
@@ -138,7 +102,8 @@ const configuration = {
 				label: 'Nombre',
 				type: 'text',
 				required: true,
-				defaultValue: null
+				default: null,
+				placeholder: 'Ingrese el nombre'
 			},
 			{
 				modelName: 'category',
@@ -146,36 +111,39 @@ const configuration = {
 				type: 'select',
 				placeholder: 'Seleccione una categoría',
 				required: true,
-				defaultValue: null,
-				options: null
+				options: null,
+				getOptions: () => Store.getters['CategoriesStore/categories'],
+				default: null
 			},
 			{
 				modelName: 'description',
 				label: 'Descripción',
 				type: 'text',
 				required: true,
-				defaultValue: null
+				default: null,
+				placeholder: 'Ingrese la descripción'
 			},
 			{
 				modelName: 'price',
 				label: 'Precio',
 				type: 'price',
 				required: true,
-				defaultValue: null
+				default: null,
+				placeholder: 'Ingrese el precio'
 			},
 			{
 				modelName: 'stock',
 				label: 'Stock',
 				type: 'switch',
 				required: true,
-				defaultValue: null
+				default: null
 			},
 			{
 				modelName: 'image',
 				label: 'Imagen',
 				type: 'image',
 				required: true,
-				defaultValue: null
+				default: null
 			}
 		]
 	}

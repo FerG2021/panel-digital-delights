@@ -11,7 +11,7 @@ const configuration = {
 		}
 	},
 	endpoints: {
-		getAllCategories: api.getAllCategories,
+		getAll: api.getAllCategories,
 		new: api.newCategory,
 		update: api.updateCategory,
 		delete: api.deleteCategory
@@ -42,34 +42,26 @@ const configuration = {
 			variation: 'delete'
 		}
 	],
-	create: {
-		modalVisible: false,
+	actions: {
+		openCreateModal: false,
+		openUpdateModal: false,
+		openDetailModal: false,
 		header: {
-			class: 'material-icons',
-			icon: 'edit',
-			headerName: 'Nueva categoría'
-		},
-		formConfiguration: [{
-			modelName: 'name',
-			label: 'Nombre',
-			type: 'text',
-			required: true,
-			defaultValue: null
-		},
-		{
-			modelName: 'image',
-			label: 'Imagen',
-			type: 'image',
-			required: true,
-			defaultValue: null
-		}]
-	},
-	update: {
-		modalVisible: false,
-		header: {
-			class: 'material-icons',
-			icon: 'edit',
-			headerName: 'Modificar categoría'
+			new: {
+				class: 'material-icons',
+				icon: 'category',
+				label: 'Nueva categoría'
+			},
+			update: {
+				class: 'material-icons',
+				icon: 'edit',
+				label: 'Actualizar categoría'
+			},
+			detail: {
+				class: 'material-icons',
+				icon: 'visibility',
+				label: 'Detalles de la categoría'
+			}
 		},
 		id: null,
 		formConfiguration: [{
@@ -77,14 +69,15 @@ const configuration = {
 			label: 'Nombre',
 			type: 'text',
 			required: true,
-			defaultValue: null
+			default: null,
+			placeholder: 'Ingrese la categoría'
 		},
 		{
 			modelName: 'image',
 			label: 'Imagen',
 			type: 'image',
 			required: true,
-			defaultValue: null
+			default: null
 		}]
 	}
 };

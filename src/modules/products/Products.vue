@@ -3,25 +3,23 @@ import { FilterMatchMode } from 'primevue/api';
 import { mapGetters } from 'vuex';
 
 import ABMCreate from '../../components/ABM/ABMCreate.vue';
+import ABMDetail from '../../components/ABM/ABMDetail.vue';
 import ABMUpdate from '../../components/ABM/ABMUpdate.vue';
 import MainCard from '../../components/common/MainCard.vue';
 import DynamicTable from '../../components/datatable/DynamicTable.vue';
-import Store from '../../managers/store/store';
-import { setConfigurationFileByAccount } from '../../utils/utils';
+import { getArrayDetailData, setConfigurationFileByAccount, setFormConfiguration } from '../../utils/utils';
 
 export default {
 	name: 'ProductsComponent',
-
 	components: {
 		DynamicTable,
 		ABMCreate,
 		ABMUpdate,
+		ABMDetail,
 		MainCard
 	},
-
 	data() {
 		return {
-			sectionTitle: this.$t('products'),
 			loading: false,
 			Configuration: null,
 			filters: {
@@ -32,7 +30,6 @@ export default {
 			}
 		};
 	},
-
 	computed: {
 		...mapGetters('UsersStore', [
 			'user',
@@ -41,154 +38,46 @@ export default {
 			'account'
 		]),
 		...mapGetters('CategoriesStore', ['categories']),
-		...mapGetters('ProductsStore', ['products'])
+		...mapGetters('ProductsStore', ['products']),
+		tableColumns() {
+			return this.Configuration.tableColumns;
+		},
+		labels() {
+			return this.Configuration.labels;
+		},
+		title() {
+			return this.Configuration.labels.sectionTitle;
+		},
+		endpoints() {
+			return this.Configuration.endpoints;
+		},
+		detailData() {
+			return getArrayDetailData(this.Configuration.actions.formConfiguration);
+		}
 	},
-
 	mounted() {
 		this.setConfigurationFile();
-		this.getHeightWindow();
 	},
-
 	methods: {
 		async setConfigurationFile() {
 			this.Configuration = await setConfigurationFileByAccount('products', this.account);
-
-			this.getAllProducts();
-			this.setCategories();
 		},
-
-		getHeightWindow() {
-			var heightWindow = window.innerHeight - 285;
-
-			return heightWindow + 'px';
+		openABMCreate() {
+			this.Configuration = setFormConfiguration(this.Configuration);
+			this.Configuration.actions.openCreateModal = true;
 		},
-
-		add() {
-			this.Configuration.create.modalVisible = true;
+		openABMUpdate(data) {
+			this.Configuration = setFormConfiguration(this.Configuration, data);
+			this.Configuration.actions.openUpdateModal = true;
 		},
-
-		async formDataCreate(value) {
-			value.category_id = value.category.id;
-
-			let formData = new FormData();
-
-			for (let key in value) {
-				formData.append(key, value[key]);
-			}
-
-			this.Configuration.endpoints.new(this.user.account_id, formData)
-				.then((response) => {
-					this.Configuration.create.modalVisible = false;
-					this.loading = false;
-					this.$toast.add({
-						severity: 'success',
-						summary: this.$t('toast.success'),
-						detail: response.data.message,
-						life: 3000
-					});
-					Store.commit('UsersStore/setLoadingServerRequest', false);
-					this.getAllProducts();
-				})
-				.catch((error) => {
-					this.$toast.add({
-						severity: 'error',
-						summary: this.$t('toast.error'),
-						detail: error.response.data.message,
-						life: 3000
-					});
-					Store.commit('UsersStore/setLoadingServerRequest', false);
-				});
+		openABMDetail(data) {
+			this.Configuration = setFormConfiguration(this.Configuration, data);
+			this.Configuration.actions.openDetailModal = true;
 		},
+		formatItem(item) {
+			item.category_id = item.category.id;
 
-		edit(data) {
-			this.Configuration.update.id = data.id;
-
-			for (const configuration of this.Configuration.update.formConfiguration) {
-				if (configuration.type === 'price') {
-					configuration.defaultValue = parseFloat(data[configuration.modelName]);
-				} else {
-					configuration.defaultValue = data[configuration.modelName];
-				}
-			}
-
-			this.Configuration.update.modalVisible = true;
-		},
-
-		formDataUpdate(value) {
-			value.category_id = value.category.id;
-			let formData = new FormData();
-
-			for (let key in value) {
-				formData.append(key, value[key]);
-			}
-
-			this.Configuration.endpoints.update(this.user.account_id, formData)
-				.then((response) => {
-					this.Configuration.update.modalVisible = false;
-					this.loading = false;
-					this.$toast.add({
-						severity: 'success',
-						summary: this.$t('toast.success'),
-						detail: response.data.message,
-						life: 3000
-					});
-					Store.commit('UsersStore/setLoadingServerRequest', false);
-					this.getAllProducts();
-				})
-				.catch((error) => {
-					this.$toast.add({
-						severity: 'error',
-						summary: this.$t('toast.error'),
-						detail: error.response.data.message,
-						life: 3000
-					});
-					Store.commit('UsersStore/setLoadingServerRequest', false);
-				});
-		},
-
-		async deleteProduct(element) {
-			this.Configuration.endpoints.delete(this.user.account_id, element)
-				.then((response) => {
-					this.loading = false;
-					this.$toast.add({
-						severity: 'success',
-						summary: this.$t('toast.success'),
-						detail: response.data.message,
-						life: 3000
-					});
-					Store.commit('UsersStore/setLoadingServerRequest', false);
-					this.getAllProducts();
-				})
-				.catch((error) => {
-					console.log(error);
-					Store.commit('UsersStore/setLoadingServerRequest', false);
-				});
-		},
-
-		setCategories() {
-			this.loading = true;
-
-			for (const configuration of this.Configuration.create.formConfiguration) {
-				if (configuration.modelName === 'category') {
-					configuration.defaultValue = this.categories;
-				}
-			}
-
-			for (const configuration of this.Configuration.update.formConfiguration) {
-				if (configuration.modelName === 'category') {
-					configuration.options = this.categories;
-				}
-			}
-
-			this.loading = false;
-		},
-
-		getAllCategories() {
-			this.Configuration.endpoints.getAllCategories(this.user.account_id);
-		},
-
-		async getAllProducts() {
-			await this.Configuration.endpoints.getAllProducts(this.user.account_id);
+			return item;
 		}
 	}
 };
@@ -198,36 +87,41 @@ export default {
 	<main class="about-page" v-if="Configuration">
 		<MainCard>
 			<template #header>
-				<h1>
-					{{ Configuration.labels.sectionTile }}
-				</h1>
+				{{ title }}
 			</template>
 			<template #content>
 				<div>
 					<DynamicTable
 						:elements="products"
-						:columns="Configuration.tableColumns"
-						:labels="Configuration.labels"
+						:columns="tableColumns"
+						:labels="labels"
 						:loading="loading"
-						@add='add'
-						@edit='edit'
-						@delete='deleteProduct'
+						:endpoints="endpoints"
+						@add="openABMCreate"
+						@edit="openABMUpdate"
+						@detail="openABMDetail"
 					/>
 				</div>
 			</template>
 		</MainCard>
 
 		<ABMCreate
-			:data="Configuration.create"
-			@formDataCreate='formDataCreate'
+			:configuration="Configuration.actions"
+			:endpoints="Configuration.endpoints"
+			:format-item="item => formatItem(item)"
 		/>
 
 		<ABMUpdate
-			:data="Configuration.update"
-			@formDataUpdate='formDataUpdate'
+			:configuration="Configuration.actions"
+			:endpoints="Configuration.endpoints"
+			:format-item="item => formatItem(item)"
 		/>
 
-		<ConfirmDialog></ConfirmDialog>
+		<ABMDetail
+			:configuration="Configuration.actions"
+			:data="detailData"
+			@formDataUpdate="formDataUpdate"
+		/>
 	</main>
 </template>
 

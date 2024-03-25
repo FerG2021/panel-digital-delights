@@ -107,7 +107,7 @@ export const getArrayDetailData = (formConfiguration) => {
 			object.value = item.default?.name;
 		}
 
-		if (item.type === 'text' || item.type === 'number' || item.type === 'image' || item.type === 'image-multiple') {
+		if (item.type === 'text' || item.type === 'number' || item.type === 'image' || item.type === 'image-multiple' || item.type === 'price' || item.type === 'switch') {
 			object.value = item.default;
 		}
 
