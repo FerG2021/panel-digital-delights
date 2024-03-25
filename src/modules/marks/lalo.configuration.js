@@ -18,6 +18,12 @@ const configuration = {
 	},
 	tableColumns: [
 		{
+			field: 'image',
+			header: 'Imagen',
+			type: 'image',
+			variation: ''
+		},
+		{
 			field: 'name',
 			header: 'Nombre',
 			type: 'normal',
@@ -59,6 +65,13 @@ const configuration = {
 			required: true,
 			default: null,
 			placeholder: 'Ingrese la marca'
+		},
+		{
+			modelName: 'image',
+			label: 'Imagen',
+			type: 'image',
+			required: true,
+			default: null
 		}]
 	}
 };
